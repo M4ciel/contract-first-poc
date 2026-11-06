@@ -49,6 +49,12 @@ export const problems = {
       status: 409,
       detail: `All copies of the book ${bookId} are on loan.`,
     }),
+  internal: (): ProblemException =>
+    new ProblemException({
+      type: 'urn:acme:problem:internal',
+      title: 'Internal server error',
+      status: 500,
+    }),
   serviceUnavailable: (detail: string): ProblemException =>
     new ProblemException({
       type: 'urn:acme:problem:service-unavailable',

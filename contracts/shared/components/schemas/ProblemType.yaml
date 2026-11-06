@@ -10,6 +10,7 @@ description: |
   - `urn:acme:problem:loan-not-found`: no loan has the given id (404).
   - `urn:acme:problem:book-unavailable`: the book has no free copy to lend or reserve (409).
   - `urn:acme:problem:service-unavailable`: the service or one of its dependencies is down (503).
+  - `urn:acme:problem:internal`: an unexpected error; details are only in the server logs (500).
 enum:
   - urn:acme:problem:validation
   - urn:acme:problem:not-found
@@ -17,3 +18,4 @@ enum:
   - urn:acme:problem:loan-not-found
   - urn:acme:problem:book-unavailable
   - urn:acme:problem:service-unavailable
+  - urn:acme:problem:internal

@@ -3,9 +3,10 @@ import type { ProblemDetails } from '@acme/api-types';
 import { ProblemException, problems } from './problem.exception.js';
 
 /**
- * Body of an error response. Problems from the catalog cover every documented error; anything
- * else (a bug, an unsupported media type) uses the RFC 9457 default type `about:blank`, whose
- * meaning is just the HTTP status.
+ * Body of an error response. Problems from the catalog cover every documented error, including
+ * unexpected ones (`internal`); a framework error the contract does not document (for example
+ * 415 Unsupported Media Type) uses the RFC 9457 default type `about:blank`, whose meaning is just
+ * the HTTP status.
  */
 export type ProblemBody =
   ProblemDetails | { type: 'about:blank'; title: string; status: number; detail?: string };
@@ -15,7 +16,7 @@ export const toProblem = (error: unknown): ProblemBody => {
   if (error instanceof ProblemException) return error.problem;
   if (!(error instanceof HttpException)) {
     // A bug: the details stay in the logs, never in the response.
-    return { type: 'about:blank', title: 'Internal server error', status: 500 };
+    return problems.internal().problem;
   }
 
   const status = error.getStatus();

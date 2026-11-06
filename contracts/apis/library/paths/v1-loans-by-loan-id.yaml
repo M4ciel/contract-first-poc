@@ -23,3 +23,5 @@ get:
       $ref: ../../../shared/components/responses/BadRequest.yaml
     '404':
       $ref: ../../../shared/components/responses/LoanNotFound.yaml
+    '500':
+      $ref: ../../../shared/components/responses/InternalServerError.yaml

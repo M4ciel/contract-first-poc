@@ -1,0 +1,31 @@
+openapi: 3.1.0
+info:
+  title: Acme Inventory API
+  version: 1.0.0
+  summary: Internal service that owns the physical copies of each book.
+  description: |
+    Internal, service-to-service API. It runs as an AWS Lambda behind API Gateway and is called
+    by the library backend through a client generated from this contract.
+
+    The same conventions as the public API apply: versioned routes, RFC 9457 Problem Details,
+    UUID identifiers, ISO 8601 dates and a required `x-stability-level` on every operation.
+
+    Authentication is out of scope for this proof of concept. In production this API would be
+    private or protected with IAM (SigV4).
+  license:
+    name: MIT
+    identifier: MIT
+servers:
+  - url: /
+    description: Same origin as the client; each consumer configures its own base URL.
+tags:
+  - name: inventories
+    description: Stock of physical copies per book.
+  - name: reservations
+    description: Copies reserved for a loan.
+security: []
+paths:
+  /v1/inventories/{bookId}:
+    $ref: paths/v1-inventories-by-book-id.yaml
+  /v1/reservations:
+    $ref: paths/v1-reservations.yaml

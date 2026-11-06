@@ -1,0 +1,42 @@
+post:
+  operationId: createReservation
+  summary: Reserve a copy of a book
+  description: |
+    Atomically reserves one available copy of a book for a loan. When no copy is available the
+    response is a 409 Problem Details. The request body is strict: unknown fields are rejected.
+  tags: [reservations]
+  x-stability-level: stable
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateReservationRequest.yaml
+        example:
+          bookId: 7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a
+          loanId: 0b9d8c7e-6f5a-4b3c-8d2e-1a0f9e8d7c6b
+  responses:
+    '201':
+      description: The copy was reserved.
+      headers:
+        Location:
+          description: URL of the created reservation.
+          schema:
+            type: string
+            format: uri-reference
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Reservation.yaml
+          example:
+            id: 5e4d3c2b-1a09-4f8e-8d7c-6b5a4f3e2d1c
+            bookId: 7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a
+            loanId: 0b9d8c7e-6f5a-4b3c-8d2e-1a0f9e8d7c6b
+            status: active
+            createdAt: '2026-01-10T12:00:00Z'
+    '400':
+      $ref: ../../../shared/components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../../shared/components/responses/NotFound.yaml
+    '409':
+      $ref: ../../../shared/components/responses/Conflict.yaml

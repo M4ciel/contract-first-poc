@@ -1,0 +1,26 @@
+type: object
+description: A copy of a book reserved for a loan.
+required: [id, bookId, loanId, status, createdAt]
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Reservation identifier.
+  bookId:
+    type: string
+    format: uuid
+    description: Identifier of the reserved book.
+  loanId:
+    type: string
+    format: uuid
+    description: Identifier of the loan that holds the copy.
+  status:
+    type: string
+    enum: [active, released]
+    description: |
+      Reservation status. New values may be added in the future; consumers receive `unknown`
+      for values they do not know yet.
+  createdAt:
+    type: string
+    format: date-time
+    description: When the copy was reserved, ISO 8601 with timezone.

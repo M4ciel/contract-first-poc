@@ -1,0 +1,18 @@
+type: object
+description: Stock of physical copies of a book.
+required: [bookId, totalCopies, availableCopies]
+properties:
+  bookId:
+    type: string
+    format: uuid
+    description: Book identifier.
+  totalCopies:
+    type: integer
+    format: int32
+    minimum: 0
+    description: Number of copies the library owns.
+  availableCopies:
+    type: integer
+    format: int32
+    minimum: 0
+    description: Number of copies that can be reserved right now.

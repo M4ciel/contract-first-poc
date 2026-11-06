@@ -34,7 +34,10 @@
       "cache": true,
       "dependsOn": ["contract-lint"],
       "inputs": ["contract"],
-      "outputs": ["{projectRoot}/artifacts/library.bundle.yaml"],
+      "outputs": [
+        "{projectRoot}/artifacts/library.bundle.yaml",
+        "{projectRoot}/artifacts/inventory.bundle.yaml"
+      ],
       "options": {
         "cwd": "{projectRoot}",
         "command": "redocly bundle",

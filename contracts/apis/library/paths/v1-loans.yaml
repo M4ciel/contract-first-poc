@@ -3,7 +3,9 @@ post:
   summary: Borrow a book
   description: |
     Creates a loan for a book. The request body is strict: unknown fields are rejected with a
-    400 Problem Details. The due date is calculated by the shared `@acme/domain` rules.
+    400 Problem Details. A copy is reserved in the inventory service; when no copy is available
+    the response is a 409 Problem Details. The due date is calculated by the shared
+    `@acme/domain` rules.
   tags: [loans]
   x-stability-level: stable
   requestBody:
@@ -37,3 +39,5 @@ post:
       $ref: ../../../shared/components/responses/BadRequest.yaml
     '404':
       $ref: ../../../shared/components/responses/NotFound.yaml
+    '409':
+      $ref: ../../../shared/components/responses/Conflict.yaml

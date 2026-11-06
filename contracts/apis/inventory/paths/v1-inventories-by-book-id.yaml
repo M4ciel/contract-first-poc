@@ -1,0 +1,23 @@
+parameters:
+  - $ref: ../components/parameters/BookId.yaml
+get:
+  operationId: getInventory
+  summary: Get the stock of a book
+  description: Returns how many copies of a book exist and how many are available.
+  tags: [inventories]
+  x-stability-level: stable
+  responses:
+    '200':
+      description: The stock of the book.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Inventory.yaml
+          example:
+            bookId: 7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a
+            totalCopies: 3
+            availableCopies: 1
+    '400':
+      $ref: ../../../shared/components/responses/BadRequest.yaml
+    '404':
+      $ref: ../../../shared/components/responses/NotFound.yaml

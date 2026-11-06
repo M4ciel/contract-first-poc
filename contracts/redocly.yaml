@@ -4,6 +4,9 @@ apis:
   library@v1:
     root: apis/library/openapi.yaml
     output: artifacts/library.bundle.yaml
+  inventory@v1:
+    root: apis/inventory/openapi.yaml
+    output: artifacts/inventory.bundle.yaml
 
 extends:
   - recommended

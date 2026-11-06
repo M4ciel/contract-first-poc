@@ -1,0 +1,13 @@
+type: object
+description: Request body to reserve a copy of a book for a loan. Unknown fields are rejected.
+required: [bookId, loanId]
+properties:
+  bookId:
+    type: string
+    format: uuid
+    description: Identifier of the book to reserve.
+  loanId:
+    type: string
+    format: uuid
+    description: Identifier of the loan that will hold the copy.
+additionalProperties: false

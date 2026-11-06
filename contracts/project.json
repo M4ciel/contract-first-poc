@@ -13,6 +13,13 @@
       {
         "externalDependencies": ["@redocly/cli"]
       }
+    ],
+    "generator": [
+      "{projectRoot}/orval.config.ts",
+      "{projectRoot}/scripts/**/*",
+      {
+        "externalDependencies": ["orval"]
+      }
     ]
   },
   "targets": {
@@ -45,6 +52,21 @@
           "REDOCLY_TELEMETRY": "off",
           "REDOCLY_SUPPRESS_UPDATE_NOTICE": "true"
         }
+      }
+    },
+    "generate": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "dependsOn": ["bundle"],
+      "inputs": ["contract", "generator"],
+      "outputs": [
+        "{projectRoot}/packages/api-types/src/generated",
+        "{projectRoot}/packages/api-client/src/generated",
+        "{projectRoot}/packages/inventory-client/src/generated"
+      ],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "orval --config orval.config.ts"
       }
     }
   }

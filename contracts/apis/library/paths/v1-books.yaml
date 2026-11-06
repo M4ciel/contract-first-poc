@@ -24,3 +24,5 @@ get:
             nextCursor: Y3Vyc29yLTE
     '400':
       $ref: ../../../shared/components/responses/BadRequest.yaml
+    '500':
+      $ref: ../../../shared/components/responses/InternalServerError.yaml

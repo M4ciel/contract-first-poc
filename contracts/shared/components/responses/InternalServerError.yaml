@@ -1,0 +1,9 @@
+description: An unexpected error. Details are only in the server logs.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/ProblemDetails.yaml
+    example:
+      type: urn:acme:problem:internal
+      title: Internal server error
+      status: 500

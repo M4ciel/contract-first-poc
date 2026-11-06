@@ -1,0 +1,30 @@
+{
+  "name": "@acme/legacy-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Simulates an app that was never updated: it still runs @acme/api-types@1.0.0 (frozen copy).",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@acme/api-client": "workspace:*",
+    "@acme/api-types": "workspace:*"
+  },
+  "nx": {
+    "tags": [
+      "type:app"
+    ],
+    "targets": {
+      "test": {
+        "options": {
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules --no-warnings=ExperimentalWarning"
+          }
+        }
+      },
+      "typecheck": {}
+    }
+  }
+}

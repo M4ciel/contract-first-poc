@@ -42,5 +42,7 @@ post:
       $ref: ../../../shared/components/responses/BookNotFound.yaml
     '409':
       $ref: ../../../shared/components/responses/BookUnavailable.yaml
+    '500':
+      $ref: ../../../shared/components/responses/InternalServerError.yaml
     '503':
       $ref: ../../../shared/components/responses/ServiceUnavailable.yaml

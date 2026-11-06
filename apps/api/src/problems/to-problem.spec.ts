@@ -35,7 +35,7 @@ describe('toProblem', () => {
 
   it('hides the details of unexpected errors', () => {
     expect(toProblem(new Error('database password is wrong'))).toEqual({
-      type: 'about:blank',
+      type: 'urn:acme:problem:internal',
       title: 'Internal server error',
       status: 500,
     });

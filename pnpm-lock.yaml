@@ -297,6 +297,19 @@ importers:
         specifier: 3.0.4
         version: 3.0.4(@types/node@24.19.2)(supports-color@8.1.1)(typescript@6.0.3)
 
+  apps/legacy-client:
+    dependencies:
+      zod:
+        specifier: 4.6.7
+        version: 4.6.7
+    devDependencies:
+      '@acme/api-client':
+        specifier: workspace:*
+        version: link:../../contracts/packages/api-client
+      '@acme/api-types':
+        specifier: workspace:*
+        version: link:../../contracts/packages/api-types
+
   contracts/packages/api-client:
     dependencies:
       '@acme/api-types':

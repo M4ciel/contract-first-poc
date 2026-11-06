@@ -13,5 +13,7 @@ get:
             $ref: ../components/schemas/Health.yaml
           example:
             status: ok
+    '500':
+      $ref: ../../../shared/components/responses/InternalServerError.yaml
     '503':
       $ref: ../../../shared/components/responses/ServiceUnavailable.yaml

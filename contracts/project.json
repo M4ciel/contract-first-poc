@@ -4,5 +4,38 @@
   "projectType": "library",
   "sourceRoot": "contracts",
   "tags": ["scope:contracts"],
-  "targets": {}
+  "namedInputs": {
+    "contract": [
+      "{projectRoot}/openapi.yaml",
+      "{projectRoot}/paths/**/*",
+      "{projectRoot}/components/**/*",
+      "{projectRoot}/redocly.yaml",
+      "{projectRoot}/.redocly.lint-ignore.yaml",
+      { "externalDependencies": ["@redocly/cli"] }
+    ]
+  },
+  "targets": {
+    "contract-lint": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": ["contract"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "redocly lint openapi.yaml",
+        "env": { "REDOCLY_TELEMETRY": "off", "REDOCLY_SUPPRESS_UPDATE_NOTICE": "true" }
+      }
+    },
+    "bundle": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "dependsOn": ["contract-lint"],
+      "inputs": ["contract"],
+      "outputs": ["{projectRoot}/artifacts/openapi.bundle.yaml"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "redocly bundle openapi.yaml --output artifacts/openapi.bundle.yaml",
+        "env": { "REDOCLY_TELEMETRY": "off", "REDOCLY_SUPPRESS_UPDATE_NOTICE": "true" }
+      }
+    }
+  }
 }

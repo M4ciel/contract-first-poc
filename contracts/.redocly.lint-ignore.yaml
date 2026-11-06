@@ -1,0 +1,6 @@
+# Explicit, reviewable exceptions to the contract lint rules.
+# Every entry needs a reason. Prefer fixing the contract over adding an entry here.
+paths/v1-health.yaml:
+  # A health check takes no input, so there is no client error (4xx) it could return.
+  operation-4xx-response:
+    - '#/get/responses'

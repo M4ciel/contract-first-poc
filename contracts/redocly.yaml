@@ -1,0 +1,41 @@
+# Contract lint rules. Conventions that used to live in a wiki become errors here.
+extends:
+  - recommended
+
+rules:
+  # operationId becomes the name of every generated function, so it must exist and be unique.
+  operation-operationId: error
+  operation-operationId-unique: error
+
+  # Paths: kebab-case and plural nouns. Version segments and singleton resources are exceptions.
+  paths-kebab-case: error
+  path-segment-plural:
+    severity: error
+    exceptions: [v1, v2, health]
+
+  rule/operation-id-camel-case:
+    severity: error
+    message: operationId must be camelCase (it becomes a generated function name).
+    subject:
+      type: Operation
+      property: operationId
+    assertions:
+      casing: camelCase
+
+  rule/versioned-paths:
+    severity: error
+    message: Every path must start with a major version, for example /v1 or /v2.
+    subject:
+      type: Paths
+    assertions:
+      pattern: /^\/v[1-9][0-9]*(?:\/|$)/
+
+  rule/operation-stability-level:
+    severity: error
+    message: Every operation must declare x-stability-level (draft, alpha, beta or stable).
+    subject:
+      type: Operation
+      property: x-stability-level
+    assertions:
+      defined: true
+      enum: [draft, alpha, beta, stable]

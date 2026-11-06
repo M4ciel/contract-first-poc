@@ -13,6 +13,8 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "contract:lint": "nx run contracts:contract-lint",
+    "contract:bundle": "nx run contracts:bundle",
     "lint": "nx run-many -t lint",
     "test": "nx run-many -t test",
     "typecheck": "nx run-many -t typecheck",
@@ -25,6 +27,7 @@
     "@nx/jest": "24.0.4",
     "@nx/js": "24.0.4",
     "@nx/workspace": "24.0.4",
+    "@redocly/cli": "2.76.0",
     "@types/jest": "30.0.0",
     "@types/node": "24.19.2",
     "eslint": "10.14.0",

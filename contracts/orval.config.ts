@@ -38,6 +38,27 @@ export default defineConfig({
     },
   },
 
+  // Server-side request validators of the public API, one per operation and location
+  // (`GetBookParams`, `ListBooksQueryParams`, `CreateLoanBody`), published as
+  // `@acme/api-types/validators`. Path and query values arrive as strings, so they are coerced.
+  // Projects run in order: this one writes inside the folder `library` cleans, so it comes after.
+  libraryValidators: {
+    input: { target: './artifacts/library.bundle.yaml' },
+    output: {
+      target: './packages/api-types/src/generated/validators/index.ts',
+      mode: 'single',
+      client: 'zod',
+      override: {
+        zod: {
+          ...zodOverride,
+          generate: { param: true, query: true, header: false, body: true, response: false },
+          coerce: { param: true, query: true },
+        },
+      },
+      formatter: 'prettier',
+    },
+  },
+
   // Internal API: backend → inventory Lambda.
   inventory: {
     input: { target: './artifacts/inventory.bundle.yaml' },
@@ -54,6 +75,11 @@ export default defineConfig({
       override: {
         zod: zodOverride,
         fetch: { runtimeValidation: false },
+        // Base URL and fetch are set at runtime with `configureInventoryClient`.
+        mutator: {
+          path: './packages/inventory-client/src/http/custom-fetch.ts',
+          name: 'customFetch',
+        },
       },
       clean: true,
       formatter: 'prettier',

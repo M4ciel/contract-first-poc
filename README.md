@@ -80,12 +80,12 @@ frontends: the backend is a consumer too.
 
 ### The published packages
 
-| Package                  | What it contains                                                  | Consumed by          | Versioning                          |
-| ------------------------ | ----------------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `@acme/api-types`        | Generated **Zod** schemas: runtime validation + inferred TS types | Backend and frontend | Fixed group with `api-client`       |
-| `@acme/api-client`       | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)  | Frontends            | Fixed group with `api-types`        |
-| `@acme/inventory-client` | Generated **Zod** schemas, **fetch** client + **MSW** handlers    | Backend              | Independent (follows inventory API) |
-| `@acme/domain`           | Pure, shared business rules (no I/O, 100% mutation score)         | Backend and frontend | Independent                         |
+| Package                  | What it contains                                                                         | Consumed by          | Versioning                          |
+| ------------------------ | ---------------------------------------------------------------------------------------- | -------------------- | ----------------------------------- |
+| `@acme/api-types`        | Generated **Zod** schemas + inferred TS types; request validators (`/validators`)        | Backend and frontend | Fixed group with `api-client`       |
+| `@acme/api-client`       | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)                         | Frontends            | Fixed group with `api-types`        |
+| `@acme/inventory-client` | Generated **Zod** schemas, **fetch** client (base URL set at runtime) + **MSW** handlers | Backend              | Independent (follows inventory API) |
+| `@acme/domain`           | Pure, shared business rules (no I/O, 100% mutation score)                                | Backend and frontend | Independent                         |
 
 ### Runtime on (emulated) AWS
 
@@ -256,7 +256,7 @@ timeline
 - [x] Problem type catalog (`urn:acme:problem:*`, field-level validation errors)
 - [x] Tolerant-response post-processing (TypeScript AST, unknown enum values become `unknown`)
 - [x] `@acme/domain` with 100% coverage and mutation score (Stryker)
-- [ ] `apps/api` (NestJS + Fastify)
+- [x] `apps/api` (NestJS + Fastify, contract validators, Problem Details, inventory over HTTP)
 - [ ] `apps/legacy-client`
 - [ ] `apps/web` (React + MSW)
 - [ ] oasdiff and stability levels

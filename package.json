@@ -1,0 +1,39 @@
+{
+  "name": "@acme/source",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Contract-first architecture with generated, versioned packages (proof of concept).",
+  "type": "module",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": "24.22.2",
+    "pnpm": "12.18.0"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "nx run-many -t lint",
+    "test": "nx run-many -t test",
+    "typecheck": "nx run-many -t typecheck",
+    "graph": "nx graph"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@nx/eslint": "24.0.4",
+    "@nx/eslint-plugin": "24.0.4",
+    "@nx/jest": "24.0.4",
+    "@nx/js": "24.0.4",
+    "@nx/workspace": "24.0.4",
+    "@types/jest": "30.0.0",
+    "@types/node": "24.19.2",
+    "eslint": "10.14.0",
+    "eslint-config-prettier": "10.1.8",
+    "jest": "30.5.2",
+    "jsonc-eslint-parser": "3.3.0",
+    "nx": "24.0.4",
+    "prettier": "3.9.10",
+    "ts-jest": "29.4.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1"
+  }
+}

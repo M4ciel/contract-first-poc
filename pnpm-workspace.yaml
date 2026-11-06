@@ -1,0 +1,11 @@
+packages:
+  - 'contracts/packages/*'
+  - 'apps/*'
+
+# Exact versions only: `pnpm add` must never write ^ or ~ ranges.
+savePrefix: ''
+# Refuse to install with a Node.js/pnpm version different from `engines`.
+engineStrict: true
+allowBuilds:
+  '@parcel/watcher': true
+  nx: true

@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Generated code is a build artifact: never committed, never edited by hand
+src/generated/
+artifacts/
+
+# Build and test outputs
+dist/
+coverage/
+reports/
+.stryker-tmp/
+*.tsbuildinfo
+test-results/
+playwright-report/
+
+# Nx
+.nx/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.zip
+
+# Environment and OS
+.env
+.env.*
+!.env.example
+.DS_Store

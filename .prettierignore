@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+showcase.md
+**/dist
+**/coverage
+**/reports
+**/artifacts
+**/src/generated
+**/.nx
+**/.terraform

@@ -1,0 +1,83 @@
+{
+  "name": "@acme/api-client",
+  "version": "0.0.0",
+  "description": "TanStack Query hooks and MSW handlers generated from the Acme Library API contract.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./mocks": {
+      "types": "./dist/mocks.d.ts",
+      "import": "./dist/mocks.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@acme/api-types": "workspace:*",
+    "@faker-js/faker": "10.6.0"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.106.1",
+    "msw": "^3.0.4",
+    "react": "^19.3.1"
+  },
+  "peerDependenciesMeta": {
+    "msw": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@tanstack/react-query": "5.106.1",
+    "@types/react": "19.3.0",
+    "msw": "3.0.4",
+    "react": "19.3.1",
+    "zod": "4.6.7"
+  },
+  "nx": {
+    "tags": [
+      "scope:contracts"
+    ],
+    "implicitDependencies": [
+      "contracts"
+    ],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          "^build",
+          {
+            "projects": [
+              "contracts"
+            ],
+            "target": "generate"
+          }
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "tsdown"
+        }
+      },
+      "typecheck": {
+        "dependsOn": [
+          "^build",
+          {
+            "projects": [
+              "contracts"
+            ],
+            "target": "generate"
+          }
+        ]
+      }
+    }
+  }
+}

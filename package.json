@@ -15,29 +15,40 @@
     "format:check": "prettier --check .",
     "contract:lint": "nx run contracts:contract-lint",
     "contract:bundle": "nx run contracts:bundle",
+    "generate": "nx run contracts:generate",
     "lint": "nx run-many -t lint",
     "test": "nx run-many -t test",
     "typecheck": "nx run-many -t typecheck",
-    "graph": "nx graph"
+    "graph": "nx graph",
+    "build": "nx run-many -t build"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@faker-js/faker": "10.6.0",
     "@nx/eslint": "24.0.4",
     "@nx/eslint-plugin": "24.0.4",
     "@nx/jest": "24.0.4",
     "@nx/js": "24.0.4",
     "@nx/workspace": "24.0.4",
     "@redocly/cli": "2.76.0",
+    "@tanstack/react-query": "5.106.1",
     "@types/jest": "30.0.0",
     "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
     "eslint": "10.14.0",
     "eslint-config-prettier": "10.1.8",
     "jest": "30.5.2",
     "jsonc-eslint-parser": "3.3.0",
+    "msw": "3.0.4",
     "nx": "24.0.4",
+    "orval": "8.46.0",
     "prettier": "3.9.10",
+    "publint": "0.3.25",
+    "react": "19.3.1",
     "ts-jest": "29.4.15",
+    "tsdown": "0.23.2",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.1"
+    "typescript-eslint": "8.72.1",
+    "zod": "4.6.7"
   }
 }

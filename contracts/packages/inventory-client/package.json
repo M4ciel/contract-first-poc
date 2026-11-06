@@ -1,0 +1,76 @@
+{
+  "name": "@acme/inventory-client",
+  "version": "0.0.0",
+  "description": "Zod schemas, fetch client and MSW handlers generated from the Acme Inventory API contract.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./mocks": {
+      "types": "./dist/mocks.d.ts",
+      "import": "./dist/mocks.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@faker-js/faker": "10.6.0"
+  },
+  "peerDependencies": {
+    "msw": "^3.0.4",
+    "zod": "^4.6.7"
+  },
+  "peerDependenciesMeta": {
+    "msw": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "msw": "3.0.4",
+    "zod": "4.6.7"
+  },
+  "nx": {
+    "tags": [
+      "scope:contracts"
+    ],
+    "implicitDependencies": [
+      "contracts"
+    ],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": [
+              "contracts"
+            ],
+            "target": "generate"
+          }
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "tsdown"
+        }
+      },
+      "typecheck": {
+        "dependsOn": [
+          {
+            "projects": [
+              "contracts"
+            ],
+            "target": "generate"
+          }
+        ]
+      }
+    }
+  }
+}

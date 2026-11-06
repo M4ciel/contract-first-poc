@@ -251,7 +251,7 @@ timeline
 - [x] Monorepo skeleton (Nx, pnpm, strict TypeScript, module boundaries, agent rules)
 - [x] OpenAPI 3.1 contract
 - [x] Redocly lint and bundle
-- [ ] Orval code generation
+- [x] Orval code generation
 - [ ] Tolerant-response post-processing
 - [ ] `@acme/domain` with mutation testing
 - [ ] `apps/api` (NestJS + Fastify)

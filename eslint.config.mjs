@@ -25,13 +25,15 @@ export default [
     ],
   },
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.mjs', '**/*.cjs'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
       '@nx/enforce-module-boundaries': [
         'error',
         {
           enforceBuildableLibDependency: true,
-          allow: [],
+          // Generated code is git-ignored, so it is outside the Nx project graph. Package entry
+          // points may re-export it; nothing else in a package may import it.
+          allow: ['./generated/**'],
           depConstraints: [
             { sourceTag: 'scope:domain', onlyDependOnLibsWithTags: [] },
             {

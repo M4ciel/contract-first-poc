@@ -1,0 +1,62 @@
+{
+  "name": "@acme/api-types",
+  "version": "0.0.0",
+  "description": "Zod schemas and TypeScript types generated from the Acme Library API contract.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "zod": "4.6.7"
+  },
+  "nx": {
+    "tags": [
+      "scope:contracts"
+    ],
+    "implicitDependencies": [
+      "contracts"
+    ],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": [
+              "contracts"
+            ],
+            "target": "generate"
+          }
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "tsdown"
+        }
+      },
+      "typecheck": {
+        "dependsOn": [
+          {
+            "projects": [
+              "contracts"
+            ],
+            "target": "generate"
+          }
+        ]
+      }
+    }
+  }
+}

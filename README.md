@@ -207,8 +207,8 @@ timeline
 ```
 
 - [x] Monorepo skeleton (Nx, pnpm, strict TypeScript, module boundaries, agent rules)
-- [ ] OpenAPI 3.1 contract
-- [ ] Redocly lint and bundle
+- [x] OpenAPI 3.1 contract
+- [x] Redocly lint and bundle
 - [ ] Orval code generation
 - [ ] Tolerant-response post-processing
 - [ ] `@acme/domain` with mutation testing

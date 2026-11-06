@@ -1,0 +1,10 @@
+description: No loan has the given id.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/ProblemDetails.yaml
+    example:
+      type: urn:acme:problem:loan-not-found
+      title: Loan not found
+      status: 404
+      detail: No loan has the given id.

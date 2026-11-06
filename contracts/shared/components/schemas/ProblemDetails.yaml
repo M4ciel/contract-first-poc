@@ -1,14 +1,12 @@
 type: object
 description: |
-  Error payload following RFC 9457 (Problem Details for HTTP APIs). Extension members are allowed,
-  so consumers must ignore fields they do not know.
+  Error payload following RFC 9457 (Problem Details for HTTP APIs). `type` comes from the shared
+  problem type catalog. Extension members are allowed, so consumers must ignore fields they do
+  not know.
 required: [type, title, status]
 properties:
   type:
-    type: string
-    format: uri-reference
-    description: URI reference that identifies the problem type.
-    default: about:blank
+    $ref: ./ProblemType.yaml
   title:
     type: string
     description: Short, human-readable summary of the problem type.
@@ -25,4 +23,9 @@ properties:
     type: string
     format: uri-reference
     description: URI reference that identifies this specific occurrence.
+  errors:
+    type: array
+    description: Field-level validation errors. Present only on `urn:acme:problem:validation`.
+    items:
+      $ref: ./InvalidParam.yaml
 additionalProperties: true

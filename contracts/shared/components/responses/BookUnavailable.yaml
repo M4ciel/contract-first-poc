@@ -1,0 +1,10 @@
+description: The book has no free copy to lend or reserve.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/ProblemDetails.yaml
+    example:
+      type: urn:acme:problem:book-unavailable
+      title: Book unavailable
+      status: 409
+      detail: All copies of this book are on loan.

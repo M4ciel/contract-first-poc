@@ -1,0 +1,19 @@
+type: string
+description: |
+  Stable identifier of a problem type. Clients may branch on it (for example to show a localized
+  message) and must fall back to `title` and `detail` for values they do not know: new problem
+  types are an additive change.
+
+  - `urn:acme:problem:validation`: the request does not match the contract (400).
+  - `urn:acme:problem:not-found`: the route or resource does not exist (404).
+  - `urn:acme:problem:book-not-found`: no book has the given id (404).
+  - `urn:acme:problem:loan-not-found`: no loan has the given id (404).
+  - `urn:acme:problem:book-unavailable`: the book has no free copy to lend or reserve (409).
+  - `urn:acme:problem:service-unavailable`: the service or one of its dependencies is down (503).
+enum:
+  - urn:acme:problem:validation
+  - urn:acme:problem:not-found
+  - urn:acme:problem:book-not-found
+  - urn:acme:problem:loan-not-found
+  - urn:acme:problem:book-unavailable
+  - urn:acme:problem:service-unavailable

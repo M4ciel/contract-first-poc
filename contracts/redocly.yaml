@@ -1,4 +1,10 @@
 # Contract lint rules. Conventions that used to live in a wiki become errors here.
+# The same rules apply to every API listed below.
+apis:
+  library@v1:
+    root: apis/library/openapi.yaml
+    output: artifacts/library.bundle.yaml
+
 extends:
   - recommended
 

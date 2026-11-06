@@ -6,12 +6,13 @@
   "tags": ["scope:contracts"],
   "namedInputs": {
     "contract": [
-      "{projectRoot}/openapi.yaml",
-      "{projectRoot}/paths/**/*",
-      "{projectRoot}/components/**/*",
+      "{projectRoot}/apis/**/*",
+      "{projectRoot}/shared/**/*",
       "{projectRoot}/redocly.yaml",
       "{projectRoot}/.redocly.lint-ignore.yaml",
-      { "externalDependencies": ["@redocly/cli"] }
+      {
+        "externalDependencies": ["@redocly/cli"]
+      }
     ]
   },
   "targets": {
@@ -21,8 +22,11 @@
       "inputs": ["contract"],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "redocly lint openapi.yaml",
-        "env": { "REDOCLY_TELEMETRY": "off", "REDOCLY_SUPPRESS_UPDATE_NOTICE": "true" }
+        "command": "redocly lint",
+        "env": {
+          "REDOCLY_TELEMETRY": "off",
+          "REDOCLY_SUPPRESS_UPDATE_NOTICE": "true"
+        }
       }
     },
     "bundle": {
@@ -30,11 +34,14 @@
       "cache": true,
       "dependsOn": ["contract-lint"],
       "inputs": ["contract"],
-      "outputs": ["{projectRoot}/artifacts/openapi.bundle.yaml"],
+      "outputs": ["{projectRoot}/artifacts/library.bundle.yaml"],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "redocly bundle openapi.yaml --output artifacts/openapi.bundle.yaml",
-        "env": { "REDOCLY_TELEMETRY": "off", "REDOCLY_SUPPRESS_UPDATE_NOTICE": "true" }
+        "command": "redocly bundle",
+        "env": {
+          "REDOCLY_TELEMETRY": "off",
+          "REDOCLY_SUPPRESS_UPDATE_NOTICE": "true"
+        }
       }
     }
   }

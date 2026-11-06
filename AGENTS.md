@@ -5,8 +5,10 @@ Humans should follow them too. `CLAUDE.md` only imports this file, so there is a
 
 ## Source of truth
 
-- The HTTP API shape is defined **only** in `contracts/openapi.yaml` (+ `contracts/paths/`,
-  `contracts/components/`). Types, Zod schemas, HTTP clients and mocks are **generated** from it.
+- HTTP APIs are defined **only** in `contracts/apis/<api>/openapi.yaml` (+ its `paths/` and
+  `components/`), with error components shared in `contracts/shared/`. Today there are two:
+  `library` (public, web → backend) and `inventory` (internal, backend → Lambda). Types, Zod
+  schemas, HTTP clients and mocks are **generated** from them.
 - Domain events are defined only in `contracts/events/`.
 - Shared business rules live only in `@acme/domain` (pure functions, no I/O).
 

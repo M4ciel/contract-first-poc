@@ -20,6 +20,6 @@ get:
             startedAt: '2026-01-10T12:00:00Z'
             dueAt: '2026-01-24T12:00:00Z'
     '400':
-      $ref: ../components/responses/BadRequest.yaml
+      $ref: ../../../shared/components/responses/BadRequest.yaml
     '404':
-      $ref: ../components/responses/NotFound.yaml
+      $ref: ../../../shared/components/responses/NotFound.yaml

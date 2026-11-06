@@ -23,4 +23,4 @@ get:
                 createdAt: '2026-01-10T12:00:00Z'
             nextCursor: Y3Vyc29yLTE
     '400':
-      $ref: ../components/responses/BadRequest.yaml
+      $ref: ../../../shared/components/responses/BadRequest.yaml

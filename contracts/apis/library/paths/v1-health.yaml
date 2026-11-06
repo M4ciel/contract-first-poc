@@ -14,4 +14,4 @@ get:
           example:
             status: ok
     '503':
-      $ref: ../components/responses/ServiceUnavailable.yaml
+      $ref: ../../../shared/components/responses/ServiceUnavailable.yaml

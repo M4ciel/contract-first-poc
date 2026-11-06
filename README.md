@@ -253,7 +253,7 @@ timeline
 - [x] Redocly lint and bundle
 - [x] Orval code generation
 - [x] Problem type catalog (`urn:acme:problem:*`, field-level validation errors)
-- [ ] Tolerant-response post-processing
+- [x] Tolerant-response post-processing (TypeScript AST, unknown enum values become `unknown`)
 - [ ] `@acme/domain` with mutation testing
 - [ ] `apps/api` (NestJS + Fastify)
 - [ ] `apps/legacy-client`

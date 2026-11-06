@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Contract-first architecture with generated, versioned packages (proof of concept).",
+  "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@12.18.0",
   "engines": {

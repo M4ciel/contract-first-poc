@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  title: Acme Library API
+  version: 1.0.0
+  summary: Fictional library API used to demonstrate a contract-first architecture.
+  description: |
+    Single source of truth for the HTTP API. Types, Zod schemas, HTTP clients and mocks are
+    generated from this contract.
+
+    Conventions:
+    - every route starts with a major version (`/v1`, `/v2`);
+    - errors use RFC 9457 Problem Details (`application/problem+json`);
+    - collections use cursor pagination;
+    - every operation declares `x-stability-level` (`draft`, `alpha`, `beta`, `stable`).
+  license:
+    name: MIT
+    identifier: MIT
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+tags:
+  - name: health
+    description: Service health.
+  - name: books
+    description: Books available in the library catalog.
+  - name: loans
+    description: Book loans.
+security: []
+paths:
+  /v1/health:
+    $ref: paths/v1-health.yaml
+  /v1/books:
+    $ref: paths/v1-books.yaml
+  /v1/books/{bookId}:
+    $ref: paths/v1-books-by-book-id.yaml
+  /v1/loans:
+    $ref: paths/v1-loans.yaml
+  /v1/loans/{loanId}:
+    $ref: paths/v1-loans-by-loan-id.yaml
+  /v2/books:
+    $ref: paths/v2-books.yaml

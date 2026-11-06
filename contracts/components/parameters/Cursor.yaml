@@ -1,0 +1,7 @@
+name: cursor
+in: query
+required: false
+description: Opaque cursor returned as `nextCursor` by the previous page. Omit for the first page.
+schema:
+  type: string
+  minLength: 1

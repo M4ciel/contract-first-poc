@@ -1,0 +1,26 @@
+type: object
+description: A book loan.
+required: [id, bookId, status, startedAt, dueAt]
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Loan identifier.
+  bookId:
+    type: string
+    format: uuid
+    description: Identifier of the borrowed book.
+  status:
+    type: string
+    enum: [active, returned, overdue]
+    description: |
+      Loan lifecycle status. New values may be added in the future; consumers receive `unknown`
+      for values they do not know yet.
+  startedAt:
+    type: string
+    format: date-time
+    description: When the loan started, ISO 8601 with timezone.
+  dueAt:
+    type: string
+    format: date-time
+    description: When the book must be returned, ISO 8601 with timezone.

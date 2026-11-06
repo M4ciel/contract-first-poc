@@ -1,0 +1,9 @@
+type: object
+description: Request body to borrow a book. Unknown fields are rejected.
+required: [bookId]
+properties:
+  bookId:
+    type: string
+    format: uuid
+    description: Identifier of the book to borrow.
+additionalProperties: false

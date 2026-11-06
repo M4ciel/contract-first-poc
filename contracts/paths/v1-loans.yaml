@@ -1,0 +1,39 @@
+post:
+  operationId: createLoan
+  summary: Borrow a book
+  description: |
+    Creates a loan for a book. The request body is strict: unknown fields are rejected with a
+    400 Problem Details. The due date is calculated by the shared `@acme/domain` rules.
+  tags: [loans]
+  x-stability-level: stable
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/CreateLoanRequest.yaml
+        example:
+          bookId: 7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a
+  responses:
+    '201':
+      description: The loan was created.
+      headers:
+        Location:
+          description: URL of the created loan.
+          schema:
+            type: string
+            format: uri-reference
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Loan.yaml
+          example:
+            id: 0b9d8c7e-6f5a-4b3c-8d2e-1a0f9e8d7c6b
+            bookId: 7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a
+            status: active
+            startedAt: '2026-01-10T12:00:00Z'
+            dueAt: '2026-01-24T12:00:00Z'
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

@@ -1,0 +1,7 @@
+name: loanId
+in: path
+required: true
+description: Loan identifier.
+schema:
+  type: string
+  format: uuid

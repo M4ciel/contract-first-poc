@@ -1,0 +1,10 @@
+description: The resource does not exist.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/ProblemDetails.yaml
+    example:
+      type: about:blank
+      title: Not Found
+      status: 404
+      detail: The requested resource was not found.

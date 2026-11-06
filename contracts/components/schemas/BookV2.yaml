@@ -1,0 +1,29 @@
+type: object
+description: |
+  A book in the catalog (v2 shape). `author` became `authors`, an incompatible change that is why
+  this shape only exists under `/v2`.
+required: [id, title, authors, publishedAt, createdAt]
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Book identifier.
+  title:
+    type: string
+    minLength: 1
+    description: Book title.
+  authors:
+    type: array
+    minItems: 1
+    items:
+      type: string
+      minLength: 1
+    description: Author display names, in credit order.
+  publishedAt:
+    type: string
+    format: date-time
+    description: Publication instant, ISO 8601 with timezone.
+  createdAt:
+    type: string
+    format: date-time
+    description: When the book was added to the catalog, ISO 8601 with timezone.

@@ -1,0 +1,26 @@
+get:
+  operationId: listBooks
+  summary: List books
+  description: Lists catalog books using cursor pagination, ordered by creation time.
+  tags: [books]
+  x-stability-level: stable
+  parameters:
+    - $ref: ../components/parameters/Cursor.yaml
+    - $ref: ../components/parameters/Limit.yaml
+  responses:
+    '200':
+      description: A page of books.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/BookPage.yaml
+          example:
+            items:
+              - id: 7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a
+                title: Book title 1
+                author: Author name 1
+                publishedAt: '2020-01-15T00:00:00Z'
+                createdAt: '2026-01-10T12:00:00Z'
+            nextCursor: Y3Vyc29yLTE
+    '400':
+      $ref: ../components/responses/BadRequest.yaml

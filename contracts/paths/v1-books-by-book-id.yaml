@@ -1,0 +1,25 @@
+parameters:
+  - $ref: ../components/parameters/BookId.yaml
+get:
+  operationId: getBook
+  summary: Get a book
+  description: Returns a single catalog book.
+  tags: [books]
+  x-stability-level: stable
+  responses:
+    '200':
+      description: The book.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Book.yaml
+          example:
+            id: 7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a
+            title: Book title 1
+            author: Author name 1
+            publishedAt: '2020-01-15T00:00:00Z'
+            createdAt: '2026-01-10T12:00:00Z'
+    '400':
+      $ref: ../components/responses/BadRequest.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml

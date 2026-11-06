@@ -1,0 +1,24 @@
+type: object
+description: A book in the catalog (v1 shape).
+required: [id, title, author, publishedAt, createdAt]
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Book identifier.
+  title:
+    type: string
+    minLength: 1
+    description: Book title.
+  author:
+    type: string
+    minLength: 1
+    description: Author display name.
+  publishedAt:
+    type: string
+    format: date-time
+    description: Publication instant, ISO 8601 with timezone.
+  createdAt:
+    type: string
+    format: date-time
+    description: When the book was added to the catalog, ISO 8601 with timezone.

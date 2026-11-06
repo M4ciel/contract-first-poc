@@ -1,0 +1,11 @@
+type: object
+description: A page of books. Pass `nextCursor` as `cursor` to fetch the next page.
+required: [items, nextCursor]
+properties:
+  items:
+    type: array
+    items:
+      $ref: ./Book.yaml
+  nextCursor:
+    type: [string, 'null']
+    description: Opaque cursor for the next page, or null on the last page.

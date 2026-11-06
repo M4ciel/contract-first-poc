@@ -17,6 +17,7 @@
     "generator": [
       "{projectRoot}/orval.config.ts",
       "{projectRoot}/scripts/**/*",
+      "{projectRoot}/packages/*/src/http/**/*",
       {
         "externalDependencies": ["orval"]
       }

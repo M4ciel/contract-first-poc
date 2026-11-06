@@ -1,0 +1,12 @@
+type: object
+description: One request field that failed validation.
+required: [pointer, detail]
+properties:
+  pointer:
+    type: string
+    description: |
+      JSON Pointer (RFC 6901) to the invalid field in the request body, or `#/query/<name>`,
+      `#/path/<name>` for parameters.
+  detail:
+    type: string
+    description: Why the field is invalid.

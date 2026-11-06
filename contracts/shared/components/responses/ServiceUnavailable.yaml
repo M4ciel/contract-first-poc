@@ -1,10 +1,10 @@
-description: The service is temporarily unavailable.
+description: The service or one of its dependencies is temporarily unavailable.
 content:
   application/problem+json:
     schema:
       $ref: ../schemas/ProblemDetails.yaml
     example:
-      type: about:blank
-      title: Service Unavailable
+      type: urn:acme:problem:service-unavailable
+      title: Service unavailable
       status: 503
       detail: A dependency is not available.

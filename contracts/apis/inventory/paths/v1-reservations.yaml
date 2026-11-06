@@ -37,6 +37,6 @@ post:
     '400':
       $ref: ../../../shared/components/responses/BadRequest.yaml
     '404':
-      $ref: ../../../shared/components/responses/NotFound.yaml
+      $ref: ../../../shared/components/responses/BookNotFound.yaml
     '409':
-      $ref: ../../../shared/components/responses/Conflict.yaml
+      $ref: ../../../shared/components/responses/BookUnavailable.yaml

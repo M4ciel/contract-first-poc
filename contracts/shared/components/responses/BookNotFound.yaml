@@ -1,0 +1,10 @@
+description: No book has the given id.
+content:
+  application/problem+json:
+    schema:
+      $ref: ../schemas/ProblemDetails.yaml
+    example:
+      type: urn:acme:problem:book-not-found
+      title: Book not found
+      status: 404
+      detail: No book has the given id.

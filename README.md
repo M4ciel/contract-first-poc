@@ -37,15 +37,15 @@ Many teams already do "API-first", but only halfway: there is an `openapi.yaml`,
 documentation. Every repository (backend, web, mobile, BFF) rewrites its own types, validation,
 HTTP clients and mocks, and nothing checks whether a change breaks existing clients.
 
-| Pain                           | Day-to-day symptom                                                                         | Fixed here by                          |
-| ------------------------------ | ------------------------------------------------------------------------------------------ | -------------------------------------- |
-| 🔀 **Contract drift**          | The YAML says `string`, the backend returns `number`, the frontend typed `string \| null`. | Code generated from a single contract  |
-| 📋 **Duplicated work**         | N repositories writing the same types and validations.                                     | Published `@acme/*` packages           |
-| 💥 **Silent client breakage**  | Renaming a field or adding an enum value takes down an old mobile app.                     | `oasdiff` in CI + tolerant responses   |
-| ⏳ **Front blocked by back**   | The frontend waits for the endpoint to exist in staging.                                   | Generated MSW mocks from day one       |
-| 🧩 **Inconsistent validation** | Zod here, Joi there, nothing elsewhere.                                                    | Generated Zod schemas, strict requests |
-| 🚨 **Heterogeneous errors**    | Every service invents its own error format.                                                | RFC 9457 Problem Details everywhere    |
-| 🏷️ **Informal versioning**     | "Which API version does app 3.2 use?"                                                      | Changesets, changelogs and dist-tags   |
+| Pain                           | Day-to-day symptom                                                                         | Fixed here by                           |
+| ------------------------------ | ------------------------------------------------------------------------------------------ | --------------------------------------- |
+| 🔀 **Contract drift**          | The YAML says `string`, the backend returns `number`, the frontend typed `string \| null`. | Code generated from a single contract   |
+| 📋 **Duplicated work**         | N repositories writing the same types and validations.                                     | Published `@acme/*` packages            |
+| 💥 **Silent client breakage**  | Renaming a field or adding an enum value takes down an old mobile app.                     | `oasdiff` in CI + tolerant responses    |
+| ⏳ **Front blocked by back**   | The frontend waits for the endpoint to exist in staging.                                   | Generated MSW mocks from day one        |
+| 🧩 **Inconsistent validation** | Zod here, Joi there, nothing elsewhere.                                                    | Generated Zod schemas, strict requests  |
+| 🚨 **Heterogeneous errors**    | Every service invents its own error format.                                                | RFC 9457 Problem Details + type catalog |
+| 🏷️ **Informal versioning**     | "Which API version does app 3.2 use?"                                                      | Changesets, changelogs and dist-tags    |
 
 ## 🏗️ Architecture
 
@@ -121,8 +121,8 @@ sequenceDiagram
   Api->>Api: strict Zod validation (400 on unknown fields)
   Api->>Inv: POST /v1/reservations { bookId, loanId }
   alt no copy available
-    Inv-->>Api: 409 Problem Details
-    Api-->>Web: 409 Problem Details
+    Inv-->>Api: 409 book-unavailable
+    Api-->>Web: 409 book-unavailable
   else copy reserved
     Inv-->>Api: 201 Reservation
     Api->>Api: dueAt = calculateDueDate(...) from @acme/domain
@@ -211,7 +211,7 @@ contract-first-poc/
 ├── AGENTS.md            # rules for AI agents (CLAUDE.md imports it)
 ├── contracts/           # the "contracts repository"
 │   ├── apis/            # library (public) and inventory (internal) OpenAPI contracts
-│   ├── shared/          # components shared by every API (Problem Details, error responses)
+│   ├── shared/          # shared by every API: Problem Details, problem type catalog, errors
 │   ├── events/          # domain event catalog
 │   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain
 ├── apps/                # api (NestJS) · inventory (Lambda) · web (React) · legacy-client
@@ -252,6 +252,7 @@ timeline
 - [x] OpenAPI 3.1 contract
 - [x] Redocly lint and bundle
 - [x] Orval code generation
+- [x] Problem type catalog (`urn:acme:problem:*`, field-level validation errors)
 - [ ] Tolerant-response post-processing
 - [ ] `@acme/domain` with mutation testing
 - [ ] `apps/api` (NestJS + Fastify)

@@ -1,10 +1,13 @@
-description: The request is invalid.
+description: The request does not match the contract.
 content:
   application/problem+json:
     schema:
       $ref: ../schemas/ProblemDetails.yaml
     example:
-      type: about:blank
-      title: Bad Request
+      type: urn:acme:problem:validation
+      title: Invalid request
       status: 400
-      detail: Request validation failed.
+      detail: The request has 1 invalid field.
+      errors:
+        - pointer: /bookId
+          detail: must be a UUID

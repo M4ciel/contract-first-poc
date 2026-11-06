@@ -22,4 +22,4 @@ get:
     '400':
       $ref: ../../../shared/components/responses/BadRequest.yaml
     '404':
-      $ref: ../../../shared/components/responses/NotFound.yaml
+      $ref: ../../../shared/components/responses/LoanNotFound.yaml

@@ -1,10 +1,10 @@
-description: The resource does not exist.
+description: The route or resource does not exist.
 content:
   application/problem+json:
     schema:
       $ref: ../schemas/ProblemDetails.yaml
     example:
-      type: about:blank
-      title: Not Found
+      type: urn:acme:problem:not-found
+      title: Not found
       status: 404
       detail: The requested resource was not found.

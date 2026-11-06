@@ -66,8 +66,16 @@
       ],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "orval --config orval.config.ts"
+        "command": "orval --config orval.config.ts && node scripts/apply-response-enum-fallback.ts"
       }
-    }
+    },
+    "test": {
+      "options": {
+        "env": {
+          "NODE_OPTIONS": "--experimental-vm-modules --no-warnings=ExperimentalWarning"
+        }
+      }
+    },
+    "typecheck": {}
   }
 }

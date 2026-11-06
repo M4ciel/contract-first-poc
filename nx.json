@@ -14,18 +14,46 @@
   },
   "plugins": [
     {
-      "plugin": "@nx/js/typescript",
-      "options": { "typecheck": { "targetName": "typecheck" }, "build": false }
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
     },
-    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
-    { "plugin": "@nx/jest/plugin", "options": { "targetName": "test" } }
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      }
+    }
   ],
   "targetDefaults": {
-    "test": { "cache": true },
-    "lint": { "cache": true },
-    "typecheck": { "cache": true }
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^production"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "tsc --noEmit -p tsconfig.json"
+      }
+    },
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "test": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^production"]
+    },
+    "lint": {
+      "cache": true
+    }
   },
-  "sync": { "applyChanges": true },
+  "sync": {
+    "applyChanges": true
+  },
   "nxCloudId": null,
   "neverConnectToCloud": true
 }

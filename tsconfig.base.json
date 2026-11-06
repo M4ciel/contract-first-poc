@@ -17,11 +17,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationMap": true,
     "sourceMap": true,
-    "composite": true,
-    "incremental": true,
-    "customConditions": ["@acme/source"]
+    "noEmit": true
   }
 }

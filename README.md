@@ -257,7 +257,7 @@ timeline
 - [x] Tolerant-response post-processing (TypeScript AST, unknown enum values become `unknown`)
 - [x] `@acme/domain` with 100% coverage and mutation score (Stryker)
 - [x] `apps/api` (NestJS + Fastify, contract validators, Problem Details, inventory over HTTP)
-- [ ] `apps/legacy-client`
+- [x] `apps/legacy-client` (frozen 1.0.0 schemas read responses of the current contract)
 - [ ] `apps/web` (React + MSW)
 - [ ] oasdiff and stability levels
 - [ ] Emulated AWS (MiniStack + Terraform) and domain events

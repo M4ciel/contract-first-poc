@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    // `#src/*` resolves to the TypeScript sources here and to `dist` at runtime.
+    "customConditions": ["@acme/source"],
+    // NestJS dependency injection reads constructor types from decorator metadata.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*.ts"]
+}

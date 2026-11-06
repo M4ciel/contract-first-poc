@@ -1,0 +1,65 @@
+{
+  "name": "@acme/domain",
+  "version": "0.0.0",
+  "description": "Pure business rules of the Acme Library, shared by the backend and the frontend.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "nx": {
+    "tags": [
+      "scope:domain"
+    ],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "tsdown"
+        }
+      },
+      "test": {
+        "options": {
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules --no-warnings=ExperimentalWarning"
+          }
+        }
+      },
+      "mutation": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "inputs": [
+          "default",
+          "^production",
+          {
+            "externalDependencies": [
+              "@stryker-mutator/core",
+              "@stryker-mutator/jest-runner",
+              "@stryker-mutator/typescript-checker"
+            ]
+          }
+        ],
+        "outputs": [
+          "{workspaceRoot}/reports/mutation/domain"
+        ],
+        "options": {
+          "cwd": "{workspaceRoot}",
+          "command": "stryker run {projectRoot}/stryker.config.mjs"
+        }
+      },
+      "typecheck": {}
+    }
+  }
+}

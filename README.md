@@ -202,6 +202,7 @@ nvm use                # Node.js 24.22.2 from .nvmrc
 pnpm install
 pnpm nx run contracts:generate
 pnpm nx run-many -t lint test typecheck
+pnpm nx run @acme/domain:mutation   # Stryker, fails below a 100% mutation score
 ```
 
 ## 📂 Repository layout
@@ -254,7 +255,7 @@ timeline
 - [x] Orval code generation
 - [x] Problem type catalog (`urn:acme:problem:*`, field-level validation errors)
 - [x] Tolerant-response post-processing (TypeScript AST, unknown enum values become `unknown`)
-- [ ] `@acme/domain` with mutation testing
+- [x] `@acme/domain` with 100% coverage and mutation score (Stryker)
 - [ ] `apps/api` (NestJS + Fastify)
 - [ ] `apps/legacy-client`
 - [ ] `apps/web` (React + MSW)

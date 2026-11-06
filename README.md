@@ -53,45 +53,83 @@ HTTP clients and mocks, and nothing checks whether a change breaks existing clie
 flowchart LR
   subgraph contracts["📜 contracts/ — source of truth"]
     direction LR
-    Y["openapi.yaml<br/>paths/ · components/"] --> L["Redocly<br/>lint"]
+    Y1["apis/library<br/><i>public API</i>"] --> L["Redocly<br/>lint"]
+    Y2["apis/inventory<br/><i>internal API</i>"] --> L
     L --> B["Redocly<br/>bundle"]
     B --> O["Orval<br/>generate"]
     O --> P["Post-process<br/>tolerant responses"]
     P --> T["@acme/api-types<br/><i>Zod schemas</i>"]
     P --> C["@acme/api-client<br/><i>TanStack Query + MSW</i>"]
+    P --> IC["@acme/inventory-client<br/><i>Zod + fetch + MSW</i>"]
     D["@acme/domain<br/><i>pure rules</i>"]
   end
 
-  CI{{"CI: lint · tests · mutation · oasdiff vs base commit"}} -. blocks .-> Y
+  CI{{"CI: lint · tests · mutation · oasdiff vs base commit"}} -. blocks .-> Y1 & Y2
 
-  T & C & D --> REG[("📦 npm registry<br/>Verdaccio locally")]
+  T & C & IC & D --> REG[("📦 npm registry<br/>Verdaccio locally")]
 
   REG --> API["apps/api<br/>NestJS + Fastify"]
   REG --> WEB["apps/web<br/>React + Vite"]
+  REG --> INV["apps/inventory<br/>AWS Lambda"]
   REG --> LEG["apps/legacy-client<br/>an old app"]
 ```
 
-### The three published packages
+Two contracts live side by side and follow the same rules: the **public library API** (web →
+backend) and the **internal inventory API** (backend → Lambda). Contract-first is not only for
+frontends: the backend is a consumer too.
 
-| Package            | What it contains                                                  | Consumed by          | Versioning                    |
-| ------------------ | ----------------------------------------------------------------- | -------------------- | ----------------------------- |
-| `@acme/api-types`  | Generated **Zod** schemas: runtime validation + inferred TS types | Backend and frontend | Fixed group with `api-client` |
-| `@acme/api-client` | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)  | Frontends            | Fixed group with `api-types`  |
-| `@acme/domain`     | Pure, shared business rules (no I/O, 100% mutation score)         | Backend and frontend | Independent                   |
+### The published packages
 
-### Running on (emulated) AWS
+| Package                  | What it contains                                                  | Consumed by          | Versioning                          |
+| ------------------------ | ----------------------------------------------------------------- | -------------------- | ----------------------------------- |
+| `@acme/api-types`        | Generated **Zod** schemas: runtime validation + inferred TS types | Backend and frontend | Fixed group with `api-client`       |
+| `@acme/api-client`       | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)  | Frontends            | Fixed group with `api-types`        |
+| `@acme/inventory-client` | Generated **Zod** schemas, **fetch** client + **MSW** handlers    | Backend              | Independent (follows inventory API) |
+| `@acme/domain`           | Pure, shared business rules (no I/O, 100% mutation score)         | Backend and frontend | Independent                         |
 
-The same NestJS application runs locally and as a Lambda. Locally, the AWS side is emulated by
+### Runtime on (emulated) AWS
+
+The NestJS backend runs as a container. The inventory service is **Lambda only**: the backend
+calls it over HTTP with the generated client. Locally, AWS is emulated by
 [MiniStack](https://github.com/ministackorg/ministack) and provisioned with Terraform.
 
 ```mermaid
 flowchart LR
-  W["🌐 apps/web"] -->|HTTPS| GW["API Gateway<br/>HTTP API"]
-  GW --> L1["λ api<br/>NestJS + Fastify"]
-  L1 --> DDB[("DynamoDB")]
-  L1 -->|feature flags| CFG["AppConfig"]
-  L1 -->|loan.created.v1| EB["EventBridge"]
-  EB --> Q["SQS"] --> L2["λ loan-events-consumer"]
+  WEB["🌐 apps/web"] -->|"@acme/api-client"| API["apps/api<br/>NestJS + Fastify<br/><i>container</i>"]
+  API --> DDB1[("DynamoDB<br/>loans")]
+  API -->|feature flags| CFG["AppConfig"]
+  API -->|"@acme/inventory-client"| GW["API Gateway<br/>HTTP API"]
+  GW --> INV["λ inventory"]
+  INV --> DDB2[("DynamoDB<br/>copies")]
+  API -->|loan.created.v1| EB["EventBridge"]
+  EB --> Q["SQS"] --> CON["λ loan-events-consumer"]
+```
+
+When a loan is created, the backend reserves a copy synchronously and announces the loan
+asynchronously:
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Web as apps/web
+  participant Api as apps/api (NestJS)
+  participant Inv as λ inventory
+  participant Bus as EventBridge → SQS
+  participant Con as λ loan-events-consumer
+
+  Web->>Api: POST /v1/loans { bookId }
+  Api->>Api: strict Zod validation (400 on unknown fields)
+  Api->>Inv: POST /v1/reservations { bookId, loanId }
+  alt no copy available
+    Inv-->>Api: 409 Problem Details
+    Api-->>Web: 409 Problem Details
+  else copy reserved
+    Inv-->>Api: 201 Reservation
+    Api->>Api: dueAt = calculateDueDate(...) from @acme/domain
+    Api-)Bus: loan.created.v1
+    Api-->>Web: 201 Loan
+    Bus-)Con: loan.created.v1
+  end
 ```
 
 ## 🔄 How a change flows
@@ -137,18 +175,19 @@ flowchart LR
 
 ## 🧰 Tech stack
 
-| Area            | Tools                                                                           |
-| --------------- | ------------------------------------------------------------------------------- |
-| Monorepo        | Nx 24, pnpm 12 workspaces, Node.js 24 LTS, TypeScript 6 (strict)                |
-| Contract        | OpenAPI 3.1, Redocly CLI (lint + bundle), Scalar (API reference portal)         |
-| Code generation | Orval → Zod 4, TanStack Query 5, MSW; TypeScript compiler API post-processing   |
-| Backend         | NestJS 11 on Fastify, AWS Lambda adapter, DynamoDB, AppConfig, EventBridge, SQS |
-| Frontend        | React 19, Vite, TanStack Query, MSW                                             |
-| Quality         | ESLint (module boundaries), Prettier, Jest, Stryker, Playwright                 |
-| Compatibility   | oasdiff against the exact base commit, `x-stability-level`                      |
-| Release         | Changesets (fixed groups, snapshot previews), Verdaccio                         |
-| Infrastructure  | Docker Compose, MiniStack, Terraform                                            |
-| CI              | GitHub Actions pinned by commit SHA                                             |
+| Area            | Tools                                                                         |
+| --------------- | ----------------------------------------------------------------------------- |
+| Monorepo        | Nx 24, pnpm 12 workspaces, Node.js 24 LTS, TypeScript 6 (strict)              |
+| Contract        | OpenAPI 3.1, Redocly CLI (lint + bundle), Scalar (API reference portal)       |
+| Code generation | Orval → Zod 4, TanStack Query 5, MSW; TypeScript compiler API post-processing |
+| Backend         | NestJS 11 on Fastify (container), DynamoDB, AppConfig, EventBridge            |
+| Serverless      | AWS Lambda (inventory service, event consumer), API Gateway HTTP API, SQS     |
+| Frontend        | React 19, Vite, TanStack Query, MSW                                           |
+| Quality         | ESLint (module boundaries), Prettier, Jest, Stryker, Playwright               |
+| Compatibility   | oasdiff against the exact base commit, `x-stability-level`                    |
+| Release         | Changesets (fixed groups, snapshot previews), Verdaccio                       |
+| Infrastructure  | Docker Compose, MiniStack, Terraform                                          |
+| CI              | GitHub Actions pinned by commit SHA                                           |
 
 ## 🚀 Getting started
 
@@ -170,9 +209,12 @@ pnpm nx run-many -t lint test typecheck
 ```
 contract-first-poc/
 ├── AGENTS.md            # rules for AI agents (CLAUDE.md imports it)
-├── contracts/           # the "contracts repository": OpenAPI, events, generator, packages
-│   └── packages/        # @acme/api-types · @acme/api-client · @acme/domain
-├── apps/                # example consumers: api (NestJS) · web (React) · legacy-client
+├── contracts/           # the "contracts repository"
+│   ├── apis/            # library (public) and inventory (internal) OpenAPI contracts
+│   ├── shared/          # components shared by every API (Problem Details, error responses)
+│   ├── events/          # domain event catalog
+│   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain
+├── apps/                # api (NestJS) · inventory (Lambda) · web (React) · legacy-client
 ├── infra/               # Terraform for the emulated AWS environment
 ├── demos/               # scripts for the live demo scenarios
 └── docs/                # one document per piece + ADRs

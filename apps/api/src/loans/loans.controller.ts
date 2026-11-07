@@ -3,8 +3,8 @@ import type { Loan } from '@acme/api-types';
 import { CreateLoanBody, GetLoanParams } from '@acme/api-types/validators';
 import type { FastifyReply } from 'fastify';
 import type { z } from 'zod';
-import { Clock } from '#src/common/clock.js';
-import { ZodValidationPipe } from '#src/problems/zod-validation.pipe.js';
+import { Clock } from '@common/clock.js';
+import { ZodValidationPipe } from '@problems/zod-validation.pipe.js';
 import { toLoan } from './loan.js';
 import { LoansService } from './loans.service.js';
 

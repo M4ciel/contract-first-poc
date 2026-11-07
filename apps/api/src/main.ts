@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
-import { AppModule } from '#src/app.module.js';
-import { loadConfig } from '#src/config/app-config.js';
+import { AppModule } from '@app/app.module.js';
+import { loadConfig } from '@config/app-config.js';
 
 const config = loadConfig(process.env);
 const app = await NestFactory.create<NestFastifyApplication>(

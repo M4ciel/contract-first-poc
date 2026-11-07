@@ -5,12 +5,6 @@
   "description": "Library backend (NestJS + Fastify) that implements the Acme Library API contract.",
   "license": "MIT",
   "type": "module",
-  "imports": {
-    "#src/*": {
-      "@acme/source": "./src/*",
-      "default": "./dist/*"
-    }
-  },
   "dependencies": {
     "@acme/api-types": "workspace:*",
     "@acme/domain": "workspace:*",
@@ -25,7 +19,8 @@
   },
   "devDependencies": {
     "@nestjs/testing": "11.2.7",
-    "msw": "3.0.4"
+    "msw": "3.0.4",
+    "tsc-alias": "1.9.9"
   },
   "nx": {
     "tags": [
@@ -47,7 +42,7 @@
         ],
         "options": {
           "cwd": "{projectRoot}",
-          "command": "tsc -p tsconfig.app.json"
+          "command": "tsc -p tsconfig.app.json && tsc-alias -p tsconfig.app.json"
         }
       },
       "serve": {

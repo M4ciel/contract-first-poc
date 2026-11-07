@@ -1,4 +1,4 @@
-import { problems } from '#src/problems/problem.exception.js';
+import { problems } from '@problems/problem.exception.js';
 
 export interface Page<T> {
   readonly items: T[];

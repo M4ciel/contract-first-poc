@@ -19,8 +19,8 @@ Humans should follow them too. `CLAUDE.md` only imports this file, so there is a
 - Regenerate code with `pnpm nx run contracts:generate` after any contract change.
 - Local AWS (MiniStack) and the npm registry (Verdaccio) run with `docker compose`.
 - Imports never climb with `../`. Use a path inside the same folder tree (`./x`, `./sub/x`), a
-  package name (`@acme/domain`) or the package's subpath alias (`#src/...`, declared in its
-  `package.json#imports`). ESLint enforces it.
+  package name (`@acme/domain`) or a folder alias of the project (`@config/...`, `@problems/...`,
+  declared in `paths` of its tsconfig.json). ESLint enforces it.
 
 ## Compatibility rules
 

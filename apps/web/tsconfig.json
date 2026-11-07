@@ -5,8 +5,16 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    // Vite bundles the sources, so imports name the real file (`./x.ts`, `#src/x.tsx`).
+    // Vite bundles the sources, so imports name the real file (`./x.ts`, `@api/x.tsx`).
     "allowImportingTsExtensions": true,
+    // One alias per folder of src/. Vite (`resolve.tsconfigPaths`) and Jest (jest.paths.cjs)
+    // read them from here.
+    "paths": {
+      "@api/*": ["./src/api/*"],
+      "@books/*": ["./src/books/*"],
+      "@loans/*": ["./src/loans/*"],
+      "@mocks/*": ["./src/mocks/*"]
+    },
     "types": ["vite/client", "node", "jest"]
   },
   "include": [

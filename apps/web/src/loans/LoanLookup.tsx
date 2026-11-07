@@ -1,8 +1,8 @@
 import { useGetLoan } from '@acme/api-client';
 import { Loan } from '@acme/api-types';
 import { useState, type FormEvent } from 'react';
-import { toApiResult } from '#src/api/api-result.ts';
-import { ProblemAlert } from '#src/api/ProblemAlert.tsx';
+import { toApiResult } from '@api/api-result.ts';
+import { ProblemAlert } from '@api/ProblemAlert.tsx';
 import { LoanCard } from './LoanCard.tsx';
 
 export const LoanLookup = () => {

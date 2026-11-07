@@ -7,8 +7,8 @@ import {
   BookV2Page,
   NotFoundResponse,
 } from '@acme/api-types';
-import { expectToMatchContract } from '#src/testing/contract.js';
-import { createTestApp, testConfig } from '#src/testing/test-app.js';
+import { expectToMatchContract } from '@testing/contract.js';
+import { createTestApp, testConfig } from '@testing/test-app.js';
 
 const FIRST_BOOK_ID = '7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a';
 

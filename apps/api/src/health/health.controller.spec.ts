@@ -1,7 +1,7 @@
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Health, NotFoundResponse } from '@acme/api-types';
-import { expectToMatchContract } from '#src/testing/contract.js';
-import { createTestApp } from '#src/testing/test-app.js';
+import { expectToMatchContract } from '@testing/contract.js';
+import { createTestApp } from '@testing/test-app.js';
 
 describe('health and unknown routes', () => {
   let app: NestFastifyApplication;

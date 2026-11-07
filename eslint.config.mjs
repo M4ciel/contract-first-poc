@@ -33,10 +33,7 @@ export default [
           enforceBuildableLibDependency: true,
           // - Generated code is git-ignored, so it is outside the Nx project graph. Package entry
           //   points may re-export it; nothing else in a package may import it.
-          // - `#src/...` is a package's own subpath import (package.json "imports"). Node only
-          //   resolves it inside that package, so it cannot cross a project boundary; the rule
-          //   would otherwise demand `../` paths, which the rule below forbids.
-          allow: ['./generated/**', '#src/**'],
+          allow: ['./generated/**'],
           depConstraints: [
             { sourceTag: 'scope:domain', onlyDependOnLibsWithTags: [] },
             {
@@ -54,8 +51,8 @@ export default [
   },
   {
     // Imports either stay in the same folder tree (`./x`, `./sub/x`) or use an alias: another
-    // package by name (`@acme/domain`) or a subpath import inside the package (`#src/...`, see
-    // `imports` in its package.json). Parent paths (`../`) break when files move and hide where
+    // package by name (`@acme/domain`) or a folder alias of the project (`@config/...`, see
+    // `paths` in its tsconfig.json). Parent paths (`../`) break when files move and hide where
     // code really comes from.
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
@@ -66,7 +63,7 @@ export default [
             {
               regex: '^\\.\\.(/|$)',
               message:
-                'Use `#src/...` (package.json "imports") or a package name instead of `../`.',
+                'Use a folder alias (`@config/...`, tsconfig "paths") or a package name instead of `../`.',
             },
           ],
         },

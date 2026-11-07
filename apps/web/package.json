@@ -5,9 +5,6 @@
   "description": "React frontend that consumes the Acme Library API only through the generated packages.",
   "license": "MIT",
   "type": "module",
-  "imports": {
-    "#src/*": "./src/*"
-  },
   "dependencies": {
     "@acme/api-client": "workspace:*",
     "@acme/api-types": "workspace:*",

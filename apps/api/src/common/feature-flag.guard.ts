@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { problems } from '#src/problems/problem.exception.js';
+import { problems } from '@problems/problem.exception.js';
 import { type FeatureFlag, FeatureFlags } from './feature-flags.js';
 
 const FEATURE_FLAG = 'acme:feature-flag';

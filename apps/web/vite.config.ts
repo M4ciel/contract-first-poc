@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
   const useMocks = env['VITE_USE_MOCKS'] === 'true';
   return {
     plugins: [react()],
+    resolve: { tsconfigPaths: true },
     // The MSW worker (`nx run @acme/web:msw-worker`) is served only in mock mode, so it never
     // ends up in a production build.
     publicDir: useMocks ? 'mock-worker' : false,

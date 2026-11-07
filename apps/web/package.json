@@ -1,0 +1,102 @@
+{
+  "name": "@acme/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "React frontend that consumes the Acme Library API only through the generated packages.",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "dependencies": {
+    "@acme/api-client": "workspace:*",
+    "@acme/api-types": "workspace:*",
+    "@acme/domain": "workspace:*",
+    "@tanstack/react-query": "5.106.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "msw": "3.0.4",
+    "vite": "8.3.5"
+  },
+  "nx": {
+    "tags": [
+      "type:app"
+    ],
+    "targets": {
+      "msw-worker": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "inputs": [
+          {
+            "externalDependencies": [
+              "msw"
+            ]
+          }
+        ],
+        "outputs": [
+          "{projectRoot}/mock-worker/mockServiceWorker.js"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "msw init mock-worker --no-save"
+        }
+      },
+      "build": {
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "vite build"
+        }
+      },
+      "serve": {
+        "executor": "nx:run-commands",
+        "continuous": true,
+        "dependsOn": [
+          "^build",
+          "msw-worker"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "vite"
+        }
+      },
+      "e2e": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "dependsOn": [
+          "^build",
+          "msw-worker"
+        ],
+        "inputs": [
+          "default",
+          "^production"
+        ],
+        "outputs": [
+          "{workspaceRoot}/reports/e2e/web"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "playwright test"
+        }
+      },
+      "test": {
+        "options": {
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules --no-warnings=ExperimentalWarning"
+          }
+        }
+      },
+      "typecheck": {}
+    }
+  }
+}

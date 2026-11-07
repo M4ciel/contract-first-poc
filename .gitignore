@@ -28,3 +28,6 @@ playwright-report/
 .env.*
 !.env.example
 .DS_Store
+
+# MSW browser worker, copied from the msw package by `nx run @acme/web:msw-worker`
+apps/web/mock-worker/

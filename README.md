@@ -203,7 +203,17 @@ pnpm install
 pnpm nx run contracts:generate
 pnpm nx run-many -t lint test typecheck
 pnpm nx run @acme/domain:mutation   # Stryker, fails below a 100% mutation score
+pnpm nx run @acme/web:e2e           # Playwright (first time: pnpm --filter @acme/web exec playwright install chromium)
 ```
+
+Run the frontend with no backend at all, on the contract's generated MSW handlers:
+
+```bash
+VITE_USE_MOCKS=true pnpm nx run @acme/web:serve   # http://localhost:4200
+```
+
+Without `VITE_USE_MOCKS`, Vite forwards `/v1` and `/v2` to `API_PROXY_TARGET`
+(default `http://localhost:3000`).
 
 ## 📂 Repository layout
 
@@ -258,7 +268,7 @@ timeline
 - [x] `@acme/domain` with 100% coverage and mutation score (Stryker)
 - [x] `apps/api` (NestJS + Fastify, contract validators, Problem Details, inventory over HTTP)
 - [x] `apps/legacy-client` (frozen 1.0.0 schemas read responses of the current contract)
-- [ ] `apps/web` (React + MSW)
+- [x] `apps/web` (React + MSW mock mode, neutral badge for `unknown`, Playwright)
 - [ ] oasdiff and stability levels
 - [ ] Emulated AWS (MiniStack + Terraform) and domain events
 - [ ] Changesets, Verdaccio and preview releases

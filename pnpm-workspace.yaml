@@ -1,6 +1,7 @@
 packages:
   - 'contracts/packages/*'
   - 'apps/*'
+  - 'tools'
 
 # Exact versions only: `pnpm add` must never write ^ or ~ ranges.
 savePrefix: ''

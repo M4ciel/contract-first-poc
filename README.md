@@ -203,6 +203,8 @@ pnpm install
 pnpm nx run contracts:generate
 pnpm nx run-many -t lint test typecheck
 pnpm nx run @acme/domain:mutation   # Stryker, fails below a 100% mutation score
+pnpm nx run @acme/tools:coverage    # every project's coverage added up, fails below 80%
+pnpm nx run @acme/tools:clean-clone # fresh clone of HEAD: install, generate, test
 pnpm nx run @acme/web:e2e           # Playwright (first time: pnpm --filter @acme/web exec playwright install chromium)
 ```
 
@@ -226,6 +228,7 @@ contract-first-poc/
 │   ├── events/          # domain event catalog
 │   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain
 ├── apps/                # api (NestJS) · inventory (Lambda) · web (React) · legacy-client
+├── tools/               # repository-wide checks (global coverage, clean clone)
 ├── infra/               # Terraform for the emulated AWS environment
 ├── demos/               # scripts for the live demo scenarios
 └── docs/                # one document per piece + ADRs
@@ -269,6 +272,7 @@ timeline
 - [x] `apps/api` (NestJS + Fastify, contract validators, Problem Details, inventory over HTTP)
 - [x] `apps/legacy-client` (frozen 1.0.0 schemas read responses of the current contract)
 - [x] `apps/web` (React + MSW mock mode, neutral badge for `unknown`, Playwright)
+- [x] Global coverage floor (80%) and clean-clone check
 - [ ] oasdiff and stability levels
 - [ ] Emulated AWS (MiniStack + Terraform) and domain events
 - [ ] Changesets, Verdaccio and preview releases

@@ -98,3 +98,14 @@ describe('an app still on @acme/api-types@1.0.0', () => {
     });
   });
 });
+
+describe('loanStatusLabel', () => {
+  it.each([
+    ['active', 'On loan'],
+    ['returned', 'Returned'],
+    ['overdue', 'Overdue'],
+    ['unknown', 'Status unavailable'],
+  ] as const)('labels %s as "%s"', (status, label) => {
+    expect(loanStatusLabel(status)).toBe(label);
+  });
+});

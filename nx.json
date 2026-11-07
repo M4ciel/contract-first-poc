@@ -45,7 +45,12 @@
     "test": {
       "cache": true,
       "dependsOn": ["^build"],
-      "inputs": ["default", "^production"]
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/jest.preset.cjs",
+        "{workspaceRoot}/jest.paths.cjs"
+      ]
     },
     "lint": {
       "cache": true

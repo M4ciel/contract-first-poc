@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test } from '@nestjs/testing';
-import { AppModule } from '#src/app.module.js';
-import { Clock } from '#src/common/clock.js';
-import type { AppConfig } from '#src/config/app-config.js';
+import { AppModule } from '@app/app.module.js';
+import { Clock } from '@common/clock.js';
+import type { AppConfig } from '@config/app-config.js';
 
 /** `.test` is a reserved top-level domain: nothing real is ever called. */
 export const INVENTORY_BASE_URL = 'http://inventory.test/local';

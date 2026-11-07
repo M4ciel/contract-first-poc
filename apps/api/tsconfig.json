@@ -3,8 +3,19 @@
   "compilerOptions": {
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    // `#src/*` resolves to the TypeScript sources here and to `dist` at runtime.
-    "customConditions": ["@acme/source"],
+    // One alias per folder of src/. `tsc-alias` rewrites them to relative paths in `dist`, and
+    // Jest reads them through jest.paths.cjs.
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@books/*": ["./src/books/*"],
+      "@common/*": ["./src/common/*"],
+      "@config/*": ["./src/config/*"],
+      "@health/*": ["./src/health/*"],
+      "@inventory/*": ["./src/inventory/*"],
+      "@loans/*": ["./src/loans/*"],
+      "@problems/*": ["./src/problems/*"],
+      "@testing/*": ["./src/testing/*"]
+    },
     // NestJS dependency injection reads constructor types from decorator metadata.
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

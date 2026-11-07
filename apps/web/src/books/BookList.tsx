@@ -1,8 +1,8 @@
 import { useListBooks } from '@acme/api-client';
 import { BookPage } from '@acme/api-types';
 import { useState } from 'react';
-import { toApiResult } from '#src/api/api-result.ts';
-import { ProblemAlert } from '#src/api/ProblemAlert.tsx';
+import { toApiResult } from '@api/api-result.ts';
+import { ProblemAlert } from '@api/ProblemAlert.tsx';
 
 const PAGE_SIZE = 5;
 

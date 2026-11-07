@@ -6,10 +6,10 @@ import {
   ListBooksV2QueryParams,
 } from '@acme/api-types/validators';
 import type { z } from 'zod';
-import { paginate } from '#src/common/pagination.js';
-import { RequireFeature } from '#src/common/feature-flag.guard.js';
-import { problems } from '#src/problems/problem.exception.js';
-import { ZodValidationPipe } from '#src/problems/zod-validation.pipe.js';
+import { paginate } from '@common/pagination.js';
+import { RequireFeature } from '@common/feature-flag.guard.js';
+import { problems } from '@problems/problem.exception.js';
+import { ZodValidationPipe } from '@problems/zod-validation.pipe.js';
 import { toBookV1, toBookV2 } from './book.js';
 import { BookRepository } from './book.repository.js';
 

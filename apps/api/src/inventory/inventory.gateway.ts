@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { configureInventoryClient, createReservation, Reservation } from '@acme/inventory-client';
-import { APP_CONFIG, type AppConfig } from '#src/config/app-config.js';
-import { problems } from '#src/problems/problem.exception.js';
+import { APP_CONFIG, type AppConfig } from '@config/app-config.js';
+import { problems } from '@problems/problem.exception.js';
 
 export type ReservationOutcome = 'reserved' | 'book-not-found' | 'unavailable';
 

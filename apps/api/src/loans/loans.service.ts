@@ -1,10 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { calculateDueDate } from '@acme/domain';
-import { BookRepository } from '#src/books/book.repository.js';
-import { Clock } from '#src/common/clock.js';
-import { InventoryGateway } from '#src/inventory/inventory.gateway.js';
-import { problems } from '#src/problems/problem.exception.js';
+import { BookRepository } from '@books/book.repository.js';
+import { Clock } from '@common/clock.js';
+import { InventoryGateway } from '@inventory/inventory.gateway.js';
+import { problems } from '@problems/problem.exception.js';
 import type { LoanRecord } from './loan.js';
 import { LoanRepository } from './loan.repository.js';
 

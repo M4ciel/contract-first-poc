@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { APP_CONFIG, type AppConfig, type FeatureFlagValues } from '#src/config/app-config.js';
+import { APP_CONFIG, type AppConfig, type FeatureFlagValues } from '@config/app-config.js';
 
 export type FeatureFlag = keyof FeatureFlagValues;
 

@@ -10,8 +10,8 @@ import {
 import { getCreateReservationResponseMock } from '@acme/inventory-client/mocks';
 import { delay, http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { expectToMatchContract } from '#src/testing/contract.js';
-import { createTestApp, FixedClock, INVENTORY_BASE_URL } from '#src/testing/test-app.js';
+import { expectToMatchContract } from '@testing/contract.js';
+import { createTestApp, FixedClock, INVENTORY_BASE_URL } from '@testing/test-app.js';
 
 const BOOK_ID = '7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a';
 const RESERVATIONS = `${INVENTORY_BASE_URL}/v1/reservations`;

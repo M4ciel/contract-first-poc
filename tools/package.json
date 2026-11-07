@@ -1,0 +1,44 @@
+{
+  "name": "@acme/tools",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Repository-wide checks: global test coverage and the clean-clone check.",
+  "license": "MIT",
+  "type": "module",
+  "nx": {
+    "tags": [
+      "type:tool"
+    ],
+    "targets": {
+      "coverage": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": [
+              "*"
+            ],
+            "target": "test"
+          }
+        ],
+        "options": {
+          "command": "node tools/src/check-coverage.ts"
+        }
+      },
+      "clean-clone": {
+        "executor": "nx:run-commands",
+        "cache": false,
+        "options": {
+          "command": "bash tools/src/clean-clone.sh"
+        }
+      },
+      "test": {
+        "options": {
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules --no-warnings=ExperimentalWarning"
+          }
+        }
+      },
+      "typecheck": {}
+    }
+  }
+}

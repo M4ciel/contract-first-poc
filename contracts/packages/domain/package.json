@@ -1,6 +1,6 @@
 {
   "name": "@acme/domain",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Pure business rules of the Acme Library, shared by the backend and the frontend.",
   "license": "MIT",
   "type": "module",

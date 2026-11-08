@@ -1,6 +1,6 @@
 {
   "name": "@acme/api-client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "TanStack Query hooks and MSW handlers generated from the Acme Library API contract.",
   "license": "MIT",
   "type": "module",

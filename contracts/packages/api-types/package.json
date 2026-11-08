@@ -1,6 +1,6 @@
 {
   "name": "@acme/api-types",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Zod schemas and TypeScript types generated from the Acme Library API contract.",
   "license": "MIT",
   "type": "module",

@@ -195,10 +195,6 @@ flowchart LR
 
 ## 🚀 Getting started
 
-> [!WARNING]
-> The project is being built step by step. The commands below describe the target experience and
-> become available as the [roadmap](#-roadmap) progresses.
-
 **Prerequisites:** [nvm](https://github.com/nvm-sh/nvm), Docker with Compose, and pnpm 12.
 
 ```bash
@@ -314,15 +310,21 @@ contract-first-poc/
 
 ## 📚 Documentation
 
-| Document                                      | What you will find                                              |
-| --------------------------------------------- | --------------------------------------------------------------- |
-| [Original specification](./docs/spec.md)      | The brief that drove this POC                                   |
-| [Rules for AI agents](./AGENTS.md)            | Source of truth, compatibility rules, prohibitions              |
-| [Live demos](./demos/README.md)               | One script per presentation scenario, with the expected outcome |
-| [Event catalog](./contracts/events/README.md) | Event rules, generated package, what is not automated yet       |
+| Document                                                | What you will find                                                     |
+| ------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Documentation index](./docs/README.md)                 | One document per piece: pain, how it works, trade-offs, how to demo it |
+| [Overview](./docs/00-overview.md)                       | The problem, the proposal and the architecture                         |
+| [Tolerant responses](./docs/04-tolerant-responses.md)   | The subtlest piece: strict requests, tolerant responses                |
+| [Compatibility rules](./docs/09-compatibility-rules.md) | Change → breaking? → what to do, verified with oasdiff                 |
+| [FAQ and gotchas](./docs/14-faq-and-gotchas.md)         | Objections and every non-obvious problem we hit                        |
+| [Presentation script](./docs/presentation.md)           | A 40-minute session, slide by slide                                    |
+| [Architecture decisions](./docs/adr/README.md)          | Twelve ADRs, deviations from the specification included                |
+| [Live demos](./demos/README.md)                         | One script per scenario, each asserting its outcome                    |
+| [Rules for AI agents](./AGENTS.md)                      | Source of truth, compatibility rules, prohibitions                     |
+| [Original specification](./docs/spec.md)                | The brief that drove this POC                                          |
 
-More documents (one per piece, ADRs, FAQ, glossary and the presentation script) are added as each
-step lands.
+The API reference portal (Scalar) is built from the bundles with
+`pnpm nx run contracts:reference` into `contracts/artifacts/reference/index.html`.
 
 ## 🗺️ Roadmap
 
@@ -358,7 +360,7 @@ timeline
 - [x] Changesets (fixed `api-types` + `api-client`), snapshot previews and a local release to Verdaccio
 - [x] GitHub Actions workflows (CI, Version PR, manual release and preview), actions pinned by SHA
 - [x] Live demo scripts (`demos/`, each asserts its outcome; `bash demos/run-all.sh`)
-- [ ] Full documentation and ADRs
+- [x] Documentation (one document per piece), ADRs, presentation script, glossary and API reference portal
 
 ## 📄 License
 

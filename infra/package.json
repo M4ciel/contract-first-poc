@@ -59,7 +59,15 @@
           "command": "node infra/scripts/set-flag.ts"
         }
       },
-      "typecheck": {}
+      "typecheck": {},
+      "release-local": {
+        "executor": "nx:run-commands",
+        "cache": false,
+        "options": {
+          "cwd": "{workspaceRoot}",
+          "command": "bash infra/release-local.sh"
+        }
+      }
     }
   }
 }

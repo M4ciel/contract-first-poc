@@ -314,11 +314,12 @@ contract-first-poc/
 
 ## 📚 Documentation
 
-| Document                                      | What you will find                                        |
-| --------------------------------------------- | --------------------------------------------------------- |
-| [Original specification](./docs/spec.md)      | The brief that drove this POC                             |
-| [Rules for AI agents](./AGENTS.md)            | Source of truth, compatibility rules, prohibitions        |
-| [Event catalog](./contracts/events/README.md) | Event rules, generated package, what is not automated yet |
+| Document                                      | What you will find                                              |
+| --------------------------------------------- | --------------------------------------------------------------- |
+| [Original specification](./docs/spec.md)      | The brief that drove this POC                                   |
+| [Rules for AI agents](./AGENTS.md)            | Source of truth, compatibility rules, prohibitions              |
+| [Live demos](./demos/README.md)               | One script per presentation scenario, with the expected outcome |
+| [Event catalog](./contracts/events/README.md) | Event rules, generated package, what is not automated yet       |
 
 More documents (one per piece, ADRs, FAQ, glossary and the presentation script) are added as each
 step lands.
@@ -356,7 +357,7 @@ timeline
 - [x] Domain event catalog (`loan.created.v1` JSON Schema → `@acme/events`, immutability check)
 - [x] Changesets (fixed `api-types` + `api-client`), snapshot previews and a local release to Verdaccio
 - [x] GitHub Actions workflows (CI, Version PR, manual release and preview), actions pinned by SHA
-- [ ] Live demo scripts
+- [x] Live demo scripts (`demos/`, each asserts its outcome; `bash demos/run-all.sh`)
 - [ ] Full documentation and ADRs
 
 ## 📄 License

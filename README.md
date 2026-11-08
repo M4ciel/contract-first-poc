@@ -97,13 +97,14 @@ calls it over HTTP with the generated client. Locally, AWS is emulated by
 ```mermaid
 flowchart LR
   WEB["🌐 apps/web"] -->|"@acme/api-client"| API["apps/api<br/>NestJS + Fastify<br/><i>container</i>"]
-  API --> DDB1[("DynamoDB<br/>loans")]
-  API -->|feature flags| CFG["AppConfig"]
+  API --> DDB1[("DynamoDB<br/>books · loans")]
+  WEB -->|OpenFeature| FS["Flagsmith<br/>feature flags"]
+  API -->|OpenFeature| FS
   API -->|"@acme/inventory-client"| GW["API Gateway<br/>HTTP API"]
   GW --> INV["λ inventory"]
   INV --> DDB2[("DynamoDB<br/>copies")]
   API -->|loan.created.v1| EB["EventBridge"]
-  EB --> Q["SQS"] --> CON["λ loan-events-consumer"]
+  EB --> Q["SQS"] --> CON["λ notifications"]
 ```
 
 When a loan is created, the backend reserves a copy synchronously and announces the loan
@@ -181,7 +182,8 @@ flowchart LR
 | Monorepo        | Nx 24, pnpm 12 workspaces, Node.js 24 LTS, TypeScript 6 (strict)              |
 | Contract        | OpenAPI 3.1, Redocly CLI (lint + bundle), Scalar (API reference portal)       |
 | Code generation | Orval → Zod 4, TanStack Query 5, MSW; TypeScript compiler API post-processing |
-| Backend         | NestJS 11 on Fastify (container), DynamoDB, AppConfig, EventBridge            |
+| Backend         | NestJS 11 on Fastify (container), DynamoDB, EventBridge                       |
+| Feature flags   | Flagsmith (self-hosted, UI) read through OpenFeature in backend and frontend  |
 | Serverless      | AWS Lambda (inventory service, event consumer), API Gateway HTTP API, SQS     |
 | Frontend        | React 19, Vite, TanStack Query, MSW                                           |
 | Quality         | ESLint (module boundaries), Prettier, Jest, Stryker, Playwright               |
@@ -216,33 +218,44 @@ Run the frontend with no backend at all, on the contract's generated MSW handler
 VITE_USE_MOCKS=true pnpm nx run @acme/web:serve   # http://localhost:4200
 ```
 
-Without `VITE_USE_MOCKS`, Vite forwards `/v1` and `/v2` to `API_PROXY_TARGET`
-(default `http://localhost:3000`).
+Mock mode never calls Flagsmith; turn a flag on with `VITE_FLAG_BOOKS_V2=true` to build a screen
+for an alpha endpoint before the backend has it. Without `VITE_USE_MOCKS`, Vite forwards `/v1` and
+`/v2` to `API_PROXY_TARGET` (default `http://localhost:3000`) and the app reads flags from
+Flagsmith when `VITE_FLAGSMITH_ENVIRONMENT_KEY` is set (see `apps/web/.env.example`).
 
 Run the whole backend locally, on emulated AWS:
 
 ```bash
 pnpm nx run @acme/infra:up                        # builds the Lambdas, starts MiniStack, applies Terraform, starts the API
 pnpm nx run @acme/infra:smoke                     # end-to-end checks (loans, inventory, events, flags)
-pnpm nx run @acme/infra:flag --args="booksV2 on"  # AppConfig deployment; the API follows within 15 s
+pnpm nx run @acme/infra:flag --args="booksV2 on"  # or flip it in the Flagsmith UI; the API follows within seconds
 pnpm nx run @acme/infra:down
 ```
 
-| Service                  | URL                                              |
-| ------------------------ | ------------------------------------------------ |
-| Library API (NestJS)     | http://localhost:3000                            |
-| Inventory API (Lambda)   | http://localhost:4566/_aws/execute-api/inventory |
-| MiniStack (AWS emulator) | http://localhost:4566                            |
-| Verdaccio (npm registry) | http://localhost:4873                            |
+| Service                   | URL                                                               |
+| ------------------------- | ----------------------------------------------------------------- |
+| Library API (NestJS)      | http://localhost:3000                                             |
+| Inventory API (Lambda)    | http://localhost:4566/_aws/execute-api/inventory                  |
+| MiniStack (AWS emulator)  | http://localhost:4566                                             |
+| Flagsmith (feature flags) | http://localhost:8000 (`admin@example.test` / `acme-local-admin`) |
+| Verdaccio (npm registry)  | http://localhost:4873                                             |
 
 Every `up` resets MiniStack and applies Terraform from scratch: catalog and stock start from the
-seed (`infra/terraform/seed/books.json`), with no loans and every flag off.
+seed (`infra/terraform/seed/books.json`), with no loans, and the Flagsmith seed turns every flag
+off. The credentials and keys are example values for this local environment only.
+
+To see a flag change in the browser, run the web app against it and flip `booksV2` in the UI (the
+catalog switches to the alpha v2 list on the next load):
+
+```bash
+VITE_FLAGSMITH_ENVIRONMENT_KEY=acmeLocalClientKey pnpm nx run @acme/web:serve
+```
 
 ```mermaid
 flowchart LR
   API["apps/api<br/>container"] -->|HTTP| GW["API Gateway"] --> INV["inventory<br/>Lambda"] --> ST[("stock<br/>DynamoDB")]
   API --> BK[("books · loans<br/>DynamoDB")]
-  API -->|flags| AC["AppConfig"]
+  API -->|flags| FS["Flagsmith<br/>+ Postgres"]
   API -->|loan.created.v1| EB["EventBridge"] --> Q["SQS<br/>+ DLQ"] --> NT["notifications<br/>Lambda"] --> RM[("reminders<br/>DynamoDB")]
 ```
 
@@ -305,7 +318,8 @@ timeline
 - [x] Global coverage floor (80%) and clean-clone check
 - [x] oasdiff against the exact base commit and `x-stability-level` behaviour tests
 - [x] Inventory Lambda on emulated AWS (MiniStack, API Gateway, DynamoDB, Terraform) and Docker Compose
-- [x] DynamoDB repositories, AppConfig feature flags and `loan.created.v1` (EventBridge → SQS → Lambda)
+- [x] DynamoDB repositories and `loan.created.v1` (EventBridge → SQS → Lambda)
+- [x] Feature flags in Flagsmith (UI) through OpenFeature, in the backend and the web app
 - [x] Domain event catalog (`loan.created.v1` JSON Schema → `@acme/events`, immutability check)
 - [ ] Changesets, Verdaccio and preview releases
 - [ ] GitHub Actions workflows

@@ -37,7 +37,9 @@ Humans should follow them too. `CLAUDE.md` only imports this file, so there is a
 ## Workflow
 
 - Small commits using Conventional Commits (`feat(contract): ...`, `fix(api): ...`, `docs: ...`).
-- Any change to a publishable package needs a changeset (`pnpm changeset`).
+- Any change to a publishable package needs a changeset (`pnpm changeset`), including contract
+  changes: the packages are generated from `contracts/`. `pnpm nx run @acme/tools:changeset-check`
+  maps changed paths to packages and fails when one is missing.
 - Run lint, tests, typecheck and the contract compatibility check before proposing a change.
 
 ## Forbidden

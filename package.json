@@ -20,9 +20,15 @@
     "test": "nx run-many -t test",
     "typecheck": "nx run-many -t typecheck",
     "graph": "nx graph",
-    "build": "nx run-many -t build"
+    "build": "nx run-many -t build",
+    "changeset": "changeset",
+    "release:version": "changeset version",
+    "release:publish": "changeset publish",
+    "release:preview:version": "changeset version --snapshot preview",
+    "release:preview:publish": "changeset publish --tag preview --no-git-tag"
   },
   "devDependencies": {
+    "@changesets/cli": "3.0.3",
     "@eslint/js": "10.0.1",
     "@faker-js/faker": "10.6.0",
     "@nx/eslint": "24.0.4",

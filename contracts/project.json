@@ -75,8 +75,26 @@
         "env": {
           "NODE_OPTIONS": "--experimental-vm-modules --no-warnings=ExperimentalWarning"
         }
+      },
+      "dependsOn": ["oasdiff-install"]
+    },
+    "typecheck": {},
+    "oasdiff-install": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "bash scripts/compat/install-oasdiff.sh"
       }
     },
-    "typecheck": {}
+    "compat": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "dependsOn": ["bundle", "oasdiff-install"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "bash scripts/compat/check-compatibility.sh"
+      }
+    }
   }
 }

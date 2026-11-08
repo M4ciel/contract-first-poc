@@ -1,9 +1,6 @@
 import { type EventBridgeClient, PutEventsCommand } from '@aws-sdk/client-eventbridge';
 import { type DomainEvent, EventPublisher } from './event-publisher.js';
 
-/** Every event the backend publishes has this source; consumers' rules match on it. */
-export const EVENT_SOURCE = 'acme.library';
-
 export class EventBridgeEventPublisher extends EventPublisher {
   constructor(
     private readonly client: EventBridgeClient,
@@ -18,7 +15,7 @@ export class EventBridgeEventPublisher extends EventPublisher {
         Entries: [
           {
             EventBusName: this.busName,
-            Source: EVENT_SOURCE,
+            Source: event.source,
             DetailType: event.type,
             Time: event.occurredAt,
             Detail: JSON.stringify(event.data),

@@ -8,6 +8,7 @@
   "dependencies": {
     "@acme/api-types": "workspace:*",
     "@acme/domain": "workspace:*",
+    "@acme/events": "workspace:*",
     "@acme/inventory-client": "workspace:*",
     "@aws-sdk/client-appconfigdata": "3.1156.0",
     "@aws-sdk/client-dynamodb": "3.1156.0",

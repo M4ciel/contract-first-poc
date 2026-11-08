@@ -7,6 +7,7 @@ import {
   LoanNotFoundResponse,
   ServiceUnavailableResponse,
 } from '@acme/api-types';
+import { LOAN_CREATED_V1, LOAN_CREATED_V1_SOURCE, LoanCreatedV1 } from '@acme/events';
 import { getCreateReservationResponseMock } from '@acme/inventory-client/mocks';
 import { delay, http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
@@ -77,15 +78,18 @@ describe('loans', () => {
       expectToMatchContract(Loan, loan);
     });
 
-    it('publishes loan.created.v1 with identifiers and dates only', async () => {
+    it('publishes loan.created.v1 exactly as the event catalog defines it', async () => {
       const events = app.get(EventPublisher) as InMemoryEventPublisher;
       events.published.length = 0;
 
       const loan = (await createLoan({ bookId: BOOK_ID })).json<Loan>();
 
+      // The exact (producer) schema generated from contracts/events/loan.created.v1.json.
+      expect(LoanCreatedV1.parse(events.published[0]?.data)).toEqual(events.published[0]?.data);
       expect(events.published).toEqual([
         {
-          type: 'loan.created.v1',
+          source: LOAN_CREATED_V1_SOURCE,
+          type: LOAN_CREATED_V1,
           occurredAt: new Date('2026-01-10T12:00:00.000Z'),
           data: {
             loanId: loan.id,

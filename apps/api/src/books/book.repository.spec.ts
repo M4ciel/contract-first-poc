@@ -17,7 +17,13 @@ describe('SEED_BOOKS', () => {
         publishedAt: book.publishedAt.toISOString(),
         createdAt: book.createdAt.toISOString(),
       })),
-    ).toEqual(seed.map(({ copies: _copies, ...book }) => book));
+    ).toEqual(
+      seed.map((book) => {
+        const { copies, ...rest } = book;
+        expect(typeof copies).toBe('number');
+        return rest;
+      }),
+    );
   });
 });
 

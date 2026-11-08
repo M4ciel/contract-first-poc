@@ -1,0 +1,51 @@
+# Publishes the versions on main (after the Version PR was merged) to the `latest` dist-tag.
+# Manual only. Without an NPM_REGISTRY_URL variable it publishes to a disposable Verdaccio inside
+# the job, so the whole flow can be demonstrated without any company infrastructure; in a real
+# setup NPM_REGISTRY_URL is the private registry and NPM_TOKEN its token.
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Shared with preview.yml: never two publishes at the same time.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+env:
+  NX_DAEMON: 'false'
+  NX_NO_CLOUD: 'true'
+  NPM_REGISTRY_URL: ${{ vars.NPM_REGISTRY_URL || 'http://localhost:4873' }}
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      verdaccio:
+        image: verdaccio/verdaccio:6.11.1@sha256:82f4decaf1c9eff885bf7a1227335f78581ff715288d5f38898e67e28b3bfbdd
+        ports:
+          - 4873:4873
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
+      - name: Generate, test, typecheck, build
+        run: pnpm nx run-many -t test typecheck build
+      - name: Authenticate to the registry
+        run: |
+          for _ in $(seq 1 30); do curl -sf "$NPM_REGISTRY_URL/-/ping" >/dev/null && break; sleep 1; done
+          infra/scripts/registry-auth.sh "$NPM_REGISTRY_URL" "$RUNNER_TEMP/.npmrc"
+          echo "NPM_CONFIG_USERCONFIG=$RUNNER_TEMP/.npmrc" >>"$GITHUB_ENV"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish (latest)
+        run: pnpm release:publish
+      - name: Dist-tags
+        run: |
+          for package in api-types api-client inventory-client domain events; do
+            echo "@acme/$package: $(npm dist-tag ls "@acme/$package" --registry "$NPM_REGISTRY_URL/" | tr '\n' ' ')"
+          done

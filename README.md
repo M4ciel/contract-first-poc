@@ -209,6 +209,7 @@ pnpm nx run @acme/domain:mutation   # Stryker, fails below a 100% mutation score
 pnpm nx run contracts:compat        # oasdiff vs the base commit (BASE_SHA, default: merge-base with main)
 pnpm nx run @acme/tools:coverage    # every project's coverage added up, fails below 80%
 pnpm nx run @acme/tools:clean-clone # fresh clone of HEAD: install, generate, test
+pnpm nx run @acme/tools:changeset-check  # every affected published package has a changeset
 pnpm nx run @acme/web:e2e           # Playwright (first time: pnpm --filter @acme/web exec playwright install chromium)
 ```
 
@@ -258,6 +259,25 @@ flowchart LR
   API -->|flags| FS["Flagsmith<br/>+ Postgres"]
   API -->|loan.created.v1| EB["EventBridge"] --> Q["SQS<br/>+ DLQ"] --> NT["notifications<br/>Lambda"] --> RM[("reminders<br/>DynamoDB")]
 ```
+
+### Releases
+
+Whoever changes a published package adds a changeset (`pnpm changeset`). Publishing is always a
+manual step: a release goes to the `latest` dist-tag, and a **preview** of pending changes goes to
+`preview` as a snapshot version (`0.2.0-preview-<datetime>`), without touching `latest`. Rehearse
+both against the local Verdaccio:
+
+```bash
+pnpm nx run @acme/infra:up              # starts Verdaccio with the rest of the environment
+pnpm nx run @acme/infra:release-local   # release + preview on a temporary clone, then a consumer install
+```
+
+```
+@acme/api-types: latest: 0.1.0 preview: 0.2.0-preview-20261108041557
+@acme/api-client: latest: 0.1.0 preview: 0.2.0-preview-20261108041557
+```
+
+Verdaccio stands in for the company's private registry; nothing leaves the machine.
 
 ## 📂 Repository layout
 
@@ -321,7 +341,7 @@ timeline
 - [x] DynamoDB repositories and `loan.created.v1` (EventBridge → SQS → Lambda)
 - [x] Feature flags in Flagsmith (UI) through OpenFeature, in the backend and the web app
 - [x] Domain event catalog (`loan.created.v1` JSON Schema → `@acme/events`, immutability check)
-- [ ] Changesets, Verdaccio and preview releases
+- [x] Changesets (fixed `api-types` + `api-client`), snapshot previews and a local release to Verdaccio
 - [ ] GitHub Actions workflows
 - [ ] Live demo scripts
 - [ ] Full documentation and ADRs

@@ -102,6 +102,17 @@
         "cwd": "{projectRoot}",
         "command": "bash scripts/compat/check-compatibility.sh"
       }
+    },
+    "reference": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "dependsOn": ["bundle"],
+      "inputs": ["contract", "{projectRoot}/scripts/build-reference.ts"],
+      "outputs": ["{projectRoot}/artifacts/reference"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "node scripts/build-reference.ts"
+      }
     }
   }
 }

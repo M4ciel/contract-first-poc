@@ -2,7 +2,7 @@
   "name": "@acme/tools",
   "version": "0.0.0",
   "private": true,
-  "description": "Repository-wide checks: global test coverage and the clean-clone check.",
+  "description": "Repository-wide checks: global test coverage, changesets and the clean-clone check.",
   "license": "MIT",
   "type": "module",
   "nx": {
@@ -38,7 +38,14 @@
           }
         }
       },
-      "typecheck": {}
+      "typecheck": {},
+      "changeset-check": {
+        "executor": "nx:run-commands",
+        "cache": false,
+        "options": {
+          "command": "node tools/src/changeset-check.ts"
+        }
+      }
     }
   }
 }

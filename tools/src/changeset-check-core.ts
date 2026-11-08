@@ -1,0 +1,74 @@
+/**
+ * Which published packages a change affects, and whether the change brings a changeset for each.
+ * The packages are generated from `contracts/`, so `changeset status` (which only looks inside
+ * package folders) would miss a contract change; this check maps contract paths to packages.
+ */
+
+export const LIBRARY = ['@acme/api-types', '@acme/api-client'] as const;
+export const INVENTORY = ['@acme/inventory-client'] as const;
+export const EVENTS = ['@acme/events'] as const;
+export const DOMAIN = ['@acme/domain'] as const;
+const GENERATED = [...LIBRARY, ...INVENTORY, ...EVENTS];
+
+const PACKAGE_FOLDERS: Record<string, string> = {
+  'api-types': '@acme/api-types',
+  'api-client': '@acme/api-client',
+  'inventory-client': '@acme/inventory-client',
+  domain: '@acme/domain',
+  events: '@acme/events',
+};
+
+const isTest = (path: string) => /\.spec\.[cm]?[jt]sx?$/.test(path);
+
+/** Published packages whose content can change because `path` changed. */
+export const packagesAffectedBy = (path: string): readonly string[] => {
+  if (isTest(path) || path.endsWith('.md')) return [];
+  if (path.startsWith('contracts/apis/library/')) return LIBRARY;
+  if (path.startsWith('contracts/apis/inventory/')) return INVENTORY;
+  // Error components and problem types are shared by both APIs.
+  if (path.startsWith('contracts/shared/')) return [...LIBRARY, ...INVENTORY];
+  if (path.startsWith('contracts/events/')) return EVENTS;
+  // The generator decides what every generated package contains.
+  if (path === 'contracts/orval.config.ts' || path.startsWith('contracts/scripts/')) {
+    return path.includes('event')
+      ? EVENTS
+      : path.startsWith('contracts/scripts/compat/')
+        ? []
+        : GENERATED;
+  }
+  const match = /^contracts\/packages\/([^/]+)\/(.+)$/.exec(path);
+  if (!match) return [];
+  // Both groups always match when the expression does.
+  const name = PACKAGE_FOLDERS[String(match[1])];
+  const file = String(match[2]);
+  if (!name) return [];
+  // Only what ends up in the published package: sources, manifest and build config.
+  const shipped =
+    file.startsWith('src/') || file === 'package.json' || file.startsWith('tsdown.config');
+  return shipped ? [name] : [];
+};
+
+/** Packages listed in the front matter of a changeset file. */
+export const packagesInChangeset = (content: string): string[] => {
+  const frontMatter = /^---\n([\s\S]*?)\n---/.exec(content)?.[1] ?? '';
+  return frontMatter
+    .split('\n')
+    .map((line) => /^\s*['"]?(@[^'"\s:]+)['"]?\s*:/.exec(line)?.[1])
+    .filter((name): name is string => name !== undefined);
+};
+
+export interface ChangesetCheck {
+  readonly affected: string[];
+  readonly covered: string[];
+  readonly missing: string[];
+}
+
+/** Every affected package must appear in at least one changeset added by the change. */
+export const checkChangesets = (
+  changedFiles: readonly string[],
+  addedChangesets: readonly string[],
+): ChangesetCheck => {
+  const affected = [...new Set(changedFiles.flatMap(packagesAffectedBy))].sort();
+  const covered = [...new Set(addedChangesets.flatMap(packagesInChangeset))].sort();
+  return { affected, covered, missing: affected.filter((name) => !covered.includes(name)) };
+};

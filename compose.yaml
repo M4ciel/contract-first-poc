@@ -1,0 +1,71 @@
+# Local environment: emulated AWS (MiniStack), the infrastructure applied with Terraform, the
+# library backend and a private npm registry (Verdaccio). Images are pinned by digest.
+#
+# Start it with `pnpm nx run @acme/infra:up`, which builds the inventory Lambda bundle first.
+
+name: contract-first-poc
+
+services:
+  ministack:
+    image: ministackorg/ministack:1.5.32@sha256:c3afdc0f5a5147477b0634cbe2d2ebb032079989a52c8a1e1e59aea7413feb78
+    ports:
+      - '4566:4566'
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:4566/_ministack/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  # One-shot job: wipes MiniStack and applies infra/terraform from a fresh state, so every `up`
+  # starts from the same known environment (seeded stock, no reservations).
+  infra:
+    image: hashicorp/terraform:1.17.0@sha256:4d1b496a256f2989bccdb04b9104a4ede97234b10fba90259e173e905ec4fb58
+    depends_on:
+      ministack:
+        condition: service_healthy
+    working_dir: /workspace/infra/terraform
+    environment:
+      TF_VAR_aws_endpoint: http://ministack:4566
+      TF_IN_AUTOMATION: 'true'
+      TF_DATA_DIR: /tmp/terraform
+    volumes:
+      - ./infra/terraform:/workspace/infra/terraform:ro
+      - ./apps/inventory/dist:/workspace/apps/inventory/dist:ro
+    entrypoint:
+      - sh
+      - -ec
+      - |
+        wget -q -O /dev/null --post-data '' http://ministack:4566/_ministack/reset
+        cp -r /workspace/infra/terraform /tmp/stack && cd /tmp/stack
+        terraform init -input=false -lockfile=readonly >/dev/null
+        terraform apply -auto-approve -input=false -state=/tmp/terraform.tfstate \
+          -var inventory_bundle_dir=/workspace/apps/inventory/dist
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      infra:
+        condition: service_completed_successfully
+    ports:
+      - '3000:3000'
+    environment:
+      # The HTTP API id is pinned in Terraform (ms-custom-id), so this URL never changes.
+      INVENTORY_BASE_URL: http://ministack:4566/_aws/execute-api/inventory
+      INVENTORY_TIMEOUT_MS: '5000'
+
+  verdaccio:
+    image: verdaccio/verdaccio:6.11.1@sha256:82f4decaf1c9eff885bf7a1227335f78581ff715288d5f38898e67e28b3bfbdd
+    ports:
+      - '4873:4873'
+    volumes:
+      - ./infra/verdaccio/config.yaml:/verdaccio/conf/config.yaml:ro
+      - verdaccio-storage:/verdaccio/storage
+
+volumes:
+  verdaccio-storage:

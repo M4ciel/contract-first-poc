@@ -10,6 +10,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./validators": {
+      "types": "./dist/validators.d.ts",
+      "import": "./dist/validators.js"
+    },
     "./mocks": {
       "types": "./dist/mocks.d.ts",
       "import": "./dist/mocks.js"

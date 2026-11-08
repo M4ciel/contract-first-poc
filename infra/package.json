@@ -1,0 +1,54 @@
+{
+  "name": "@acme/infra",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local environment: Docker Compose, MiniStack and the Terraform stack.",
+  "license": "MIT",
+  "nx": {
+    "tags": [
+      "type:infra"
+    ],
+    "implicitDependencies": [
+      "@acme/inventory",
+      "@acme/api"
+    ],
+    "targets": {
+      "up": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": [
+              "@acme/inventory"
+            ],
+            "target": "build"
+          }
+        ],
+        "options": {
+          "cwd": "{workspaceRoot}",
+          "command": "docker compose up --detach --build --wait ministack api verdaccio"
+        }
+      },
+      "down": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "{workspaceRoot}",
+          "command": "docker compose down --volumes"
+        }
+      },
+      "smoke": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "{workspaceRoot}",
+          "command": "bash infra/smoke.sh"
+        }
+      },
+      "fmt-check": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "{projectRoot}/terraform",
+          "command": "docker run --rm -v \"$PWD:/stack\" -w /stack hashicorp/terraform:1.17.0@sha256:4d1b496a256f2989bccdb04b9104a4ede97234b10fba90259e173e905ec4fb58 fmt -check -recursive"
+        }
+      }
+    }
+  }
+}

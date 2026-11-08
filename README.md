@@ -80,12 +80,12 @@ frontends: the backend is a consumer too.
 
 ### The published packages
 
-| Package                  | What it contains                                                                         | Consumed by          | Versioning                          |
-| ------------------------ | ---------------------------------------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `@acme/api-types`        | Generated **Zod** schemas + inferred TS types; request validators (`/validators`)        | Backend and frontend | Fixed group with `api-client`       |
-| `@acme/api-client`       | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)                         | Frontends            | Fixed group with `api-types`        |
-| `@acme/inventory-client` | Generated **Zod** schemas, **fetch** client (base URL set at runtime) + **MSW** handlers | Backend              | Independent (follows inventory API) |
-| `@acme/domain`           | Pure, shared business rules (no I/O, 100% mutation score)                                | Backend and frontend | Independent                         |
+| Package                  | What it contains                                                                                                             | Consumed by          | Versioning                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------- |
+| `@acme/api-types`        | Generated **Zod** schemas + inferred TS types; request validators (`/validators`)                                            | Backend and frontend | Fixed group with `api-client`       |
+| `@acme/api-client`       | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)                                                             | Frontends            | Fixed group with `api-types`        |
+| `@acme/inventory-client` | Generated **Zod** schemas, **fetch** client (base URL set at runtime), request validators (`/validators`) + **MSW** handlers | Backend              | Independent (follows inventory API) |
+| `@acme/domain`           | Pure, shared business rules (no I/O, 100% mutation score)                                                                    | Backend and frontend | Independent                         |
 
 ### Runtime on (emulated) AWS
 
@@ -218,6 +218,24 @@ VITE_USE_MOCKS=true pnpm nx run @acme/web:serve   # http://localhost:4200
 Without `VITE_USE_MOCKS`, Vite forwards `/v1` and `/v2` to `API_PROXY_TARGET`
 (default `http://localhost:3000`).
 
+Run the whole backend locally, on emulated AWS:
+
+```bash
+pnpm nx run @acme/infra:up      # builds the Lambda, starts MiniStack, applies Terraform, starts the API
+pnpm nx run @acme/infra:smoke   # loan → API Gateway → inventory Lambda → DynamoDB
+pnpm nx run @acme/infra:down
+```
+
+| Service                  | URL                                              |
+| ------------------------ | ------------------------------------------------ |
+| Library API (NestJS)     | http://localhost:3000                            |
+| Inventory API (Lambda)   | http://localhost:4566/_aws/execute-api/inventory |
+| MiniStack (AWS emulator) | http://localhost:4566                            |
+| Verdaccio (npm registry) | http://localhost:4873                            |
+
+Every `up` resets MiniStack and applies Terraform from scratch, so the stock starts from the seed
+again.
+
 ## 📂 Repository layout
 
 ```
@@ -275,7 +293,8 @@ timeline
 - [x] `apps/web` (React + MSW mock mode, neutral badge for `unknown`, Playwright)
 - [x] Global coverage floor (80%) and clean-clone check
 - [x] oasdiff against the exact base commit and `x-stability-level` behaviour tests
-- [ ] Emulated AWS (MiniStack + Terraform) and domain events
+- [x] Inventory Lambda on emulated AWS (MiniStack, API Gateway, DynamoDB, Terraform) and Docker Compose
+- [ ] DynamoDB repositories, AppConfig feature flags and domain events
 - [ ] Changesets, Verdaccio and preview releases
 - [ ] GitHub Actions workflows
 - [ ] Live demo scripts

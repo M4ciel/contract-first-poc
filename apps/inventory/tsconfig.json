@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    // One alias per folder of src/. tsdown bundles them; Jest reads them through jest.paths.cjs.
+    "paths": {
+      "@http/*": ["./src/http/*"],
+      "@store/*": ["./src/store/*"]
+    },
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*.ts", "tsdown.config.ts"]
+}

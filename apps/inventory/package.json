@@ -1,0 +1,42 @@
+{
+  "name": "@acme/inventory",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Inventory service: an AWS Lambda behind API Gateway that implements the Acme Inventory API contract.",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@acme/inventory-client": "workspace:*",
+    "@aws-sdk/client-dynamodb": "3.1156.0",
+    "@aws-sdk/lib-dynamodb": "3.1156.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.164"
+  },
+  "nx": {
+    "tags": [
+      "type:app"
+    ],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "options": {
+          "cwd": "{projectRoot}",
+          "command": "tsdown"
+        }
+      },
+      "test": {
+        "options": {
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules --no-warnings=ExperimentalWarning"
+          }
+        }
+      },
+      "typecheck": {}
+    }
+  }
+}

@@ -210,3 +210,13 @@ input {
   overflow: hidden;
   clip-path: inset(50%);
 }
+
+.author {
+  display: inline-block;
+  margin: 0 6px 2px 0;
+}
+
+.author + .author::before {
+  content: '· ';
+  color: var(--muted);
+}

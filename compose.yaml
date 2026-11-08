@@ -1,5 +1,6 @@
 # Local environment: emulated AWS (MiniStack), the infrastructure applied with Terraform, the
-# library backend and a private npm registry (Verdaccio). Images are pinned by digest.
+# library backend, feature flags (Flagsmith) and a private npm registry (Verdaccio). Images are
+# pinned by digest. Every credential and key in this file is an example value for local use only.
 #
 # Start it with `pnpm nx run @acme/infra:up`, which builds the inventory Lambda bundle first.
 
@@ -55,6 +56,8 @@ services:
     depends_on:
       infra:
         condition: service_completed_successfully
+      flagsmith-seed:
+        condition: service_completed_successfully
     ports:
       - '3000:3000'
     environment:
@@ -69,10 +72,67 @@ services:
       BOOKS_TABLE: acme-library-books
       LOANS_TABLE: acme-library-loans
       EVENT_BUS_NAME: acme-library
-      FEATURE_FLAGS_SOURCE: appconfig
-      APPCONFIG_APPLICATION: acme-library
-      APPCONFIG_ENVIRONMENT: local
-      APPCONFIG_PROFILE: feature-flags
+      FEATURE_FLAGS_SOURCE: flagsmith
+      FLAGSMITH_API_URL: http://flagsmith:8000/api/v1/
+      FLAGSMITH_SERVER_KEY: ser.acmeLocalServerKey
+      # Short, so a toggle in the Flagsmith UI shows up in a demo within seconds.
+      FLAGSMITH_REFRESH_SECONDS: '3'
+
+  # Feature flags with a UI (http://localhost:8000), self-hosted. The backend and the web app read
+  # them through OpenFeature, so another vendor would only change the provider.
+  flagsmith-db:
+    image: postgres:17.10-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193
+    environment:
+      POSTGRES_DB: flagsmith
+      POSTGRES_USER: flagsmith
+      POSTGRES_PASSWORD: flagsmith
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'flagsmith']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  flagsmith:
+    image: flagsmith/flagsmith:2.287.0@sha256:ecd69b757e2694ce0ea9974af91661f51a2fd1834eda9480883d2f90981ed110
+    depends_on:
+      flagsmith-db:
+        condition: service_healthy
+    ports:
+      - '8000:8000'
+    environment: &flagsmith-env
+      DATABASE_URL: postgresql://flagsmith:flagsmith@flagsmith-db:5432/flagsmith
+      DJANGO_ALLOWED_HOSTS: '*'
+      DISABLE_INFLUXDB_FEATURES: 'true'
+      # First start: create the admin, the organisation and the project (example values only).
+      ALLOW_ADMIN_INITIATION_VIA_CLI: 'true'
+      ADMIN_EMAIL: admin@example.test
+      ORGANISATION_NAME: Acme
+      PROJECT_NAME: Acme Library
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/liveness/')"
+      interval: 3s
+      timeout: 3s
+      retries: 60
+
+  # One-shot job: admin password, the `Local` environment with fixed example keys, and booksV2
+  # reset to off. The keys below are what the API (server key) and the web app (client key) use.
+  flagsmith-seed:
+    image: flagsmith/flagsmith:2.287.0@sha256:ecd69b757e2694ce0ea9974af91661f51a2fd1834eda9480883d2f90981ed110
+    depends_on:
+      flagsmith:
+        condition: service_healthy
+    environment:
+      <<: *flagsmith-env
+      ADMIN_PASSWORD: acme-local-admin
+      FLAGSMITH_CLIENT_KEY: acmeLocalClientKey
+      FLAGSMITH_SERVER_KEY: ser.acmeLocalServerKey
+    volumes:
+      - ./infra/flagsmith/seed.py:/seed/seed.py:ro
+    entrypoint: ['sh', '-c', 'python manage.py shell < /seed/seed.py']
 
   verdaccio:
     image: verdaccio/verdaccio:6.11.1@sha256:82f4decaf1c9eff885bf7a1227335f78581ff715288d5f38898e67e28b3bfbdd

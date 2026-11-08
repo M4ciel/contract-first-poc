@@ -3,7 +3,6 @@ import { APP_FILTER } from '@nestjs/core';
 import type { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import type { EventBridgeClient } from '@aws-sdk/client-eventbridge';
 import {
-  appConfigDataProvider,
   DYNAMODB,
   dynamoDbProvider,
   EVENTBRIDGE,
@@ -12,10 +11,9 @@ import {
 import { BooksController } from '@books/books.controller.js';
 import { BookRepository, InMemoryBookRepository, SEED_BOOKS } from '@books/book.repository.js';
 import { DynamoBookRepository } from '@books/dynamo-book.repository.js';
-import { AppConfigFeatureFlags } from '@common/appconfig-feature-flags.js';
 import { Clock, SystemClock } from '@common/clock.js';
 import { FeatureFlagGuard } from '@common/feature-flag.guard.js';
-import { EnvFeatureFlags, FeatureFlags } from '@common/feature-flags.js';
+import { featureFlagsProvider } from '@common/feature-flags.factory.js';
 import { APP_CONFIG, type AppConfig } from '@config/app-config.js';
 import { EventPublisher, InMemoryEventPublisher } from '@events/event-publisher.js';
 import { EventBridgeEventPublisher } from '@events/eventbridge-event-publisher.js';
@@ -28,8 +26,8 @@ import { LoansService } from '@loans/loans.service.js';
 import { ProblemDetailsFilter } from '@problems/problem-details.filter.js';
 
 /**
- * Adapters are chosen once, from the configuration: AWS services when they are configured,
- * in-memory ones otherwise. Nothing else in the application knows which one runs.
+ * Adapters are chosen once, from the configuration: AWS services and Flagsmith when they are
+ * configured, in-memory ones otherwise. Nothing else in the application knows which one runs.
  */
 const adapterProviders = (config: AppConfig): Provider[] => {
   const { booksTable, loansTable } = config.storage;
@@ -58,13 +56,10 @@ const adapterProviders = (config: AppConfig): Provider[] => {
           useFactory: (client: EventBridgeClient) => new EventBridgeEventPublisher(client, busName),
         }
       : { provide: EventPublisher, useClass: InMemoryEventPublisher },
-    config.featureFlags.source === 'appconfig'
-      ? { provide: FeatureFlags, useClass: AppConfigFeatureFlags }
-      : { provide: FeatureFlags, useClass: EnvFeatureFlags },
+    featureFlagsProvider,
   ];
   if (booksTable || loansTable) providers.push(dynamoDbProvider);
   if (busName) providers.push(eventBridgeProvider);
-  if (config.featureFlags.source === 'appconfig') providers.push(appConfigDataProvider);
   return providers;
 };
 

@@ -3,7 +3,7 @@
 # - catalog and loans in DynamoDB;
 # - loans reserve a copy through API Gateway → inventory Lambda → DynamoDB;
 # - loan.created.v1 goes EventBridge → SQS → notifications Lambda → reminders table;
-# - the booksV2 flag is switched in AppConfig and the backend follows without a restart.
+# - the booksV2 flag is switched in Flagsmith and the backend follows without a restart.
 set -euo pipefail
 
 API="${API_URL:-http://localhost:3000}"
@@ -70,7 +70,7 @@ check 'the inventory rejects unknown fields (strict request)' 400 \
 
 check 'GET /v2/books is hidden while booksV2 is off' 404 "$API/v2/books"
 node "$here/scripts/set-flag.ts" booksV2 on >/dev/null
-if eventually 30 v2_status_is 200; then pass 'turning booksV2 on in AppConfig exposes /v2/books'; else fail '/v2/books still hidden 30 s after turning booksV2 on'; fi
+if eventually 30 v2_status_is 200; then pass 'turning booksV2 on in Flagsmith exposes /v2/books'; else fail '/v2/books still hidden 30 s after turning booksV2 on'; fi
 node "$here/scripts/set-flag.ts" booksV2 off >/dev/null
 if eventually 30 v2_status_is 404; then pass 'turning booksV2 off hides it again'; else fail '/v2/books still exposed 30 s after turning booksV2 off'; fi
 

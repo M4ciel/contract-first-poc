@@ -2,12 +2,9 @@
   "name": "@acme/infra",
   "version": "0.0.0",
   "private": true,
-  "description": "Local environment: Docker Compose, MiniStack and the Terraform stack.",
+  "description": "Local environment: Docker Compose, MiniStack, Flagsmith and the Terraform stack.",
   "license": "MIT",
   "type": "module",
-  "devDependencies": {
-    "@aws-sdk/client-appconfig": "3.1156.0"
-  },
   "nx": {
     "tags": [
       "type:infra"
@@ -31,7 +28,7 @@
         ],
         "options": {
           "cwd": "{workspaceRoot}",
-          "command": "docker compose up --detach --build --wait ministack api verdaccio"
+          "command": "docker compose up --detach --build --wait ministack flagsmith api verdaccio"
         }
       },
       "down": {

@@ -1,6 +1,6 @@
-# Library backend resources: catalog and loans tables, the event bus with the notifications
-# consumer, and the feature flags in AppConfig. The backend itself runs as a container
-# (compose.yaml); in AWS it would be ECS or App Runner with an IAM role for these resources.
+# Library backend resources: catalog and loans tables, and the event bus with the notifications
+# consumer. The backend itself runs as a container (compose.yaml); in AWS it would be ECS or App
+# Runner with an IAM role for these resources. Feature flags live in Flagsmith (compose.yaml).
 
 locals {
   # Single seed for the catalog and the stock. apps/api tests check that the in-memory catalog
@@ -172,51 +172,4 @@ resource "aws_lambda_event_source_mapping" "loan_events" {
   function_name           = aws_lambda_function.notifications.arn
   batch_size              = 10
   function_response_types = ["ReportBatchItemFailures"]
-}
-
-# ---------------------------------------------------------------------------------------------
-# Feature flags: AWS AppConfig
-# ---------------------------------------------------------------------------------------------
-
-resource "aws_appconfig_application" "library" {
-  name = "acme-library"
-}
-
-resource "aws_appconfig_environment" "local" {
-  name           = "local"
-  application_id = aws_appconfig_application.library.id
-}
-
-resource "aws_appconfig_configuration_profile" "feature_flags" {
-  name           = "feature-flags"
-  application_id = aws_appconfig_application.library.id
-  location_uri   = "hosted"
-  type           = "AWS.AppConfig.FeatureFlags"
-}
-
-resource "aws_appconfig_hosted_configuration_version" "feature_flags" {
-  application_id           = aws_appconfig_application.library.id
-  configuration_profile_id = aws_appconfig_configuration_profile.feature_flags.configuration_profile_id
-  content_type             = "application/json"
-  content = jsonencode({
-    version = "1"
-    flags   = { booksV2 = { name = "booksV2", description = "GET /v2/books (alpha)" } }
-    values  = { booksV2 = { enabled = var.books_v2_enabled } }
-  })
-}
-
-resource "aws_appconfig_deployment_strategy" "all_at_once" {
-  name                           = "acme-all-at-once"
-  deployment_duration_in_minutes = 0
-  final_bake_time_in_minutes     = 0
-  growth_factor                  = 100
-  replicate_to                   = "NONE"
-}
-
-resource "aws_appconfig_deployment" "feature_flags" {
-  application_id           = aws_appconfig_application.library.id
-  environment_id           = aws_appconfig_environment.local.environment_id
-  configuration_profile_id = aws_appconfig_configuration_profile.feature_flags.configuration_profile_id
-  configuration_version    = aws_appconfig_hosted_configuration_version.feature_flags.version_number
-  deployment_strategy_id   = aws_appconfig_deployment_strategy.all_at_once.id
 }

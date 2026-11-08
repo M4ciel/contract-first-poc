@@ -21,9 +21,3 @@ variable "bundles_dir" {
   type        = string
   default     = "../../apps"
 }
-
-variable "books_v2_enabled" {
-  description = "Initial value of the booksV2 feature flag in AppConfig."
-  type        = bool
-  default     = false
-}

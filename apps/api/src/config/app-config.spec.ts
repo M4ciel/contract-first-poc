@@ -20,31 +20,29 @@ describe('loadConfig', () => {
     expect(
       loadConfig({
         ...required,
-        FEATURE_FLAGS_SOURCE: 'appconfig',
-        APPCONFIG_APPLICATION: 'acme-library',
-        APPCONFIG_ENVIRONMENT: 'local',
-        APPCONFIG_PROFILE: 'feature-flags',
+        FEATURE_FLAGS_SOURCE: 'flagsmith',
+        FLAGSMITH_API_URL: 'http://flagsmith.test/api/v1/',
+        FLAGSMITH_SERVER_KEY: 'ser.example',
         BOOKS_TABLE: 'books',
         LOANS_TABLE: 'loans',
         EVENT_BUS_NAME: 'bus',
       }),
     ).toMatchObject({
       featureFlags: {
-        source: 'appconfig',
-        application: 'acme-library',
-        environment: 'local',
-        profile: 'feature-flags',
-        pollIntervalSeconds: 15,
+        source: 'flagsmith',
+        apiUrl: 'http://flagsmith.test/api/v1/',
+        serverKey: 'ser.example',
+        refreshIntervalSeconds: 60,
       },
       storage: { booksTable: 'books', loansTable: 'loans' },
       events: { busName: 'bus' },
     });
   });
 
-  it('requires the AppConfig identifiers when flags come from AppConfig', () => {
-    expect(() =>
-      loadConfig({ ...required, FEATURE_FLAGS_SOURCE: 'appconfig', APPCONFIG_PROFILE: 'flags' }),
-    ).toThrow(/- APPCONFIG_APPLICATION: Required .+\n- APPCONFIG_ENVIRONMENT: Required .+$/);
+  it('requires the Flagsmith URL and key when flags come from Flagsmith', () => {
+    expect(() => loadConfig({ ...required, FEATURE_FLAGS_SOURCE: 'flagsmith' })).toThrow(
+      /- FLAGSMITH_API_URL: Required .+\n- FLAGSMITH_SERVER_KEY: Required .+$/,
+    );
   });
 
   it('reads every variable', () => {

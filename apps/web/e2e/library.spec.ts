@@ -115,3 +115,10 @@ test('falls back to the server title for a problem type added after this build',
 
   await expect(page.getByRole('alert')).toContainText('Too many lookups');
 });
+
+test('uses the v1 catalog while the booksV2 flag is off', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByRole('cell', { name: book.title, exact: true })).toBeVisible();
+  await expect(page.getByTestId('catalog-version')).toHaveCount(0);
+});

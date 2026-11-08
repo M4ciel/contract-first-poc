@@ -12,6 +12,7 @@
     "paths": {
       "@api/*": ["./src/api/*"],
       "@books/*": ["./src/books/*"],
+      "@flags/*": ["./src/flags/*"],
       "@loans/*": ["./src/loans/*"],
       "@mocks/*": ["./src/mocks/*"]
     },

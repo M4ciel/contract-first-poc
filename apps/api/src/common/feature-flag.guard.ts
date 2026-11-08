@@ -23,9 +23,9 @@ export class FeatureFlagGuard implements CanActivate {
     private readonly flags: FeatureFlags,
   ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const flag = this.reflector.get<FeatureFlag>(FEATURE_FLAG, context.getHandler());
-    if (!this.flags.isEnabled(flag)) throw problems.notFound();
+    if (!(await this.flags.isEnabled(flag))) throw problems.notFound();
     return true;
   }
 }

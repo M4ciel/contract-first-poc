@@ -15,9 +15,6 @@ set -euo pipefail
 
 REGISTRY="${REGISTRY_URL:-http://localhost:4873}"
 PACKAGES=(@acme/api-types @acme/api-client @acme/inventory-client @acme/domain @acme/events)
-# Example-only credentials for the disposable local registry.
-USER_NAME=acme-release
-USER_PASSWORD=acme-local-release
 
 if ! curl -sf "$REGISTRY/-/ping" >/dev/null; then
   echo "✖ No registry at $REGISTRY. Start it with: pnpm nx run @acme/infra:up" >&2
@@ -28,16 +25,8 @@ root="$(git rev-parse --show-toplevel)"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
-# A user to publish with (Verdaccio answers 409 when it already exists), then a throwaway npmrc
-# that sends every @acme package to Verdaccio. The real ~/.npmrc is never read or changed.
-curl -s -o /dev/null -X PUT "$REGISTRY/-/user/org.couchdb.user:$USER_NAME" \
-  -H 'content-type: application/json' \
-  -d "{\"name\":\"$USER_NAME\",\"password\":\"$USER_PASSWORD\"}"
-host="${REGISTRY#*://}"
-cat >"$work/.npmrc" <<EOF
-@acme:registry=$REGISTRY/
-//$host/:_auth=$(printf '%s:%s' "$USER_NAME" "$USER_PASSWORD" | base64)
-EOF
+# A throwaway npmrc that sends every @acme package to Verdaccio. ~/.npmrc is never read or changed.
+"$root/infra/scripts/registry-auth.sh" "$REGISTRY" "$work/.npmrc" >/dev/null
 export NPM_CONFIG_USERCONFIG="$work/.npmrc" NX_DAEMON=false NX_NO_CLOUD=true
 
 echo "› Cloning $(git -C "$root" rev-parse --short HEAD) and building the packages"

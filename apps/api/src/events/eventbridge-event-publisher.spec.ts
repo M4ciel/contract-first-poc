@@ -3,6 +3,7 @@ import { fakeAwsClient, inputOf } from '@testing/fake-aws-client.js';
 import { EventBridgeEventPublisher } from './eventbridge-event-publisher.js';
 
 const event = {
+  source: 'acme.library',
   type: 'loan.created.v1',
   occurredAt: new Date('2026-01-10T12:00:00.000Z'),
   data: { loanId: 'l1' },

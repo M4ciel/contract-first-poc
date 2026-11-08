@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 /**
- * A domain event as the application publishes it. `type` follows `entity.action.vN`; events are
- * immutable, so a new shape means a new version. `data` never carries personal data.
+ * A domain event as the application publishes it. Names, sources and payload shapes come from the
+ * event catalog (contracts/events, generated as `@acme/events`).
  */
 export interface DomainEvent<Data = unknown> {
+  /** Producer, from the catalog's `x-source` (EventBridge `source`). */
+  readonly source: string;
   readonly type: string;
   readonly occurredAt: Date;
   readonly data: Data;

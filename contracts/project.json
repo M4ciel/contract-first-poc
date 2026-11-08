@@ -21,6 +21,12 @@
       {
         "externalDependencies": ["orval"]
       }
+    ],
+    "events": [
+      "{projectRoot}/events/**/*",
+      {
+        "externalDependencies": ["json-schema-to-typescript"]
+      }
     ]
   },
   "targets": {
@@ -59,15 +65,16 @@
       "executor": "nx:run-commands",
       "cache": true,
       "dependsOn": ["bundle"],
-      "inputs": ["contract", "generator"],
+      "inputs": ["contract", "generator", "events"],
       "outputs": [
         "{projectRoot}/packages/api-types/src/generated",
         "{projectRoot}/packages/api-client/src/generated",
-        "{projectRoot}/packages/inventory-client/src/generated"
+        "{projectRoot}/packages/inventory-client/src/generated",
+        "{projectRoot}/packages/events/src/generated"
       ],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "orval --config orval.config.ts && node scripts/apply-response-enum-fallback.ts"
+        "command": "orval --config orval.config.ts && node scripts/apply-response-enum-fallback.ts && node scripts/generate-events.ts"
       }
     },
     "test": {

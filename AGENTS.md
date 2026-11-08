@@ -9,7 +9,8 @@ Humans should follow them too. `CLAUDE.md` only imports this file, so there is a
   `components/`), with error components shared in `contracts/shared/`. Today there are two:
   `library` (public, web → backend) and `inventory` (internal, backend → Lambda). Types, Zod
   schemas, HTTP clients and mocks are **generated** from them.
-- Domain events are defined only in `contracts/events/`.
+- Domain events are defined only in `contracts/events/` (JSON Schema, immutable: a new shape is a
+  new version). `@acme/events` is generated from it.
 - Shared business rules live only in `@acme/domain` (pure functions, no I/O).
 
 ## Tooling

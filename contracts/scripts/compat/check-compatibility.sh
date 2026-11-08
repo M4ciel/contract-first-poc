@@ -9,6 +9,9 @@
 #
 # oasdiff reads `x-stability-level`: breaking changes in `draft` and `alpha` operations are allowed,
 # `beta` and `stable` are protected, and lowering an operation's level is itself an error.
+# Domain events (contracts/events) are immutable: a file that exists at the base commit must be
+# byte-for-byte the same; a new shape is a new version (a new file).
+#
 # One rule is lowered from error to info, in oasdiff-severity.txt (the file format has no
 # comments): `response-property-enum-value-added`. A new enum value in a response is an allowed,
 # additive change (AGENTS.md, spec 5.9) because every generated response schema maps values it does
@@ -48,7 +51,7 @@ trap 'rm -rf "$work"' EXIT
 
 # Extract only the contract sources of the base commit and bundle them the same way as HEAD.
 sources=()
-for path in redocly.yaml apis shared; do
+for path in redocly.yaml apis shared events; do
   if git -C "$root" cat-file -e "$base:$prefix/$path" 2>/dev/null; then sources+=("$prefix/$path"); fi
 done
 git -C "$root" archive "$base" "${sources[@]}" | tar -x -C "$work"
@@ -81,9 +84,25 @@ for head_bundle in "$contracts"/artifacts/*.bundle.yaml; do
   fi
 done
 
+if [ -d "$work/$prefix/events" ]; then
+  for base_event in "$work/$prefix"/events/*.json; do
+    event="$(basename "$base_event")"
+    if [ ! -f "$contracts/events/$event" ]; then
+      echo "✖ events/$event exists at $short but was removed. Published events are never deleted." >&2
+      status=1
+    elif ! cmp -s "$base_event" "$contracts/events/$event"; then
+      echo "✖ events/$event changed since $short. Events are immutable: add a new version instead." >&2
+      diff -u "$base_event" "$contracts/events/$event" >&2 || true
+      status=1
+    else
+      echo "› events/$event: unchanged"
+    fi
+  done
+fi
+
 if [ "$status" -ne 0 ]; then
-  echo "✖ Breaking change in a beta or stable operation. Do not weaken this check: move the change" >&2
-  echo "  to a new operation or a new major version (/v2), or deprecate and add a replacement." >&2
+  echo "✖ Incompatible contract change. Do not weaken this check: move an API change to a new" >&2
+  echo "  operation or a new major version (/v2), and an event change to a new event version." >&2
   exit 1
 fi
 echo "✔ No breaking changes against $short."

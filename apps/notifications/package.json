@@ -6,6 +6,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@acme/events": "workspace:*",
     "@aws-sdk/client-dynamodb": "3.1156.0",
     "@aws-sdk/lib-dynamodb": "3.1156.0",
     "zod": "4.6.7"

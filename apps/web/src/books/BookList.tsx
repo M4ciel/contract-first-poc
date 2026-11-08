@@ -1,10 +1,8 @@
-import { useListBooks } from '@acme/api-client';
-import { BookPage } from '@acme/api-types';
+import { useBooleanFlagValue } from '@openfeature/react-sdk';
 import { useState } from 'react';
-import { toApiResult } from '@api/api-result.ts';
 import { ProblemAlert } from '@api/ProblemAlert.tsx';
-
-const PAGE_SIZE = 5;
+import { FLAGS } from '@flags/flag-provider.ts';
+import { useBookRows } from './use-book-rows.ts';
 
 interface BookListProps {
   readonly onBorrow: (bookId: string) => void;
@@ -14,19 +12,22 @@ interface BookListProps {
 export const BookList = ({ onBorrow, borrowingId }: BookListProps) => {
   // Cursors of the pages already visited, so "Previous" can go back (cursors are opaque).
   const [cursors, setCursors] = useState<readonly string[]>([]);
-  const cursor = cursors.at(-1);
-  const books = useListBooks(
-    { limit: PAGE_SIZE, ...(cursor ? { cursor } : {}) },
-    { query: { select: (response) => toApiResult(BookPage, 200, response) } },
-  );
+  // Behind a flag: the alpha `/v2/books` (a list of authors) replaces `/v1/books`.
+  const useV2 = useBooleanFlagValue(FLAGS.booksV2, false);
+  const books = useBookRows(useV2, cursors.at(-1));
 
   if (books.isPending) return <p className="muted">Loading books…</p>;
   if (books.isError) return <p role="alert">The book list could not be read.</p>;
   if (!books.data.ok) return <ProblemAlert problem={books.data.problem} />;
 
-  const { items, nextCursor } = books.data.value;
+  const { version, rows, nextCursor } = books.data.value;
   return (
     <>
+      {version === 'v2' && (
+        <p className="tag" data-testid="catalog-version">
+          Catalog v2 (alpha)
+        </p>
+      )}
       <table className="books">
         <thead>
           <tr>
@@ -38,10 +39,16 @@ export const BookList = ({ onBorrow, borrowingId }: BookListProps) => {
           </tr>
         </thead>
         <tbody>
-          {items.map((book) => (
+          {rows.map((book) => (
             <tr key={book.id}>
               <td>{book.title}</td>
-              <td>{book.author}</td>
+              <td>
+                {book.authors.map((author) => (
+                  <span key={author} className="author">
+                    {author}
+                  </span>
+                ))}
+              </td>
               <td>
                 <button
                   type="button"

@@ -7,7 +7,9 @@ const MOCK_MODE_PORT = 4311;
  * Two dev servers:
  * - `api-stubs`: the app talks to `/v1/...` as usual; each test answers with `page.route`, using
  *   bodies from the contract's generated mocks, to drive exact cases (unknown status, 409, ...).
- * - `mock-mode`: `VITE_USE_MOCKS=true`, the MSW worker answers in the browser and no backend runs.
+ * - `mock-mode`: `VITE_USE_MOCKS=true`, the MSW worker answers in the browser and no backend runs;
+ *   the booksV2 flag is on, so the app shows the alpha `/v2/books` catalog.
+ * Neither server has a Flagsmith key, so flags are fixed values (VITE_FLAG_*).
  */
 export default defineConfig({
   testDir: './e2e',
@@ -39,7 +41,8 @@ export default defineConfig({
     },
     {
       command: `vite --port ${MOCK_MODE_PORT} --strictPort`,
-      env: { VITE_USE_MOCKS: 'true' },
+      // The booksV2 flag is on: the frontend builds the alpha /v2 screen on the generated mocks.
+      env: { VITE_USE_MOCKS: 'true', VITE_FLAG_BOOKS_V2: 'true' },
       url: `http://localhost:${MOCK_MODE_PORT}`,
       reuseExistingServer: !process.env['CI'],
     },

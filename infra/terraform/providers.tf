@@ -10,7 +10,6 @@ provider "aws" {
 
   endpoints {
     apigatewayv2 = var.aws_endpoint
-    appconfig    = var.aws_endpoint
     dynamodb     = var.aws_endpoint
     eventbridge  = var.aws_endpoint
     iam          = var.aws_endpoint

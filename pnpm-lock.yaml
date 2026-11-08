@@ -274,9 +274,6 @@ importers:
       '@acme/inventory-client':
         specifier: workspace:*
         version: link:../../contracts/packages/inventory-client
-      '@aws-sdk/client-appconfigdata':
-        specifier: 3.1156.0
-        version: 3.1156.0
       '@aws-sdk/client-dynamodb':
         specifier: 3.1156.0
         version: 3.1156.0
@@ -286,6 +283,9 @@ importers:
       '@aws-sdk/lib-dynamodb':
         specifier: 3.1156.0
         version: 3.1156.0(@aws-sdk/client-dynamodb@3.1156.0)
+      '@flagsmith/nodejs':
+        specifier: 9.1.0
+        version: 9.1.0
       '@nestjs/common':
         specifier: 11.2.7
         version: 11.2.7(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
@@ -295,6 +295,12 @@ importers:
       '@nestjs/platform-fastify':
         specifier: 11.2.7
         version: 11.2.7(@nestjs/common@11.2.7(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.7(@nestjs/common@11.2.7(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(reflect-metadata@0.2.2)(rxjs@7.8.2))
+      '@openfeature/core':
+        specifier: 1.12.0
+        version: 1.12.0
+      '@openfeature/server-sdk':
+        specifier: 1.23.0
+        version: 1.23.0(@openfeature/core@1.12.0)
       fastify:
         specifier: 5.11.3
         version: 5.11.3
@@ -380,6 +386,21 @@ importers:
       '@acme/domain':
         specifier: workspace:*
         version: link:../../contracts/packages/domain
+      '@flagsmith/flagsmith':
+        specifier: 12.4.0
+        version: 12.4.0
+      '@openfeature/core':
+        specifier: 1.12.0
+        version: 1.12.0
+      '@openfeature/flagsmith-client-provider':
+        specifier: 0.3.0
+        version: 0.3.0(@flagsmith/flagsmith@12.4.0)(@openfeature/web-sdk@1.10.0(@openfeature/core@1.12.0))
+      '@openfeature/react-sdk':
+        specifier: 1.4.1
+        version: 1.4.1(@openfeature/web-sdk@1.10.0(@openfeature/core@1.12.0))(react@19.3.1)
+      '@openfeature/web-sdk':
+        specifier: 1.10.0
+        version: 1.10.0(@openfeature/core@1.12.0)
       '@tanstack/react-query':
         specifier: 5.106.1
         version: 5.106.1(@types/react@19.3.0)(react@19.3.1)
@@ -464,11 +485,7 @@ importers:
         specifier: 4.6.7
         version: 4.6.7
 
-  infra:
-    devDependencies:
-      '@aws-sdk/client-appconfig':
-        specifier: 3.1156.0
-        version: 3.1156.0
+  infra: {}
 
   tools: {}
 
@@ -477,14 +494,6 @@ packages:
   '@apidevtools/json-schema-ref-parser@11.9.3':
     resolution: {integrity: sha512-60vepv88RwcJtSHrD6MjIL6Ta3SOYbgfnkHb+ppAVK+o9mXprRtulx7VlRl3lN3bbvysAfCS7WMVfhUYemB0IQ==}
     engines: {node: '>= 16'}
-
-  '@aws-sdk/client-appconfig@3.1156.0':
-    resolution: {integrity: sha512-cxlSCljPs5swxIl+tIyqL25srnb6wSAfUlRam99S4FUmQN+Bm1sC7PNz/FPFjrIWeSYf48oPnqQGxX4i4FYOxw==}
-    engines: {node: '>=20.0.0'}
-
-  '@aws-sdk/client-appconfigdata@3.1156.0':
-    resolution: {integrity: sha512-opNehp2jEWzD8aqxH59yNqihB3zmdLVjcrS6CDELmmu+6ZOhbWW9vZQ/sjCYvzluVQisb5GFm5E/nKAIcnfEUg==}
-    engines: {node: '>=20.0.0'}
 
   '@aws-sdk/client-dynamodb@3.1156.0':
     resolution: {integrity: sha512-K7wOerEfbVIMHxssmqXPKw/TtrKl9D7jDv1f8AtCr0S1jh040HChaV1vgDtzU2tmbCFlVvLQrG6vvZbHrTwacw==}
@@ -1652,6 +1661,13 @@ packages:
   '@fastify/proxy-addr@5.1.2':
     resolution: {integrity: sha512-uqB4QsgVoro0XDC+DIftIMGXHdBPn+lK6Ek3xXAIxPMCJfqxnbtyEoMCm2KPUVOuIosd7Cyw9HawEqMFM/UA+g==}
 
+  '@flagsmith/flagsmith@12.4.0':
+    resolution: {integrity: sha512-V07of71pHOj7vz0zgCi6dlDDItfQo+cu/Cf++77EQh2WkrnymQlKXGmirOiU+Suc9HZvLg48b8Jqjq7+QZVpsg==}
+
+  '@flagsmith/nodejs@9.1.0':
+    resolution: {integrity: sha512-UfwDVllFzUMI96OqX0jtkJC5kktFuEUBfgcXJ1WV69DbAPDRi7MPj0uwULvDk7DBtWOwpglVEWsbqTcRshFEpA==}
+    engines: {node: '>=20'}
+
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
     engines: {node: '>=18.18.0'}
@@ -1926,6 +1942,18 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
+  '@jsep-plugin/assignment@1.4.0':
+    resolution: {integrity: sha512-nw2Px23Eirx0PFTVoPrb3FEq9Wkmg6vxcDtt38MtBCf1G0tjLCB9cK+3seOXyiw+6+aalgYhvJabQbWwMVKlEQ==}
+    engines: {node: '>= 10.16.0'}
+    peerDependencies:
+      jsep: ^0.4.0||^1.0.0
+
+  '@jsep-plugin/regex@1.1.0':
+    resolution: {integrity: sha512-2Vkbda+XRjK6VTI6Lrh0sNBuMT8mZ51EhqMvO+V2rSdmqjs7NAGssxPZfkL23EFzYfSrvxyd1ZjOdqPQMM50og==}
+    engines: {node: '>= 10.16.0'}
+    peerDependencies:
+      jsep: ^0.4.0||^1.0.0
+
   '@keyv/bigmap@1.3.1':
     resolution: {integrity: sha512-WbzE9sdmQtKy8vrNPa9BRnwZh5UF4s1KTmSK0KUVLo3eff5BlQNNWDnFOouNpKfPKDnms9xynJjsMYjMaT/aFQ==}
     engines: {node: '>= 18'}
@@ -2127,6 +2155,32 @@ packages:
 
   '@open-draft/until@3.0.1':
     resolution: {integrity: sha512-s7/9ELP4aP9YZtW7RJaa0Xf3RISaRH9+EFN18FtykJYRHGNrl8f9ymvoNXzjhrjmftFvkQudtuDU9RYhk0xs3A==}
+
+  '@openfeature/core@1.12.0':
+    resolution: {integrity: sha512-7PCPzyd1OC19begz30+CRknFB0ChtyaZUhk7YWrk+Bov1fpVw0HYkTXtoxxsvPfDZB9P9WsT7uixN+Z8f9+bcA==}
+
+  '@openfeature/flagsmith-client-provider@0.3.0':
+    resolution: {integrity: sha512-gI+S+4tBbNCQ8vU1sxKPzGZK3+2c6wHZNWe8VOGX5DiepIsmiw3WFPnUj1DNX4qdwBstIbuqtKS3AjJB5d9Ijw==}
+    peerDependencies:
+      '@flagsmith/flagsmith': ^12.1.2
+      '@openfeature/web-sdk': ^1.0.0
+
+  '@openfeature/react-sdk@1.4.1':
+    resolution: {integrity: sha512-xKpXBXVT0w9CIrhl6IzGkIuxmsqy7At+eYUW1XtaZbk+odKW424ZnmmjqiQMrbu31pfAhQrzww36QokTQaIf7g==}
+    peerDependencies:
+      '@openfeature/web-sdk': ^1.9.0
+      react: '>=16.8.0'
+
+  '@openfeature/server-sdk@1.23.0':
+    resolution: {integrity: sha512-JWeLvltJIV0AFgOfbw7hK9b9Rw/5wWq+RMhCIU9sJtAqarxr8hSPglG+JAGGhYdElAz3Qwe9W3ApWyPNkQEyqg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@openfeature/core': ^1.12.0
+
+  '@openfeature/web-sdk@1.10.0':
+    resolution: {integrity: sha512-qf+JmJSnaslhegNwoDDLn2Cf72P6cIobuAQPUb61MSkzJOZuVLU6f9pv/90FlLcK6UDtp6od//xZHW712rBrmg==}
+    peerDependencies:
+      '@openfeature/core': ^1.12.0
 
   '@orval/angular@8.46.0':
     resolution: {integrity: sha512-t8fPU4Zkh7TLvjJdRY8JK4SDPFfhEzPeH56zhjSvr+Vmk10VrkkjiohLu69P+x53C/9D6xirz0cuEH4YN+XxNw==}
@@ -3978,6 +4032,10 @@ packages:
     resolution: {integrity: sha512-paNr4LFIFPjeeSmwNYdrb8FafLLG/Cr2Af3GjbsHJ5CxIjH4r0c2emlmRdAtpPAieP1gRVzk6buBbVP5gBMGAg==}
     hasBin: true
 
+  jsep@1.6.0:
+    resolution: {integrity: sha512-Y8Tr54CX7B5YGAwo7/n8eumidEX3Opx98RyyQVnlHqUaZcPA8uUzL2v1rshr9ypW9Q6hNjfJtg3sL+8kaNE7TA==}
+    engines: {node: '>= 20.16.0'}
+
   jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
     engines: {node: '>=6'}
@@ -4021,6 +4079,11 @@ packages:
 
   jsonc-parser@3.3.1:
     resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
+
+  jsonpath-plus@10.4.0:
+    resolution: {integrity: sha512-T92WWatJXmhBbKsgH/0hl+jxjdXrifi5IKeMY02DWggRxX0UElcbVzPlmgLTbvsPeW1PasQ6xE2Q75stkhGbsA==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   keyv@5.6.0:
     resolution: {integrity: sha512-CYDD3SOtsHtyXeEORYRx2qBtpDJFjRTGXUtmNEMGyzYOKj1TE3tycdlho7kA1Ufx9OYWZzg52QFBGALTirzDSw==}
@@ -5056,6 +5119,9 @@ packages:
   underscore@1.13.8:
     resolution: {integrity: sha512-DXtD3ZtEQzc7M8m4cXotyHR+FAS18C64asBYY5vqZexfYryNNnDc02W4hKg3rdQuqOYas1jkseX0+nZXjTXnvQ==}
 
+  undici-types@6.29.1:
+    resolution: {integrity: sha512-8ewZRMhr1pEZVOUITV/cBrtH8iz6juS76jNqam5zXA1LQuTjM5CcidoAEIp8u+3OJc7EWKfMhW7CBD2xJJVh4A==}
+
   undici-types@7.24.6:
     resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
 
@@ -5270,28 +5336,6 @@ snapshots:
       '@jsdevtools/ono': 7.1.3
       '@types/json-schema': 7.0.15
       js-yaml: 4.3.2
-
-  '@aws-sdk/client-appconfig@3.1156.0':
-    dependencies:
-      '@aws-sdk/core': 3.980.1
-      '@aws-sdk/credential-provider-node': 3.972.94
-      '@aws-sdk/types': 3.975.0
-      '@smithy/core': 3.39.0
-      '@smithy/fetch-http-handler': 5.8.1
-      '@smithy/node-http-handler': 4.14.2
-      '@smithy/types': 4.20.0
-      tslib: 2.9.1
-
-  '@aws-sdk/client-appconfigdata@3.1156.0':
-    dependencies:
-      '@aws-sdk/core': 3.980.1
-      '@aws-sdk/credential-provider-node': 3.972.94
-      '@aws-sdk/types': 3.975.0
-      '@smithy/core': 3.39.0
-      '@smithy/fetch-http-handler': 5.8.1
-      '@smithy/node-http-handler': 4.14.2
-      '@smithy/types': 4.20.0
-      tslib: 2.9.1
 
   '@aws-sdk/client-dynamodb@3.1156.0':
     dependencies:
@@ -6814,6 +6858,15 @@ snapshots:
       '@fastify/forwarded': 3.1.2
       ipaddr.js: 2.5.0
 
+  '@flagsmith/flagsmith@12.4.0': {}
+
+  '@flagsmith/nodejs@9.1.0':
+    dependencies:
+      jsonpath-plus: 10.4.0
+      pino: 10.4.0
+      semver: 7.8.6
+      undici-types: 6.29.1
+
   '@humanfs/core@0.19.2':
     dependencies:
       '@humanfs/types': 0.15.0
@@ -7175,6 +7228,14 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
+  '@jsep-plugin/assignment@1.4.0(jsep@1.6.0)':
+    dependencies:
+      jsep: 1.6.0
+
+  '@jsep-plugin/regex@1.1.0(jsep@1.6.0)':
+    dependencies:
+      jsep: 1.6.0
+
   '@keyv/bigmap@1.3.1(keyv@5.6.0)':
     dependencies:
       hashery: 1.5.1
@@ -7430,6 +7491,26 @@ snapshots:
       - '@swc/core'
 
   '@open-draft/until@3.0.1': {}
+
+  '@openfeature/core@1.12.0': {}
+
+  '@openfeature/flagsmith-client-provider@0.3.0(@flagsmith/flagsmith@12.4.0)(@openfeature/web-sdk@1.10.0(@openfeature/core@1.12.0))':
+    dependencies:
+      '@flagsmith/flagsmith': 12.4.0
+      '@openfeature/web-sdk': 1.10.0(@openfeature/core@1.12.0)
+
+  '@openfeature/react-sdk@1.4.1(@openfeature/web-sdk@1.10.0(@openfeature/core@1.12.0))(react@19.3.1)':
+    dependencies:
+      '@openfeature/web-sdk': 1.10.0(@openfeature/core@1.12.0)
+      react: 19.3.1
+
+  '@openfeature/server-sdk@1.23.0(@openfeature/core@1.12.0)':
+    dependencies:
+      '@openfeature/core': 1.12.0
+
+  '@openfeature/web-sdk@1.10.0(@openfeature/core@1.12.0)':
+    dependencies:
+      '@openfeature/core': 1.12.0
 
   '@orval/angular@8.46.0(@faker-js/faker@10.6.0)':
     dependencies:
@@ -9498,6 +9579,8 @@ snapshots:
     dependencies:
       argparse: 3.0.4
 
+  jsep@1.6.0: {}
+
   jsesc@3.1.0: {}
 
   json-parse-even-better-errors@2.3.1: {}
@@ -9541,6 +9624,12 @@ snapshots:
       verkit: 0.3.2
 
   jsonc-parser@3.3.1: {}
+
+  jsonpath-plus@10.4.0:
+    dependencies:
+      '@jsep-plugin/assignment': 1.4.0(jsep@1.6.0)
+      '@jsep-plugin/regex': 1.1.0(jsep@1.6.0)
+      jsep: 1.6.0
 
   keyv@5.6.0:
     dependencies:
@@ -10561,6 +10650,8 @@ snapshots:
       quansync: 1.0.0
 
   underscore@1.13.8: {}
+
+  undici-types@6.29.1: {}
 
   undici-types@7.24.6: {}
 

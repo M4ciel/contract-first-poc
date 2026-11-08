@@ -1,4 +1,5 @@
-import type { BookPageOutput, BookV2PageOutput } from '@acme/api-types';
+import { BookPage, type BookPageOutput, BookV2Page, type BookV2PageOutput } from '@acme/api-types';
+import { type ApiResult, type RawResponse, toApiResult } from '@api/api-result.ts';
 
 /** What the table shows, whichever API version the page came from. */
 export interface BookRow {
@@ -26,3 +27,14 @@ export const fromV2 = (page: BookV2PageOutput): BookRows => ({
   rows: page.items.map((book) => ({ id: book.id, title: book.title, authors: book.authors })),
   nextCursor: page.nextCursor,
 });
+
+const mapResult = <T>(result: ApiResult<T>, map: (value: T) => BookRows): ApiResult<BookRows> =>
+  result.ok ? { ok: true, value: map(result.value) } : result;
+
+/** `select` of the generated v1 hook: tolerant parse, then rows. */
+export const selectV1Rows = (response: RawResponse): ApiResult<BookRows> =>
+  mapResult(toApiResult(BookPage, 200, response), fromV1);
+
+/** `select` of the generated v2 hook: tolerant parse, then rows. */
+export const selectV2Rows = (response: RawResponse): ApiResult<BookRows> =>
+  mapResult(toApiResult(BookV2Page, 200, response), fromV2);

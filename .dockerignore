@@ -1,0 +1,17 @@
+# Build contexts start from the repository root; send only sources.
+**/node_modules
+**/dist
+**/coverage
+**/reports
+**/.nx
+**/.stryker-tmp
+**/src/generated
+**/mock-worker
+contracts/artifacts
+contracts/.cache
+infra/terraform/.terraform
+infra/terraform/.build
+infra/terraform/*.tfstate*
+.git
+.env
+.env.*

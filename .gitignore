@@ -34,3 +34,6 @@ apps/web/mock-worker/
 
 # Downloaded tools (oasdiff), verified by checksum
 contracts/.cache/
+
+# Terraform build output
+infra/terraform/.build/

@@ -1,0 +1,22 @@
+# Local stand-in for the company's private npm registry. `@acme/*` packages live here; everything
+# else is proxied to the public registry. Anyone may publish: it only runs on a developer machine
+# or in an ephemeral CI job.
+storage: /verdaccio/storage
+auth:
+  htpasswd:
+    file: /verdaccio/storage/htpasswd
+    max_users: 100
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+packages:
+  '@acme/*':
+    access: $all
+    publish: $all
+    unpublish: $all
+  '**':
+    access: $all
+    proxy: npmjs
+server:
+  keepAliveTimeout: 60
+log: { type: stdout, format: pretty, level: warn }

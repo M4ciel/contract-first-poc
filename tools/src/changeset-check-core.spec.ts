@@ -16,11 +16,11 @@ describe('packagesAffectedBy', () => {
     ['contracts/scripts/generate-events.ts', ['@acme/events']],
     [
       'contracts/orval.config.ts',
-      ['@acme/api-types', '@acme/api-client', '@acme/inventory-client', '@acme/events'],
+      ['@acme/api-types', '@acme/api-client', '@acme/inventory-client'],
     ],
     [
       'contracts/scripts/apply-response-enum-fallback-core.ts',
-      ['@acme/api-types', '@acme/api-client', '@acme/inventory-client', '@acme/events'],
+      ['@acme/api-types', '@acme/api-client', '@acme/inventory-client'],
     ],
     ['contracts/packages/domain/src/loan.ts', ['@acme/domain']],
     ['contracts/packages/inventory-client/src/http/custom-fetch.ts', ['@acme/inventory-client']],
@@ -34,6 +34,7 @@ describe('packagesAffectedBy', () => {
     'contracts/packages/domain/src/loan.spec.ts',
     'contracts/scripts/apply-response-enum-fallback-core.spec.ts',
     'contracts/scripts/compat/check-compatibility.sh',
+    'contracts/scripts/build-reference.ts',
     'contracts/events/README.md',
     'contracts/packages/domain/stryker.config.mjs',
     'contracts/packages/unknown/src/index.ts',

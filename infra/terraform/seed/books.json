@@ -1,0 +1,202 @@
+[
+  {
+    "id": "7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a",
+    "title": "Book title 1",
+    "authors": ["Author name 1"],
+    "publishedAt": "2001-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:00:00.000Z",
+    "copies": 2
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000002",
+    "title": "Book title 2",
+    "authors": ["Author name 2"],
+    "publishedAt": "2002-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:01:00.000Z",
+    "copies": 0
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000003",
+    "title": "Book title 3",
+    "authors": ["Author name 3"],
+    "publishedAt": "2003-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:02:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000004",
+    "title": "Book title 4",
+    "authors": ["Author name 4"],
+    "publishedAt": "2004-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:03:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000005",
+    "title": "Book title 5",
+    "authors": ["Author name 5", "Author name 6"],
+    "publishedAt": "2005-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:04:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000006",
+    "title": "Book title 6",
+    "authors": ["Author name 6"],
+    "publishedAt": "2006-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:05:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000007",
+    "title": "Book title 7",
+    "authors": ["Author name 7"],
+    "publishedAt": "2007-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:06:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000008",
+    "title": "Book title 8",
+    "authors": ["Author name 8"],
+    "publishedAt": "2008-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:07:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000009",
+    "title": "Book title 9",
+    "authors": ["Author name 9"],
+    "publishedAt": "2009-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:08:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000010",
+    "title": "Book title 10",
+    "authors": ["Author name 10", "Author name 11"],
+    "publishedAt": "2010-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:09:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000011",
+    "title": "Book title 11",
+    "authors": ["Author name 11"],
+    "publishedAt": "2011-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:10:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000012",
+    "title": "Book title 12",
+    "authors": ["Author name 12"],
+    "publishedAt": "2012-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:11:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000013",
+    "title": "Book title 13",
+    "authors": ["Author name 13"],
+    "publishedAt": "2013-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:12:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000014",
+    "title": "Book title 14",
+    "authors": ["Author name 14"],
+    "publishedAt": "2014-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:13:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000015",
+    "title": "Book title 15",
+    "authors": ["Author name 15", "Author name 16"],
+    "publishedAt": "2015-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:14:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000016",
+    "title": "Book title 16",
+    "authors": ["Author name 16"],
+    "publishedAt": "2016-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:15:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000017",
+    "title": "Book title 17",
+    "authors": ["Author name 17"],
+    "publishedAt": "2017-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:16:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000018",
+    "title": "Book title 18",
+    "authors": ["Author name 18"],
+    "publishedAt": "2018-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:17:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000019",
+    "title": "Book title 19",
+    "authors": ["Author name 19"],
+    "publishedAt": "2019-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:18:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000020",
+    "title": "Book title 20",
+    "authors": ["Author name 20", "Author name 21"],
+    "publishedAt": "2020-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:19:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000021",
+    "title": "Book title 21",
+    "authors": ["Author name 21"],
+    "publishedAt": "2021-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:20:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000022",
+    "title": "Book title 22",
+    "authors": ["Author name 22"],
+    "publishedAt": "2022-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:21:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000023",
+    "title": "Book title 23",
+    "authors": ["Author name 23"],
+    "publishedAt": "2023-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:22:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000024",
+    "title": "Book title 24",
+    "authors": ["Author name 24"],
+    "publishedAt": "2024-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:23:00.000Z",
+    "copies": 3
+  },
+  {
+    "id": "00000000-0000-4000-8000-000000000025",
+    "title": "Book title 25",
+    "authors": ["Author name 25", "Author name 26"],
+    "publishedAt": "2000-01-15T00:00:00.000Z",
+    "createdAt": "2026-01-10T12:24:00.000Z",
+    "copies": 3
+  }
+]

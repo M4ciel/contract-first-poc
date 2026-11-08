@@ -221,8 +221,9 @@ Without `VITE_USE_MOCKS`, Vite forwards `/v1` and `/v2` to `API_PROXY_TARGET`
 Run the whole backend locally, on emulated AWS:
 
 ```bash
-pnpm nx run @acme/infra:up      # builds the Lambda, starts MiniStack, applies Terraform, starts the API
-pnpm nx run @acme/infra:smoke   # loan → API Gateway → inventory Lambda → DynamoDB
+pnpm nx run @acme/infra:up                        # builds the Lambdas, starts MiniStack, applies Terraform, starts the API
+pnpm nx run @acme/infra:smoke                     # end-to-end checks (loans, inventory, events, flags)
+pnpm nx run @acme/infra:flag --args="booksV2 on"  # AppConfig deployment; the API follows within 15 s
 pnpm nx run @acme/infra:down
 ```
 
@@ -233,8 +234,16 @@ pnpm nx run @acme/infra:down
 | MiniStack (AWS emulator) | http://localhost:4566                            |
 | Verdaccio (npm registry) | http://localhost:4873                            |
 
-Every `up` resets MiniStack and applies Terraform from scratch, so the stock starts from the seed
-again.
+Every `up` resets MiniStack and applies Terraform from scratch: catalog and stock start from the
+seed (`infra/terraform/seed/books.json`), with no loans and every flag off.
+
+```mermaid
+flowchart LR
+  API["apps/api<br/>container"] -->|HTTP| GW["API Gateway"] --> INV["inventory<br/>Lambda"] --> ST[("stock<br/>DynamoDB")]
+  API --> BK[("books · loans<br/>DynamoDB")]
+  API -->|flags| AC["AppConfig"]
+  API -->|loan.created.v1| EB["EventBridge"] --> Q["SQS<br/>+ DLQ"] --> NT["notifications<br/>Lambda"] --> RM[("reminders<br/>DynamoDB")]
+```
 
 ## 📂 Repository layout
 
@@ -294,7 +303,7 @@ timeline
 - [x] Global coverage floor (80%) and clean-clone check
 - [x] oasdiff against the exact base commit and `x-stability-level` behaviour tests
 - [x] Inventory Lambda on emulated AWS (MiniStack, API Gateway, DynamoDB, Terraform) and Docker Compose
-- [ ] DynamoDB repositories, AppConfig feature flags and domain events
+- [x] DynamoDB repositories, AppConfig feature flags and `loan.created.v1` (EventBridge → SQS → Lambda)
 - [ ] Changesets, Verdaccio and preview releases
 - [ ] GitHub Actions workflows
 - [ ] Live demo scripts

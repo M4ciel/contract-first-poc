@@ -61,6 +61,10 @@ git -C "$root" archive "$base" "${sources[@]}" | tar -x -C "$work"
 )
 
 short="$(git -C "$root" rev-parse --short "$base")"
+# CI asks for `githubactions` (annotations on the PR); `--color` is only accepted by text formats.
+format="${OASDIFF_FORMAT:-text}"
+format_args=(--format "$format")
+case "$format" in text | singleline) format_args+=(--color never) ;; esac
 status=0
 for base_bundle in "$work/$prefix"/artifacts/*.bundle.yaml; do
   api="$(basename "$base_bundle" .bundle.yaml)"
@@ -72,7 +76,7 @@ for base_bundle in "$work/$prefix"/artifacts/*.bundle.yaml; do
   fi
   echo "› $api: $short → working tree"
   if ! "$oasdiff" breaking "$base_bundle" "$head_bundle" \
-    --fail-on ERR --color never --allow-external-refs=false --format "${OASDIFF_FORMAT:-text}" \
+    --fail-on ERR --allow-external-refs=false "${format_args[@]}" \
     --severity-levels "$here/oasdiff-severity.txt"; then
     status=1
   fi

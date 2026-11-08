@@ -25,7 +25,7 @@ trade-offs, how to demonstrate it and frequently asked questions.
 | 16  | [Feature flags](./16-feature-flags.md)                           | Flagsmith through OpenFeature, backend and frontend     | 11      |
 
 Also: [presentation script](./presentation.md), [glossary](./glossary.md),
-[next steps](./next-steps.md), [architecture decision records](./adr/) and the
+[next steps](./next-steps.md), [implementation report](./implementation-report.md), [architecture decision records](./adr/) and the
 [original specification](./spec.md).
 
 The live demos are in [`demos/`](../demos/README.md). Each one asserts its expected outcome, so

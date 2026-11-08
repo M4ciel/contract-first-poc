@@ -13,7 +13,7 @@ blocks incompatible changes by machine, not by intuition.
 ![Nx](https://img.shields.io/badge/nx-24-143055?logo=nx&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-6.0-3178C6?logo=typescript&logoColor=white)
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-6BA539?logo=openapiinitiative&logoColor=white)
-![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)
+![Status](https://img.shields.io/badge/status-POC%20complete-brightgreen)
 
 [Why](#-why) •
 [Architecture](#-architecture) •
@@ -310,18 +310,19 @@ contract-first-poc/
 
 ## 📚 Documentation
 
-| Document                                                | What you will find                                                     |
-| ------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [Documentation index](./docs/README.md)                 | One document per piece: pain, how it works, trade-offs, how to demo it |
-| [Overview](./docs/00-overview.md)                       | The problem, the proposal and the architecture                         |
-| [Tolerant responses](./docs/04-tolerant-responses.md)   | The subtlest piece: strict requests, tolerant responses                |
-| [Compatibility rules](./docs/09-compatibility-rules.md) | Change → breaking? → what to do, verified with oasdiff                 |
-| [FAQ and gotchas](./docs/14-faq-and-gotchas.md)         | Objections and every non-obvious problem we hit                        |
-| [Presentation script](./docs/presentation.md)           | A 40-minute session, slide by slide                                    |
-| [Architecture decisions](./docs/adr/README.md)          | Twelve ADRs, deviations from the specification included                |
-| [Live demos](./demos/README.md)                         | One script per scenario, each asserting its outcome                    |
-| [Rules for AI agents](./AGENTS.md)                      | Source of truth, compatibility rules, prohibitions                     |
-| [Original specification](./docs/spec.md)                | The brief that drove this POC                                          |
+| Document                                                 | What you will find                                                     |
+| -------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Documentation index](./docs/README.md)                  | One document per piece: pain, how it works, trade-offs, how to demo it |
+| [Overview](./docs/00-overview.md)                        | The problem, the proposal and the architecture                         |
+| [Tolerant responses](./docs/04-tolerant-responses.md)    | The subtlest piece: strict requests, tolerant responses                |
+| [Compatibility rules](./docs/09-compatibility-rules.md)  | Change → breaking? → what to do, verified with oasdiff                 |
+| [FAQ and gotchas](./docs/14-faq-and-gotchas.md)          | Objections and every non-obvious problem we hit                        |
+| [Presentation script](./docs/presentation.md)            | A 40-minute session, slide by slide                                    |
+| [Architecture decisions](./docs/adr/README.md)           | Twelve ADRs, deviations from the specification included                |
+| [Live demos](./demos/README.md)                          | One script per scenario, each asserting its outcome                    |
+| [Rules for AI agents](./AGENTS.md)                       | Source of truth, compatibility rules, prohibitions                     |
+| [Implementation report](./docs/implementation-report.md) | Acceptance criteria, what was validated, deviations and their reasons  |
+| [Original specification](./docs/spec.md)                 | The brief that drove this POC                                          |
 
 The API reference portal (Scalar) is built from the bundles with
 `pnpm nx run contracts:reference` into `contracts/artifacts/reference/index.html`.
@@ -361,6 +362,7 @@ timeline
 - [x] GitHub Actions workflows (CI, Version PR, manual release and preview), actions pinned by SHA
 - [x] Live demo scripts (`demos/`, each asserts its outcome; `bash demos/run-all.sh`)
 - [x] Documentation (one document per piece), ADRs, presentation script, glossary and API reference portal
+- [x] Implementation report (acceptance criteria, validations, deviations)
 
 ## 📄 License
 

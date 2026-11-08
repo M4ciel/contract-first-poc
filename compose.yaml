@@ -21,7 +21,7 @@ services:
       retries: 30
 
   # One-shot job: wipes MiniStack and applies infra/terraform from a fresh state, so every `up`
-  # starts from the same known environment (seeded stock, no reservations).
+  # starts from the same known environment (seeded catalog and stock, no loans, flags off).
   infra:
     image: hashicorp/terraform:1.17.0@sha256:4d1b496a256f2989bccdb04b9104a4ede97234b10fba90259e173e905ec4fb58
     depends_on:
@@ -35,15 +35,18 @@ services:
     volumes:
       - ./infra/terraform:/workspace/infra/terraform:ro
       - ./apps/inventory/dist:/workspace/apps/inventory/dist:ro
+      - ./apps/notifications/dist:/workspace/apps/notifications/dist:ro
     entrypoint:
       - sh
       - -ec
       - |
         wget -q -O /dev/null --post-data '' http://ministack:4566/_ministack/reset
+        # Later `up`s restart this same container, so clear what the previous run left in /tmp.
+        rm -rf /tmp/stack /tmp/terraform.tfstate
         cp -r /workspace/infra/terraform /tmp/stack && cd /tmp/stack
         terraform init -input=false -lockfile=readonly >/dev/null
         terraform apply -auto-approve -input=false -state=/tmp/terraform.tfstate \
-          -var inventory_bundle_dir=/workspace/apps/inventory/dist
+          -var bundles_dir=/workspace/apps
 
   api:
     build:
@@ -58,6 +61,18 @@ services:
       # The HTTP API id is pinned in Terraform (ms-custom-id), so this URL never changes.
       INVENTORY_BASE_URL: http://ministack:4566/_aws/execute-api/inventory
       INVENTORY_TIMEOUT_MS: '5000'
+      # AWS SDK: MiniStack endpoint and its dummy credentials.
+      AWS_ENDPOINT_URL: http://ministack:4566
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      BOOKS_TABLE: acme-library-books
+      LOANS_TABLE: acme-library-loans
+      EVENT_BUS_NAME: acme-library
+      FEATURE_FLAGS_SOURCE: appconfig
+      APPCONFIG_APPLICATION: acme-library
+      APPCONFIG_ENVIRONMENT: local
+      APPCONFIG_PROFILE: feature-flags
 
   verdaccio:
     image: verdaccio/verdaccio:6.11.1@sha256:82f4decaf1c9eff885bf7a1227335f78581ff715288d5f38898e67e28b3bfbdd

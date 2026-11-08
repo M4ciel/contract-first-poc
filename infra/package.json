@@ -4,12 +4,17 @@
   "private": true,
   "description": "Local environment: Docker Compose, MiniStack and the Terraform stack.",
   "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@aws-sdk/client-appconfig": "3.1156.0"
+  },
   "nx": {
     "tags": [
       "type:infra"
     ],
     "implicitDependencies": [
       "@acme/inventory",
+      "@acme/notifications",
       "@acme/api"
     ],
     "targets": {
@@ -18,7 +23,8 @@
         "dependsOn": [
           {
             "projects": [
-              "@acme/inventory"
+              "@acme/inventory",
+              "@acme/notifications"
             ],
             "target": "build"
           }
@@ -48,7 +54,15 @@
           "cwd": "{projectRoot}/terraform",
           "command": "docker run --rm -v \"$PWD:/stack\" -w /stack hashicorp/terraform:1.17.0@sha256:4d1b496a256f2989bccdb04b9104a4ede97234b10fba90259e173e905ec4fb58 fmt -check -recursive"
         }
-      }
+      },
+      "flag": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "{workspaceRoot}",
+          "command": "node infra/scripts/set-flag.ts"
+        }
+      },
+      "typecheck": {}
     }
   }
 }

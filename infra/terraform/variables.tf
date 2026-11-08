@@ -16,8 +16,14 @@ variable "lambda_aws_endpoint" {
   default     = "http://localhost:4566"
 }
 
-variable "inventory_bundle_dir" {
-  description = "Folder with the inventory Lambda bundle (nx run @acme/inventory:build)."
+variable "bundles_dir" {
+  description = "Folder that holds the Lambda apps; each bundle is <app>/dist (nx run <app>:build)."
   type        = string
-  default     = "../../apps/inventory/dist"
+  default     = "../../apps"
+}
+
+variable "books_v2_enabled" {
+  description = "Initial value of the booksV2 feature flag in AppConfig."
+  type        = bool
+  default     = false
 }

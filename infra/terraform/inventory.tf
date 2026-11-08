@@ -1,14 +1,8 @@
-# Inventory service: Lambda + HTTP API + two DynamoDB tables, seeded with the same book ids as
-# the backend's catalog (apps/api/src/books/book.repository.ts).
+# Inventory service: Lambda + HTTP API + two DynamoDB tables. The stock comes from the shared
+# seed (seed/books.json, see library.tf): book 2 has no copies, to demo 409 book-unavailable.
 
 locals {
   name = "acme-inventory"
-
-  # Copies per book. Book 1 has two copies; book 2 has none left, to demo 409 book-unavailable.
-  seed_books = merge(
-    { "7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a" = 2 },
-    { for n in range(2, 26) : format("00000000-0000-4000-8000-%012d", n) => n == 2 ? 0 : 3 },
-  )
 }
 
 resource "aws_dynamodb_table" "stock" {
@@ -40,7 +34,7 @@ resource "aws_dynamodb_table_item" "stock" {
 
   item = jsonencode({
     bookId         = { S = each.key }
-    totalCopies    = { N = tostring(each.value) }
+    totalCopies    = { N = tostring(each.value.copies) }
     reservedCopies = { N = "0" }
   })
 
@@ -52,7 +46,7 @@ resource "aws_dynamodb_table_item" "stock" {
 
 data "archive_file" "inventory" {
   type        = "zip"
-  source_dir  = var.inventory_bundle_dir
+  source_dir  = "${var.bundles_dir}/inventory/dist"
   output_path = "${path.module}/.build/inventory.zip"
   excludes    = ["index.mjs.map"]
 }

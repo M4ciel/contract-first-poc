@@ -10,7 +10,41 @@ describe('loadConfig', () => {
       inventoryBaseUrl: 'http://inventory.test/local',
       inventoryTimeoutMs: 2000,
       features: { booksV2: false },
+      featureFlags: { source: 'env' },
+      storage: { booksTable: undefined, loansTable: undefined },
+      events: { busName: undefined },
     });
+  });
+
+  it('reads the AWS adapters', () => {
+    expect(
+      loadConfig({
+        ...required,
+        FEATURE_FLAGS_SOURCE: 'appconfig',
+        APPCONFIG_APPLICATION: 'acme-library',
+        APPCONFIG_ENVIRONMENT: 'local',
+        APPCONFIG_PROFILE: 'feature-flags',
+        BOOKS_TABLE: 'books',
+        LOANS_TABLE: 'loans',
+        EVENT_BUS_NAME: 'bus',
+      }),
+    ).toMatchObject({
+      featureFlags: {
+        source: 'appconfig',
+        application: 'acme-library',
+        environment: 'local',
+        profile: 'feature-flags',
+        pollIntervalSeconds: 15,
+      },
+      storage: { booksTable: 'books', loansTable: 'loans' },
+      events: { busName: 'bus' },
+    });
+  });
+
+  it('requires the AppConfig identifiers when flags come from AppConfig', () => {
+    expect(() =>
+      loadConfig({ ...required, FEATURE_FLAGS_SOURCE: 'appconfig', APPCONFIG_PROFILE: 'flags' }),
+    ).toThrow(/- APPCONFIG_APPLICATION: Required .+\n- APPCONFIG_ENVIRONMENT: Required .+$/);
   });
 
   it('reads every variable', () => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { LoanRecord } from './loan.js';
 
-/** Loan storage. In memory for now; DynamoDB comes with the infrastructure step. */
+/** Loan storage: DynamoDB (dynamo-loan.repository.ts) or memory (tests, local development). */
 export abstract class LoanRepository {
   abstract save(loan: LoanRecord): Promise<void>;
   abstract findById(id: string): Promise<LoanRecord | undefined>;

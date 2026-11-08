@@ -4,8 +4,8 @@ import { APP_CONFIG, type AppConfig, type FeatureFlagValues } from '@config/app-
 export type FeatureFlag = keyof FeatureFlagValues;
 
 /**
- * Feature flags read by the application. The environment-based implementation is the default;
- * an AWS AppConfig implementation can replace it without touching the controllers.
+ * Feature flags read by the application: from environment variables (`EnvFeatureFlags`, default)
+ * or from AWS AppConfig (`AppConfigFeatureFlags`). Controllers only see this class.
  */
 export abstract class FeatureFlags {
   abstract isEnabled(flag: FeatureFlag): boolean;

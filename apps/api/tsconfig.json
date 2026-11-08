@@ -8,8 +8,10 @@
     "paths": {
       "@app/*": ["./src/app/*"],
       "@books/*": ["./src/books/*"],
+      "@cloud/*": ["./src/cloud/*"],
       "@common/*": ["./src/common/*"],
       "@config/*": ["./src/config/*"],
+      "@events/*": ["./src/events/*"],
       "@health/*": ["./src/health/*"],
       "@inventory/*": ["./src/inventory/*"],
       "@loans/*": ["./src/loans/*"],

@@ -10,6 +10,7 @@ import {
 import { getCreateReservationResponseMock } from '@acme/inventory-client/mocks';
 import { delay, http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { EventPublisher, InMemoryEventPublisher } from '@events/event-publisher.js';
 import { expectToMatchContract } from '@testing/contract.js';
 import { createTestApp, FixedClock, INVENTORY_BASE_URL } from '@testing/test-app.js';
 
@@ -74,6 +75,46 @@ describe('loans', () => {
       });
       expect(reservations).toEqual([{ bookId: BOOK_ID, loanId: loan.id }]);
       expectToMatchContract(Loan, loan);
+    });
+
+    it('publishes loan.created.v1 with identifiers and dates only', async () => {
+      const events = app.get(EventPublisher) as InMemoryEventPublisher;
+      events.published.length = 0;
+
+      const loan = (await createLoan({ bookId: BOOK_ID })).json<Loan>();
+
+      expect(events.published).toEqual([
+        {
+          type: 'loan.created.v1',
+          occurredAt: new Date('2026-01-10T12:00:00.000Z'),
+          data: {
+            loanId: loan.id,
+            bookId: BOOK_ID,
+            startedAt: '2026-01-10T12:00:00.000Z',
+            dueAt: '2026-01-24T12:00:00.000Z',
+          },
+        },
+      ]);
+    });
+
+    it('still creates the loan when the event cannot be published', async () => {
+      const failing: EventPublisher = { publish: () => Promise.reject(new Error('bus is down')) };
+      const other = await createTestApp({ clock, events: failing });
+      try {
+        const response = await other.inject({
+          method: 'POST',
+          url: '/v1/loans',
+          payload: { bookId: BOOK_ID },
+        });
+
+        expect(response.statusCode).toBe(201);
+        const loanId = response.json<Loan>().id;
+        expect((await other.inject({ method: 'GET', url: `/v1/loans/${loanId}` })).statusCode).toBe(
+          200,
+        );
+      } finally {
+        await other.close();
+      }
     });
 
     it.each([

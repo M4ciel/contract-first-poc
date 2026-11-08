@@ -8,6 +8,8 @@
 #   3. consumer: installs the published packages in an empty folder, like another repository would,
 #               and checks that `workspace:*` became real versions.
 #
+# PREVIEW_ONLY=1 skips the release and previews the changesets already pending in HEAD (demo 5).
+#
 # It works on a temporary clone of HEAD, so the version bumps and changelogs never touch your
 # working tree. Verdaccio is a stand-in for the company's private registry; nothing leaves this
 # machine. Running it again skips versions that already exist and publishes a new preview.
@@ -35,18 +37,22 @@ cd "$work/repo"
 pnpm install --frozen-lockfile --silent
 pnpm nx run-many -t build --projects=tag:scope:contracts,tag:scope:domain --output-style=static >/dev/null
 
-echo "› 1. Release (latest)"
-pnpm --silent changeset version
-pnpm --silent changeset publish
+if [ "${PREVIEW_ONLY:-}" != 1 ]; then
+  echo "› 1. Release (latest)"
+  pnpm --silent changeset version
+  pnpm --silent changeset publish
 
-echo "› 2. Preview: a pending change, published as a snapshot"
-cat >.changeset/preview-demo.md <<'EOF'
+  echo "› 2. Preview: a pending change, published as a snapshot"
+  cat >.changeset/preview-demo.md <<'EOF'
 ---
 '@acme/api-types': minor
 ---
 
 Preview of a contract change that is still alpha.
 EOF
+else
+  echo "› 2. Preview of the changesets pending in HEAD"
+fi
 pnpm --silent changeset version --snapshot preview
 # Snapshot guard: without a pending changeset, `version --snapshot` changes nothing and `publish`
 # would push the normal version under the `preview` tag.

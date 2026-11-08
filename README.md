@@ -80,12 +80,13 @@ frontends: the backend is a consumer too.
 
 ### The published packages
 
-| Package                  | What it contains                                                                                                             | Consumed by          | Versioning                          |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `@acme/api-types`        | Generated **Zod** schemas + inferred TS types; request validators (`/validators`)                                            | Backend and frontend | Fixed group with `api-client`       |
-| `@acme/api-client`       | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)                                                             | Frontends            | Fixed group with `api-types`        |
-| `@acme/inventory-client` | Generated **Zod** schemas, **fetch** client (base URL set at runtime), request validators (`/validators`) + **MSW** handlers | Backend              | Independent (follows inventory API) |
-| `@acme/domain`           | Pure, shared business rules (no I/O, 100% mutation score)                                                                    | Backend and frontend | Independent                         |
+| Package                  | What it contains                                                                                                                          | Consumed by             | Versioning                          |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------- |
+| `@acme/api-types`        | Generated **Zod** schemas + inferred TS types; request validators (`/validators`)                                                         | Backend and frontend    | Fixed group with `api-client`       |
+| `@acme/api-client`       | Generated **TanStack Query** hooks + **MSW** handlers (`/mocks`)                                                                          | Frontends               | Fixed group with `api-types`        |
+| `@acme/inventory-client` | Generated **Zod** schemas, **fetch** client (base URL set at runtime), request validators (`/validators`) + **MSW** handlers              | Backend                 | Independent (follows inventory API) |
+| `@acme/domain`           | Pure, shared business rules (no I/O, 100% mutation score)                                                                                 | Backend and frontend    | Independent                         |
+| `@acme/events`           | Payload types + exact (producer) and tolerant (consumer) **Zod** schemas generated from the [event catalog](./contracts/events/README.md) | Producers and consumers | Independent                         |
 
 ### Runtime on (emulated) AWS
 
@@ -253,8 +254,8 @@ contract-first-poc/
 ├── contracts/           # the "contracts repository"
 │   ├── apis/            # library (public) and inventory (internal) OpenAPI contracts
 │   ├── shared/          # shared by every API: Problem Details, problem type catalog, errors
-│   ├── events/          # domain event catalog
-│   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain
+│   ├── events/          # domain event catalog (JSON Schema, immutable, see its README)
+│   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain · @acme/events
 ├── apps/                # api (NestJS) · inventory (Lambda) · web (React) · legacy-client
 ├── tools/               # repository-wide checks (global coverage, clean clone)
 ├── infra/               # Terraform for the emulated AWS environment
@@ -267,10 +268,11 @@ contract-first-poc/
 
 ## 📚 Documentation
 
-| Document                                 | What you will find                                 |
-| ---------------------------------------- | -------------------------------------------------- |
-| [Original specification](./docs/spec.md) | The brief that drove this POC                      |
-| [Rules for AI agents](./AGENTS.md)       | Source of truth, compatibility rules, prohibitions |
+| Document                                      | What you will find                                        |
+| --------------------------------------------- | --------------------------------------------------------- |
+| [Original specification](./docs/spec.md)      | The brief that drove this POC                             |
+| [Rules for AI agents](./AGENTS.md)            | Source of truth, compatibility rules, prohibitions        |
+| [Event catalog](./contracts/events/README.md) | Event rules, generated package, what is not automated yet |
 
 More documents (one per piece, ADRs, FAQ, glossary and the presentation script) are added as each
 step lands.
@@ -304,6 +306,7 @@ timeline
 - [x] oasdiff against the exact base commit and `x-stability-level` behaviour tests
 - [x] Inventory Lambda on emulated AWS (MiniStack, API Gateway, DynamoDB, Terraform) and Docker Compose
 - [x] DynamoDB repositories, AppConfig feature flags and `loan.created.v1` (EventBridge → SQS → Lambda)
+- [x] Domain event catalog (`loan.created.v1` JSON Schema → `@acme/events`, immutability check)
 - [ ] Changesets, Verdaccio and preview releases
 - [ ] GitHub Actions workflows
 - [ ] Live demo scripts

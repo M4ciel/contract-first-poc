@@ -85,4 +85,24 @@ export default defineConfig({
       formatter: 'prettier',
     },
   },
+
+  // Server-side request validators of the internal API (`GetInventoryParams`,
+  // `CreateReservationBody`), used by the inventory Lambda and published as
+  // `@acme/inventory-client/validators`. Runs after `inventory`, which cleans the folder.
+  inventoryValidators: {
+    input: { target: './artifacts/inventory.bundle.yaml' },
+    output: {
+      target: './packages/inventory-client/src/generated/validators/index.ts',
+      mode: 'single',
+      client: 'zod',
+      override: {
+        zod: {
+          ...zodOverride,
+          generate: { param: true, query: true, header: false, body: true, response: false },
+          coerce: { param: true, query: true },
+        },
+      },
+      formatter: 'prettier',
+    },
+  },
 });

@@ -1,0 +1,60 @@
+# Publishes the pending changesets as snapshot versions (0.2.0-preview-<datetime>) to the
+# `preview` dist-tag, for consumers to try a contract that is still alpha. `latest` never moves and
+# nothing is committed: snapshots are ephemeral. Manual only; same registry rules as release.yml.
+name: Preview
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+env:
+  NX_DAEMON: 'false'
+  NX_NO_CLOUD: 'true'
+  NPM_REGISTRY_URL: ${{ vars.NPM_REGISTRY_URL || 'http://localhost:4873' }}
+
+jobs:
+  preview:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      verdaccio:
+        image: verdaccio/verdaccio:6.11.1@sha256:82f4decaf1c9eff885bf7a1227335f78581ff715288d5f38898e67e28b3bfbdd
+        ports:
+          - 4873:4873
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
+      - name: Generate, test, typecheck, build
+        run: pnpm nx run-many -t test typecheck build
+      - name: Snapshot versions
+        run: pnpm release:preview:version
+      - name: Require snapshot versions
+        # Without pending changesets nothing changes, and publish would push the normal version
+        # under the preview tag.
+        run: |
+          set -euo pipefail
+          if ! grep --quiet --extended-regexp '"version": "[^"]+-preview-[0-9]+"' contracts/packages/*/package.json; then
+            echo "::error::No pending changesets produced a preview version; nothing to publish."
+            exit 1
+          fi
+      - name: Authenticate to the registry
+        run: |
+          for _ in $(seq 1 30); do curl -sf "$NPM_REGISTRY_URL/-/ping" >/dev/null && break; sleep 1; done
+          infra/scripts/registry-auth.sh "$NPM_REGISTRY_URL" "$RUNNER_TEMP/.npmrc"
+          echo "NPM_CONFIG_USERCONFIG=$RUNNER_TEMP/.npmrc" >>"$GITHUB_ENV"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish (preview)
+        run: pnpm release:preview:publish
+      - name: Dist-tags
+        run: |
+          for package in api-types api-client inventory-client domain events; do
+            echo "@acme/$package: $(npm dist-tag ls "@acme/$package" --registry "$NPM_REGISTRY_URL/" | tr '\n' ' ')"
+          done

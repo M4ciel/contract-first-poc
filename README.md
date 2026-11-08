@@ -6,6 +6,7 @@
 One source of truth generates versioned packages (types, validation, HTTP client, mocks), and CI
 blocks incompatible changes by machine, not by intuition.
 
+[![CI](https://github.com/M4ciel/contract-first-poc/actions/workflows/ci.yml/badge.svg)](https://github.com/M4ciel/contract-first-poc/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 ![Node.js](https://img.shields.io/badge/node-24.22-339933?logo=nodedotjs&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-12-F69220?logo=pnpm&logoColor=white)
@@ -260,6 +261,18 @@ flowchart LR
   API -->|loan.created.v1| EB["EventBridge"] --> Q["SQS<br/>+ DLQ"] --> NT["notifications<br/>Lambda"] --> RM[("reminders<br/>DynamoDB")]
 ```
 
+### Continuous integration
+
+| Workflow                | When                         | What                                                                                                                                                                           |
+| ----------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ci.yml`                | pull request, push to `main` | format, actionlint, contract lint, lint, typecheck, build, tests + global coverage, mutation, **oasdiff vs base commit**, changesets, Playwright, local environment smoke test |
+| `changeset-version.yml` | push to `main`               | opens or updates the **Version PR** (bumps + changelogs); merging it publishes nothing                                                                                         |
+| `release.yml`           | manual, `main` only          | tests and builds, then publishes to `latest`                                                                                                                                   |
+| `preview.yml`           | manual, `main` only          | snapshot versions of pending changesets, guarded, published to `preview`                                                                                                       |
+
+Every action is pinned by commit SHA. Release and preview share a concurrency group and, without
+an `NPM_REGISTRY_URL` repository variable, publish to a disposable Verdaccio inside the job.
+
 ### Releases
 
 Whoever changes a published package adds a changeset (`pnpm changeset`). Publishing is always a
@@ -342,7 +355,7 @@ timeline
 - [x] Feature flags in Flagsmith (UI) through OpenFeature, in the backend and the web app
 - [x] Domain event catalog (`loan.created.v1` JSON Schema → `@acme/events`, immutability check)
 - [x] Changesets (fixed `api-types` + `api-client`), snapshot previews and a local release to Verdaccio
-- [ ] GitHub Actions workflows
+- [x] GitHub Actions workflows (CI, Version PR, manual release and preview), actions pinned by SHA
 - [ ] Live demo scripts
 - [ ] Full documentation and ADRs
 

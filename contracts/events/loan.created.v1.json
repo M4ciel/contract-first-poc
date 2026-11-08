@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:acme:event:loan.created.v1",
+  "title": "loan.created.v1",
+  "description": "A book was lent: the copy is reserved in the inventory and the loan is stored with its due date. Published by the library backend once the loan is saved.",
+  "x-source": "acme.library",
+  "x-transport": "Amazon EventBridge: `source` is x-source, `detail-type` is the event name, `detail` is this payload.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["loanId", "bookId", "startedAt", "dueAt"],
+  "properties": {
+    "loanId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifier of the loan."
+    },
+    "bookId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifier of the borrowed book."
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the loan started, ISO 8601 with timezone."
+    },
+    "dueAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the book must be returned, ISO 8601 with timezone (from @acme/domain)."
+    }
+  },
+  "examples": [
+    {
+      "loanId": "0b9d8c7e-6f5a-4b3c-8d2e-1a0f9e8d7c6b",
+      "bookId": "7c1e4b52-3f0a-4d8e-9b6a-1f2e3d4c5b6a",
+      "startedAt": "2026-01-10T12:00:00.000Z",
+      "dueAt": "2026-01-24T12:00:00.000Z"
+    }
+  ]
+}

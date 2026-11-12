@@ -302,7 +302,7 @@ contract-first-poc/
 │   ├── shared/          # shared by every API: Problem Details, problem type catalog, errors
 │   ├── events/          # domain event catalog: one folder per event, one schema per version
 │   ├── catalog/         # domain, systems and teams of the software catalog (Backstage format)
-│   ├── tooling/         # generate (post-processing, events) · compat (oasdiff) · reference (portal)
+│   ├── tooling/         # generate (post-processing, events) · compat (oasdiff) · portal (developer portal)
 │   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain · @acme/events
 ├── apps/                # api (NestJS) · inventory and notifications (Lambdas) · web (React) · legacy-client
 ├── tools/               # repository-wide checks (global coverage, clean clone)
@@ -324,7 +324,7 @@ contract-first-poc/
 | [Compatibility rules](./docs/09-compatibility-rules.md)  | Change → breaking? → what to do, verified with oasdiff                 |
 | [FAQ and gotchas](./docs/14-faq-and-gotchas.md)          | Objections and every non-obvious problem we hit                        |
 | [Presentation script](./docs/presentation.md)            | A 40-minute session, slide by slide                                    |
-| [Architecture decisions](./docs/adr/README.md)           | Thirteen ADRs, deviations from the specification included              |
+| [Architecture decisions](./docs/adr/README.md)           | Fourteen ADRs, deviations from the specification included              |
 | [Live demos](./demos/README.md)                          | One script per scenario, each asserting its outcome                    |
 | [Rules for AI agents](./AGENTS.md)                       | Source of truth, compatibility rules, prohibitions                     |
 | [Implementation report](./docs/implementation-report.md) | Acceptance criteria, what was validated, deviations and their reasons  |
@@ -372,6 +372,8 @@ timeline
 - [x] Documentation (one document per piece), ADRs, presentation script, glossary and API reference portal
 - [x] Implementation report (acceptance criteria, validations, deviations)
 - [x] Software catalog: Backstage descriptors for every API, event, app and package, checked in CI
+- [x] AsyncAPI 3 document for the event channels (EventBridge bus, SQS queue)
+- [x] Developer portal generated from the catalog and published on GitHub Pages (demo 12)
 
 ## 📄 License
 

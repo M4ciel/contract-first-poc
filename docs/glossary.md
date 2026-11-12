@@ -25,6 +25,9 @@ truth; code on both sides is generated from it or validated against it.
 **Cursor pagination.** Pages addressed by an opaque cursor returned with each page
 (`nextCursor`), instead of an offset. Stable when items are inserted while a client pages.
 
+**Developer portal.** The static site generated from the software catalog, the contracts and the
+packages (`contracts:portal`), published on GitHub Pages: what exists, who owns it, how to use it.
+
 **Dist-tag.** A named pointer to a version of an npm package. `latest` is what `npm install` gets;
 `preview` points to snapshot versions of contracts still in `alpha`.
 
@@ -39,6 +42,9 @@ pluggable provider.
 
 **Problem Details.** RFC 9457: a standard JSON shape for HTTP errors (`type`, `title`, `status`,
 `detail`), served as `application/problem+json`.
+
+**Software catalog.** The `catalog-info.yaml` descriptors (Backstage format) that say who owns each
+API, event, app and package, and what provides, consumes and depends on what.
 
 **Snapshot version.** A throwaway prerelease version built from pending changesets
 (`0.2.0-preview-20261108041557`), published under the `preview` dist-tag without changing anything

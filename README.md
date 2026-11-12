@@ -178,20 +178,20 @@ flowchart LR
 
 ## 🧰 Tech stack
 
-| Area            | Tools                                                                         |
-| --------------- | ----------------------------------------------------------------------------- |
-| Monorepo        | Nx 24, pnpm 12 workspaces, Node.js 24 LTS, TypeScript 6 (strict)              |
-| Contract        | OpenAPI 3.1, Redocly CLI (lint + bundle), Scalar (API reference portal)       |
-| Code generation | Orval → Zod 4, TanStack Query 5, MSW; TypeScript compiler API post-processing |
-| Backend         | NestJS 11 on Fastify (container), DynamoDB, EventBridge                       |
-| Feature flags   | Flagsmith (self-hosted, UI) read through OpenFeature in backend and frontend  |
-| Serverless      | AWS Lambda (inventory service, event consumer), API Gateway HTTP API, SQS     |
-| Frontend        | React 19, Vite, TanStack Query, MSW                                           |
-| Quality         | ESLint (module boundaries), Prettier, Jest, Stryker, Playwright               |
-| Compatibility   | oasdiff against the exact base commit, `x-stability-level`                    |
-| Release         | Changesets (fixed groups, snapshot previews), Verdaccio                       |
-| Infrastructure  | Docker Compose, MiniStack, Terraform                                          |
-| CI              | GitHub Actions pinned by commit SHA                                           |
+| Area            | Tools                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------- |
+| Monorepo        | Nx 24, pnpm 12 workspaces, Node.js 24 LTS, TypeScript 6 (strict)                         |
+| Contract        | OpenAPI 3.1, Redocly CLI (lint + bundle), Scalar (API reference in the developer portal) |
+| Code generation | Orval → Zod 4, TanStack Query 5, MSW; TypeScript compiler API post-processing            |
+| Backend         | NestJS 11 on Fastify (container), DynamoDB, EventBridge                                  |
+| Feature flags   | Flagsmith (self-hosted, UI) read through OpenFeature in backend and frontend             |
+| Serverless      | AWS Lambda (inventory service, event consumer), API Gateway HTTP API, SQS                |
+| Frontend        | React 19, Vite, TanStack Query, MSW                                                      |
+| Quality         | ESLint (module boundaries), Prettier, Jest, Stryker, Playwright                          |
+| Compatibility   | oasdiff against the exact base commit, `x-stability-level`                               |
+| Release         | Changesets (fixed groups, snapshot previews), Verdaccio                                  |
+| Infrastructure  | Docker Compose, MiniStack, Terraform                                                     |
+| CI              | GitHub Actions pinned by commit SHA                                                      |
 
 ## 🚀 Getting started
 
@@ -327,8 +327,8 @@ contract-first-poc/
 | [Implementation report](./docs/implementation-report.md) | Acceptance criteria, what was validated, deviations and their reasons  |
 | [Original specification](./docs/spec.md)                 | The brief that drove this POC                                          |
 
-The API reference portal (Scalar) is built from the bundles with
-`pnpm nx run contracts:reference` into `contracts/artifacts/reference/index.html`.
+The developer portal (catalog, APIs, events, packages and the Scalar reference of each API) is built
+with `pnpm nx run contracts:portal` into `contracts/artifacts/portal/index.html`.
 
 ## 🗺️ Roadmap
 

@@ -2,6 +2,7 @@ import {
   API_VERSION,
   checkCatalog,
   checkEntity,
+  GENERATED_FROM,
   type Entity,
   type LoadedEntity,
   parseRef,
@@ -168,6 +169,30 @@ describe('checkCatalog', () => {
       },
     };
     expect(checkCatalog(location, [...catalog(), group], facts())).toEqual([]);
+  });
+
+  it('checks the APIs a generated package comes from', () => {
+    const annotate = (value: string) => (current: Entity) => ({
+      ...current,
+      metadata: { ...current.metadata, annotations: { [GENERATED_FROM]: value } },
+    });
+    expect(
+      checkCatalog(
+        location,
+        replace(catalog(), 'acme-types', annotate('books-api, api:book-added')),
+        facts(),
+      ),
+    ).toEqual([]);
+    expect(
+      checkCatalog(
+        location,
+        replace(catalog(), 'acme-types', annotate('payments-api,group:team-a')),
+        facts(),
+      ),
+    ).toEqual([
+      `contracts/packages/types/catalog-info.yaml: ${GENERATED_FROM} api:payments-api must be an existing API`,
+      `contracts/packages/types/catalog-info.yaml: ${GENERATED_FROM} group:team-a must be an existing API`,
+    ]);
   });
 
   it('reports duplicated entities', () => {

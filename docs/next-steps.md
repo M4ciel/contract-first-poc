@@ -16,8 +16,8 @@ What this POC does not do yet, in rough order of value.
   would need an equivalent per language.
 - **Publish the bundle as an artifact.** Versioned bundles let teams without the npm packages (or in
   other languages) diff and generate from the exact released contract.
-- **Documentation portal.** `pnpm nx run contracts:reference` already renders the bundles with
-  Scalar; publishing it per release (static hosting) gives every team one place to read the API.
+- **Publish the developer portal.** `pnpm nx run contracts:portal` builds it from the catalog, the
+  contracts and the packages; hosting it (static) on every merge gives every team one place to look.
 - **`426 Upgrade Required`.** A minimum app version, answered with Problem Details, for the rare
   breaking change that must reach mobile apps. Documented, not implemented.
 - **A GitHub App token for the Version PR,** so CI runs on it (pull requests created with

@@ -32,7 +32,7 @@ export const packagesAffectedBy = (path: string): readonly string[] => {
   // Only the event schemas feed @acme/events; the AsyncAPI document and descriptors do not.
   if (path.startsWith('contracts/events/')) return path.endsWith('.schema.json') ? EVENTS : [];
   // Generators decide what the generated packages contain. Other scripts (the compatibility
-  // check, the API reference portal) change no package.
+  // check, the developer portal) change no package.
   if (
     path === 'contracts/orval.config.ts' ||
     path.startsWith('contracts/tooling/generate/apply-response-enum-fallback')

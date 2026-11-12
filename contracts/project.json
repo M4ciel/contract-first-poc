@@ -105,15 +105,27 @@
         "command": "bash tooling/compat/check-compatibility.sh"
       }
     },
-    "reference": {
+    "portal": {
       "executor": "nx:run-commands",
       "cache": true,
       "dependsOn": ["bundle"],
-      "inputs": ["contract", "{projectRoot}/tooling/reference/build-reference.ts"],
-      "outputs": ["{projectRoot}/artifacts/reference"],
+      "inputs": [
+        "contract",
+        "{projectRoot}/tooling/portal/**/*",
+        "{workspaceRoot}/catalog-info.yaml",
+        "{workspaceRoot}/**/catalog-info.yaml",
+        "{projectRoot}/catalog/**/*",
+        "{projectRoot}/packages/*/package.json",
+        "{projectRoot}/packages/*/README.md",
+        "{projectRoot}/packages/*/CHANGELOG.md",
+        {
+          "externalDependencies": ["yaml"]
+        }
+      ],
+      "outputs": ["{projectRoot}/artifacts/portal"],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "node tooling/reference/build-reference.ts"
+        "command": "node tooling/portal/build-portal.ts"
       }
     }
   }

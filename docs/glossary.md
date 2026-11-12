@@ -14,7 +14,7 @@ send or receive on them, and the messages. Here it describes where the domain ev
 changing a type, adding a required request field, removing a success status code.
 
 **Bundle.** A single OpenAPI file produced from the split files (`redocly bundle`), read by the
-generator, oasdiff and the API reference portal. Generated and git-ignored.
+generator, oasdiff and the developer portal. Generated and git-ignored.
 
 **Changeset.** A small Markdown file that names the packages a change affects, the bump (patch,
 minor, major) and a description for consumers. Consumed when versions are bumped.

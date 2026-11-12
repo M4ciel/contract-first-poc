@@ -1,5 +1,19 @@
 # @acme/api-client
 
+## 0.1.1
+
+### Patch Changes
+
+- f279af4: The contracts repository was reorganised: generators moved to `contracts/tooling/` and each event
+  now lives in its own folder (`contracts/events/loan.created/v1.schema.json`). No API or event shape
+  changed. The HTTP packages are byte-for-byte the same; `@acme/events` only updates the source paths
+  in its generated comments.
+- 02373a8: Every package now has a README with how to install it from the private registry and how to use it.
+  No code change.
+- Updated dependencies [f279af4]
+- Updated dependencies [02373a8]
+  - @acme/api-types@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes

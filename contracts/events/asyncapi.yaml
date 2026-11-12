@@ -1,0 +1,105 @@
+asyncapi: 3.0.0
+info:
+  title: Acme Lending Events
+  version: 1.0.0
+  description: |
+    Where the domain events of the lending domain travel. The payloads are the JSON Schemas of the
+    event catalog (`<event>/vN.schema.json`), referenced, never copied; this document adds the
+    channels, who sends and who receives, and the envelope EventBridge wraps around each payload.
+
+    Transport: the producer puts events on an Amazon EventBridge bus; a rule per consumer routes
+    them to that consumer's SQS queue, with a dead-letter queue after three failed receives.
+  tags:
+    - name: lending
+      description: Lending books to readers.
+defaultContentType: application/json
+
+channels:
+  libraryBus:
+    address: acme-library
+    title: Library event bus (EventBridge)
+    description: |
+      Events published by the library backend. `source` is `acme.library`, `detail-type` is the
+      event name and `detail` is the payload.
+    messages:
+      loanCreatedV1:
+        $ref: '#/components/messages/loanCreatedV1'
+
+  loanRemindersQueue:
+    address: acme-notifications-loan-events
+    title: Loan reminders queue (SQS)
+    description: |
+      Rule `acme-notifications-loan-created` routes `loan.created.v1` from the library bus to this
+      queue. After 3 failed receives a message moves to `acme-notifications-loan-events-dlq`.
+    messages:
+      loanCreatedV1Delivery:
+        $ref: '#/components/messages/loanCreatedV1Delivery'
+
+operations:
+  publishLoanCreated:
+    action: send
+    channel:
+      $ref: '#/channels/libraryBus'
+    title: Publish loan.created.v1
+    summary: The library backend publishes the event once the loan is saved.
+    messages:
+      - $ref: '#/channels/libraryBus/messages/loanCreatedV1'
+
+  scheduleLoanReminder:
+    action: receive
+    channel:
+      $ref: '#/channels/loanRemindersQueue'
+    title: Schedule a return reminder
+    summary: The loan reminders Lambda reads batches of up to 10 and reports failures per message.
+    messages:
+      - $ref: '#/channels/loanRemindersQueue/messages/loanCreatedV1Delivery'
+
+components:
+  messages:
+    loanCreatedV1:
+      name: loan.created.v1
+      title: Loan created (v1), as published
+      summary: A book was lent. Identifiers and dates only.
+      headers:
+        type: object
+        required: [source, detail-type]
+        properties:
+          source:
+            type: string
+            const: acme.library
+            description: EventBridge `Source`.
+          detail-type:
+            type: string
+            const: loan.created.v1
+            description: EventBridge `DetailType`, the event name.
+      payload:
+        $ref: '#/components/schemas/LoanCreatedV1'
+
+    loanCreatedV1Delivery:
+      name: loan.created.v1
+      title: Loan created (v1), as delivered to a queue
+      summary: The EventBridge envelope, with the event in `detail`.
+      payload:
+        type: object
+        required: [id, source, detail-type, detail]
+        properties:
+          id:
+            type: string
+            description: Event id assigned by EventBridge; consumers use it for idempotency.
+          source:
+            type: string
+            const: acme.library
+          detail-type:
+            type: string
+            const: loan.created.v1
+          time:
+            type: string
+            format: date-time
+            description: When EventBridge received the event.
+          detail:
+            $ref: '#/components/schemas/LoanCreatedV1'
+
+  schemas:
+    # One entry per event version, pointing at the catalog file (never a copy of it).
+    LoanCreatedV1:
+      $ref: './loan.created/v1.schema.json'

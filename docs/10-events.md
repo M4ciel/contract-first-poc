@@ -17,7 +17,9 @@ message ends up in a dead-letter queue weeks before anyone notices.
 ```
 contracts/events/
 ├── README.md                # the rules and what is not automated yet
+├── asyncapi.yaml            # channels: where each event travels, who sends and who receives
 └── loan.created/            # one folder per event (entity.action)
+    ├── catalog-info.yaml    # owner and system (software catalog)
     └── v1.schema.json       # one JSON Schema 2020-12 per version
 ```
 
@@ -77,9 +79,20 @@ Guarantees:
   new shape is a new file (`loan.created/v2.schema.json`), published side
   by side until every consumer moved.
 
-**What is not automated yet:** the catalog validates payloads, not channels (which bus, which queue,
-who subscribes); that part is a table in the README. The natural next step is AsyncAPI, linted and
-diffed in CI like OpenAPI.
+**Channels:** `contracts/events/asyncapi.yaml` (AsyncAPI 3) describes where each event travels: the
+EventBridge bus `acme-library` (operation `send`, by the library backend) and the SQS queue of each
+consumer (operation `receive`), with two messages per event, because the shape changes on the way:
+
+| Message                 | Where           | Shape                                                                          |
+| ----------------------- | --------------- | ------------------------------------------------------------------------------ |
+| `loanCreatedV1`         | bus (published) | the payload, with `source` and `detail-type` as headers                        |
+| `loanCreatedV1Delivery` | queue (read)    | the EventBridge envelope (`id`, `source`, `detail-type`, `time`) with `detail` |
+
+Both reference `loan.created/v1.schema.json`. Redocly lints the document with the HTTP contracts,
+and a test fails when an event schema is not referenced by it.
+
+**What is not automated yet:** channels are not diffed (no mature AsyncAPI equivalent of oasdiff), so
+renaming a bus or a queue in the document is not blocked in CI.
 
 ## Day-to-day usage
 

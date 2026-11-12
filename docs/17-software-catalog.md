@@ -21,7 +21,7 @@ contracts/catalog/
 ├── systems.yaml                          # Systems: library, inventory
 └── teams.yaml                            # Groups: team-lending, team-inventory, team-frontend
 contracts/apis/<api>/catalog-info.yaml    # kind: API, type openapi, definition ./openapi.yaml
-contracts/events/<event>/catalog-info.yaml  # kind: API, type json-schema, definition ./v1.schema.json
+contracts/events/<event>/catalog-info.yaml  # kind: API, type asyncapi, definition ../asyncapi.yaml
 contracts/packages/<pkg>/catalog-info.yaml  # kind: Component, type library
 apps/<app>/catalog-info.yaml              # kind: Component, type service or website
 ```
@@ -88,8 +88,8 @@ pnpm nx run @acme/tools:catalog-check
   register the root `catalog-info.yaml` as is. Running Backstage itself (a server, a database,
   plugins) is not worth it for a few services; a static portal generated from the same files covers
   the demo (see [next steps](./next-steps.md)).
-- **Events as `json-schema` APIs.** Backstage has no event kind; the common practice is an `API`
-  entity. Its type becomes `asyncapi` once the events have an AsyncAPI document.
+- **Events as `asyncapi` APIs.** Backstage has no event kind; the common practice is an `API`
+  entity whose definition is the AsyncAPI document (`contracts/events/asyncapi.yaml`).
 - **Owners are fictional teams.** No people: the repository holds no personal data.
 - Descriptors are one more file per project. The check makes forgetting one a CI failure instead of
   a silent gap.

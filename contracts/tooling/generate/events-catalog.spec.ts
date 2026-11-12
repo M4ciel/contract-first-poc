@@ -11,6 +11,7 @@ import { checkEventSchema, eventNameFromFile } from './generate-events-core.ts';
  */
 const catalog = path.join(process.cwd(), 'events');
 const files = listEventFiles(catalog);
+const asyncapi = readFileSync(path.join(catalog, 'asyncapi.yaml'), 'utf8');
 
 describe.each(files)('%s', (file) => {
   const schema = JSON.parse(readFileSync(path.join(catalog, file), 'utf8')) as Record<
@@ -29,6 +30,10 @@ describe.each(files)('%s', (file) => {
 
     expect(name).toBeDefined();
     expect(checkEventSchema(name ?? '', schema)).toEqual([]);
+  });
+
+  it('is referenced by the AsyncAPI document, so its channels are described', () => {
+    expect(asyncapi).toContain(`$ref: './${file}'`);
   });
 
   it('has examples, and every example is a valid event', () => {

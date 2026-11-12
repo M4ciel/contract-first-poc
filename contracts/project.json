@@ -8,6 +8,7 @@
     "contract": [
       "{projectRoot}/apis/**/*",
       "{projectRoot}/shared/**/*",
+      "{projectRoot}/events/asyncapi.yaml",
       "{projectRoot}/redocly.yaml",
       "{projectRoot}/.redocly.lint-ignore.yaml",
       {
@@ -50,7 +51,8 @@
       "inputs": ["contract"],
       "outputs": [
         "{projectRoot}/artifacts/library.bundle.yaml",
-        "{projectRoot}/artifacts/inventory.bundle.yaml"
+        "{projectRoot}/artifacts/inventory.bundle.yaml",
+        "{projectRoot}/artifacts/events"
       ],
       "options": {
         "cwd": "{projectRoot}",

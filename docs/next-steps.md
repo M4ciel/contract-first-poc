@@ -2,9 +2,9 @@
 
 What this POC does not do yet, in rough order of value.
 
-- **AsyncAPI for events.** The catalog validates payloads; channels (bus, queues, subscribers) are a
-  table in a README. One AsyncAPI document per service, referencing the existing JSON Schemas, would
-  make them machine-readable, linted and diffed in CI like OpenAPI.
+- **Diff the AsyncAPI channels.** Events have an AsyncAPI document, linted in CI, and their payloads
+  are immutable, but renaming a bus or a queue is not blocked. A small check against the base commit
+  (channel addresses and operations only) would close it.
 - **An outbox for events.** The backend publishes `loan.created.v1` after saving the loan; a crash in
   between loses the event. Writing the event in the same transaction as the loan and relaying it
   (DynamoDB Streams, or a polling relay) makes delivery at-least-once.

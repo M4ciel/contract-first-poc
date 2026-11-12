@@ -4,9 +4,13 @@ Asynchronous events drift just like HTTP APIs, only more silently: a consumer of
 production, not in code review. This folder is the single source of truth for the events the
 system publishes, with the same rigour as the OpenAPI contracts.
 
-| Event             | Producer   | Consumers            | Transport                 |
-| ----------------- | ---------- | -------------------- | ------------------------- |
-| `loan.created.v1` | `apps/api` | `apps/notifications` | EventBridge → SQS (+ DLQ) |
+- **Payloads:** one JSON Schema per event version (`<event>/vN.schema.json`), the source of
+  `@acme/events`.
+- **Channels:** [`asyncapi.yaml`](./asyncapi.yaml) (AsyncAPI 3) says where each event travels: the
+  EventBridge bus it is published on, the SQS queue each consumer reads (with its dead-letter
+  queue), who sends and who receives, and the envelope EventBridge wraps around the payload. It
+  references the schemas, never copies them.
+- **Ownership:** a `catalog-info.yaml` per event ([software catalog](../../docs/17-software-catalog.md)).
 
 ## Rules
 
@@ -37,10 +41,18 @@ import { LOAN_CREATED_V1, LoanCreatedV1, LoanCreatedV1Tolerant } from '@acme/eve
 // LoanCreatedV1Tolerant      → ignores unknown fields (consumers)
 ```
 
+## Channels (AsyncAPI)
+
+`nx run contracts:contract-lint` lints `asyncapi.yaml` with the same Redocly setup as the HTTP APIs
+(two rules are off for it, with the reason in `redocly.yaml`), and `nx run contracts:bundle` writes
+a single-file version to `artifacts/events/lending-events.asyncapi.yaml`. A test fails when an event
+schema is not referenced by the document.
+
+**Adding a consumer:** a rule and a queue in Terraform, a channel and a `receive` operation here,
+and `consumesApis` in the consumer's `catalog-info.yaml`.
+
 ## What is not automated yet
 
-This catalog validates **payloads**: the producer's tests, the consumer's parsing and the
-immutability check. It does not describe **channels** (which bus, which queue, who subscribes) in a
-machine-readable way; the table above is documentation only. The natural next step is
-[AsyncAPI](https://www.asyncapi.com/): one document per service that references these schemas,
-linted and diffed in CI like the OpenAPI contracts.
+Payloads are protected (immutability, producer tests, tolerant consumers). Channels are not diffed:
+there is no mature AsyncAPI equivalent of oasdiff, so renaming a bus or a queue in this document is
+not blocked in CI. Review catches it; the infrastructure would break loudly.

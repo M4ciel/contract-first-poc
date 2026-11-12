@@ -7,6 +7,16 @@ apis:
   inventory@v1:
     root: apis/inventory/openapi.yaml
     output: artifacts/inventory.bundle.yaml
+  # Domain events (AsyncAPI 3). Bundled apart from the HTTP APIs: the compatibility check runs
+  # oasdiff on artifacts/*.bundle.yaml, and event payloads are protected by immutability instead.
+  lending-events@v1:
+    root: events/asyncapi.yaml
+    output: artifacts/events/lending-events.asyncapi.yaml
+    rules:
+      # x-stability-level drives oasdiff, which only reads OpenAPI.
+      rule/operation-stability-level: off
+      # Events travel on a private bus and queues; access is granted by IAM, not per message.
+      security-defined: off
 
 extends:
   - recommended

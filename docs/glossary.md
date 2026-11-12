@@ -7,6 +7,9 @@ response field, a new endpoint, a new optional parameter, a new response enum va
 **API-first.** Designing the API before implementing it. Contract-first goes further: the design is
 a machine-readable contract that generates code and is checked in CI.
 
+**AsyncAPI.** The OpenAPI of asynchronous messages: channels (a bus, a queue), the operations that
+send or receive on them, and the messages. Here it describes where the domain events travel.
+
 **Breaking change.** A change that can make an existing client fail: removing or renaming a field,
 changing a type, adding a required request field, removing a success status code.
 

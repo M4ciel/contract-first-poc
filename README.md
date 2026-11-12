@@ -7,6 +7,7 @@ One source of truth generates versioned packages (types, validation, HTTP client
 blocks incompatible changes by machine, not by intuition.
 
 [![CI](https://github.com/M4ciel/contract-first-poc/actions/workflows/ci.yml/badge.svg)](https://github.com/M4ciel/contract-first-poc/actions/workflows/ci.yml)
+[![Developer portal](https://github.com/M4ciel/contract-first-poc/actions/workflows/portal.yml/badge.svg)](https://m4ciel.github.io/contract-first-poc/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 ![Node.js](https://img.shields.io/badge/node-24.22-339933?logo=nodedotjs&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-12-F69220?logo=pnpm&logoColor=white)
@@ -14,6 +15,8 @@ blocks incompatible changes by machine, not by intuition.
 ![TypeScript](https://img.shields.io/badge/typescript-6.0-3178C6?logo=typescript&logoColor=white)
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-6BA539?logo=openapiinitiative&logoColor=white)
 ![Status](https://img.shields.io/badge/status-POC%20complete-brightgreen)
+
+**[🧭 Developer portal](https://m4ciel.github.io/contract-first-poc/)**: every API, event, service and package, generated from this repository.
 
 [Why](#-why) •
 [Architecture](#-architecture) •
@@ -328,7 +331,9 @@ contract-first-poc/
 | [Original specification](./docs/spec.md)                 | The brief that drove this POC                                          |
 
 The developer portal (catalog, APIs, events, packages and the Scalar reference of each API) is built
-with `pnpm nx run contracts:portal` into `contracts/artifacts/portal/index.html`.
+with `pnpm nx run contracts:portal` into `contracts/artifacts/portal/index.html`, and published to
+[GitHub Pages](https://m4ciel.github.io/contract-first-poc/) on every push to `main`
+(`.github/workflows/portal.yml`).
 
 ## 🗺️ Roadmap
 

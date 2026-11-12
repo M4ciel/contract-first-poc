@@ -10,11 +10,13 @@ system publishes, with the same rigour as the OpenAPI contracts.
 
 ## Rules
 
-- **One JSON Schema (2020-12) per event**, in a file named after it: `entity.action.vN.json`.
-  `$id` is `urn:acme:event:<name>`, `title` is the name, and `x-source` is the EventBridge source.
-- **Events are immutable.** Once an event is on `main`, its file never changes: a new shape is a
-  new version (`loan.created.v2`), published side by side until every consumer has moved.
-  `nx run contracts:compat` enforces it against the base commit.
+- **One folder per event, one JSON Schema (2020-12) per version:**
+  `<entity>.<action>/v<N>.schema.json`, for example `loan.created/v1.schema.json` for
+  `loan.created.v1`. `$id` is `urn:acme:event:<name>`, `title` is the name, and `x-source` is the
+  EventBridge source.
+- **Events are immutable.** Once an event is on `main`, its schema never changes: a new shape is a
+  new version (`loan.created/v2.schema.json`), published side by side until every consumer has
+  moved. `nx run contracts:compat` enforces it against the base commit, matching events by `$id`.
 - **Producers are exact, consumers are tolerant.** The schema sets `additionalProperties: false`
   and the producer's tests validate what it publishes against it. Consumers parse with the
   tolerant variant, which ignores fields it does not know.

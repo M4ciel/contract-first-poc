@@ -1,6 +1,7 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { z } from 'zod';
+import { listEventFiles } from './event-files.ts';
 import { checkEventSchema, eventNameFromFile } from './generate-events-core.ts';
 
 /**
@@ -9,7 +10,7 @@ import { checkEventSchema, eventNameFromFile } from './generate-events-core.ts';
  * the generated @acme/events package builds them.
  */
 const catalog = path.join(process.cwd(), 'events');
-const files = readdirSync(catalog).filter((file) => file.endsWith('.json'));
+const files = listEventFiles(catalog);
 
 describe.each(files)('%s', (file) => {
   const schema = JSON.parse(readFileSync(path.join(catalog, file), 'utf8')) as Record<

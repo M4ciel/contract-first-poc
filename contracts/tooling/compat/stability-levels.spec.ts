@@ -9,9 +9,9 @@ import path from 'node:path';
  * contract, so an oasdiff upgrade that changes this behaviour fails here first.
  */
 
-const scriptsDir = path.join(process.cwd(), 'scripts', 'compat');
+const compatDir = path.join(process.cwd(), 'tooling', 'compat');
 const contractsDir = process.cwd();
-const oasdiff = execFileSync('bash', [path.join(scriptsDir, 'install-oasdiff.sh')], {
+const oasdiff = execFileSync('bash', [path.join(compatDir, 'install-oasdiff.sh')], {
   encoding: 'utf8',
 }).trim();
 
@@ -105,7 +105,7 @@ const breaking = (
     [
       'breaking',
       ...(severityLevels
-        ? ['--severity-levels', path.join(scriptsDir, 'oasdiff-severity.txt')]
+        ? ['--severity-levels', path.join(compatDir, 'oasdiff-severity.txt')]
         : []),
       write('base.json', contract(base)),
       write('revision.json', contract(revision)),

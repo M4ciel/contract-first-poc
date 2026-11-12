@@ -33,11 +33,16 @@ export const packagesAffectedBy = (path: string): readonly string[] => {
   // check, the API reference portal) change no package.
   if (
     path === 'contracts/orval.config.ts' ||
-    path.startsWith('contracts/scripts/apply-response-enum-fallback')
+    path.startsWith('contracts/tooling/generate/apply-response-enum-fallback')
   ) {
     return HTTP_CLIENTS;
   }
-  if (path.startsWith('contracts/scripts/generate-events')) return EVENTS;
+  if (
+    path.startsWith('contracts/tooling/generate/generate-events') ||
+    path === 'contracts/tooling/generate/event-files.ts'
+  ) {
+    return EVENTS;
+  }
   const match = /^contracts\/packages\/([^/]+)\/(.+)$/.exec(path);
   if (!match) return [];
   // Both groups always match when the expression does.

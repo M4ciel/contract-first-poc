@@ -296,9 +296,10 @@ contract-first-poc/
 ├── contracts/           # the "contracts repository"
 │   ├── apis/            # library (public) and inventory (internal) OpenAPI contracts
 │   ├── shared/          # shared by every API: Problem Details, problem type catalog, errors
-│   ├── events/          # domain event catalog (JSON Schema, immutable, see its README)
+│   ├── events/          # domain event catalog: one folder per event, one schema per version
+│   ├── tooling/         # generate (post-processing, events) · compat (oasdiff) · reference (portal)
 │   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain · @acme/events
-├── apps/                # api (NestJS) · inventory (Lambda) · web (React) · legacy-client
+├── apps/                # api (NestJS) · inventory and notifications (Lambdas) · web (React) · legacy-client
 ├── tools/               # repository-wide checks (global coverage, clean clone)
 ├── infra/               # Terraform for the emulated AWS environment
 ├── demos/               # scripts for the live demo scenarios

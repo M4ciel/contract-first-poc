@@ -57,7 +57,7 @@ pnpm nx run contracts:bundle          # lint + bundle
 pnpm nx run contracts:reference       # + API reference portal (artifacts/reference/index.html)
 ```
 
-The `x-stability-level` rule is also covered by tests (`contracts/scripts/compat/stability-levels.spec.ts`)
+The `x-stability-level` rule is also covered by tests (`contracts/tooling/compat/stability-levels.spec.ts`)
 that lint fixtures with a missing and an invalid level.
 
 ## Trade-offs

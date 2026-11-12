@@ -13,7 +13,7 @@ const SCALAR_VERSION = '1.76.0';
 const SCALAR_URL = `https://cdn.jsdelivr.net/npm/@scalar/api-reference@${SCALAR_VERSION}/dist/browser/standalone.js`;
 const SCALAR_INTEGRITY = 'sha384-oH1C0RwqcwbVXkC+r8A+4qRoyEUQdtxAzOwumkxZtQBBcsy61FOoPt7B50OVJYYQ';
 
-const root = join(import.meta.dirname, '..');
+const root = join(import.meta.dirname, '..', '..');
 const apis = [
   { slug: 'library', title: 'Acme Library API (public)' },
   { slug: 'inventory', title: 'Acme Inventory API (internal)' },

@@ -84,7 +84,7 @@ describe('loans', () => {
 
       const loan = (await createLoan({ bookId: BOOK_ID })).json<Loan>();
 
-      // The exact (producer) schema generated from contracts/events/loan.created.v1.json.
+      // The exact (producer) schema generated from contracts/events/loan.created/v1.schema.json.
       expect(LoanCreatedV1.parse(events.published[0]?.data)).toEqual(events.published[0]?.data);
       expect(events.published).toEqual([
         {

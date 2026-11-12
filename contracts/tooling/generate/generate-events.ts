@@ -1,8 +1,9 @@
 /**
- * Event catalog generator: contracts/events/*.json → packages/events/src/generated (@acme/events).
+ * Event catalog generator: contracts/events/<event>/vN.schema.json → packages/events/src/generated
+ * (@acme/events).
  * Runs as part of `contracts:generate`. Fails on any file that breaks the catalog rules.
  */
-import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { compile } from 'json-schema-to-typescript';
 import { format, resolveConfig } from 'prettier';
@@ -14,21 +15,20 @@ import {
   renderEventModule,
   renderIndex,
 } from './generate-events-core.ts';
+import { listEventFiles } from './event-files.ts';
 
-const root = join(import.meta.dirname, '..');
+const root = join(import.meta.dirname, '..', '..');
 const catalog = join(root, 'events');
 const output = join(root, 'packages', 'events', 'src', 'generated');
 
-const files = readdirSync(catalog)
-  .filter((file) => file.endsWith('.json'))
-  .sort();
+const files = listEventFiles(catalog);
 
 const problems: string[] = [];
 const modules: Array<{ module: string; source: string }> = [];
 for (const file of files) {
   const name = eventNameFromFile(file);
   if (!name) {
-    problems.push(`${file}: the file name must be entity.action.vN.json`);
+    problems.push(`${file}: the path must be entity.action/vN.schema.json`);
     continue;
   }
   const schema = JSON.parse(readFileSync(join(catalog, file), 'utf8')) as JsonSchema;

@@ -1,0 +1,30 @@
+# Fictional teams. Groups only: no people, no personal data.
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: team-lending
+  title: Lending team
+  description: Owns the library API, the loan rules and the loan events.
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: team-inventory
+  title: Inventory team
+  description: Owns the inventory service and its internal API.
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: team-frontend
+  title: Frontend team
+  description: Owns the web app and keeps the old app versions working.
+spec:
+  type: team
+  children: []

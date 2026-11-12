@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: library-backend
+  title: Library backend
+  description: Implements the Library API (NestJS on Fastify), reserves copies in the inventory and publishes loan.created.
+spec:
+  type: service
+  lifecycle: production
+  owner: team-lending
+  system: library
+  providesApis: [library-api, loan-created]
+  consumesApis: [inventory-api]
+  dependsOn:
+    - component:acme-api-types
+    - component:acme-domain
+    - component:acme-events
+    - component:acme-inventory-client

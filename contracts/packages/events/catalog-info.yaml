@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-events
+  title: '@acme/events'
+  description: Types plus exact (producer) and tolerant (consumer) Zod schemas generated from the event catalog.
+spec:
+  type: library
+  lifecycle: production
+  owner: team-lending
+  system: library
+  dependsOn: []

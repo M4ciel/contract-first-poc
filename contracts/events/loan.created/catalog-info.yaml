@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: loan-created
+  title: loan.created
+  description: Published when a book is lent. Identifiers and dates only.
+  tags: [event, eventbridge]
+spec:
+  type: json-schema
+  lifecycle: production
+  owner: team-lending
+  system: library
+  definition:
+    $text: ./v1.schema.json

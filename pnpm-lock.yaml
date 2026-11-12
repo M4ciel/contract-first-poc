@@ -490,7 +490,11 @@ importers:
 
   infra: {}
 
-  tools: {}
+  tools:
+    devDependencies:
+      yaml:
+        specifier: 2.9.1
+        version: 2.9.1
 
 packages:
 

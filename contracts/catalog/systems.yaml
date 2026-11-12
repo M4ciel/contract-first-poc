@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: library
+  title: Library
+  description: The public library API, the web app and the loan reminders.
+spec:
+  owner: team-lending
+  domain: lending
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: inventory
+  title: Inventory
+  description: How many copies of each book exist and which ones are reserved.
+spec:
+  owner: team-inventory
+  domain: lending

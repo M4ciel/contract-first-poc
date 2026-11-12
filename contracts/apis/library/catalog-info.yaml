@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: library-api
+  title: Library API
+  description: Public HTTP API of the library, used by the web app and the mobile apps.
+  tags: [rest, public]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-lending
+  system: library
+  definition:
+    $text: ./openapi.yaml

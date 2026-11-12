@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-domain
+  title: '@acme/domain'
+  description: Pure business rules shared by the backend and the frontend (due dates, overdue loans).
+spec:
+  type: library
+  lifecycle: production
+  owner: team-lending
+  system: library
+  dependsOn: []

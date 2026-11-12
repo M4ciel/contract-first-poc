@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-api-client
+  title: '@acme/api-client'
+  description: TanStack Query hooks and MSW handlers generated from the Library API.
+spec:
+  type: library
+  lifecycle: production
+  owner: team-lending
+  system: library
+  dependsOn:
+    - component:acme-api-types

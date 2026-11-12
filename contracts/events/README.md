@@ -23,6 +23,8 @@ system publishes, with the same rigour as the OpenAPI contracts.
 - **No personal data.** Identifiers and dates only. If a consumer ever needs personal data, it
   receives a pseudonymous id and looks the data up behind access control. The generator rejects
   property names that usually carry personal data (`email`, `name`, `phone`, ...).
+- **Every event has a `catalog-info.yaml`** in its folder: owner, system, and the producer and
+  consumers declare it in `providesApis` / `consumesApis` ([software catalog](../../docs/17-software-catalog.md)).
 
 ## Generated code
 

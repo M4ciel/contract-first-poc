@@ -293,10 +293,12 @@ Verdaccio stands in for the company's private registry; nothing leaves the machi
 ```
 contract-first-poc/
 ├── AGENTS.md            # rules for AI agents (CLAUDE.md imports it)
+├── catalog-info.yaml    # software catalog entry point: every API, event, app and package
 ├── contracts/           # the "contracts repository"
 │   ├── apis/            # library (public) and inventory (internal) OpenAPI contracts
 │   ├── shared/          # shared by every API: Problem Details, problem type catalog, errors
 │   ├── events/          # domain event catalog: one folder per event, one schema per version
+│   ├── catalog/         # domain, systems and teams of the software catalog (Backstage format)
 │   ├── tooling/         # generate (post-processing, events) · compat (oasdiff) · reference (portal)
 │   └── packages/        # @acme/api-types · @acme/api-client · @acme/inventory-client · @acme/domain · @acme/events
 ├── apps/                # api (NestJS) · inventory and notifications (Lambdas) · web (React) · legacy-client
@@ -319,7 +321,7 @@ contract-first-poc/
 | [Compatibility rules](./docs/09-compatibility-rules.md)  | Change → breaking? → what to do, verified with oasdiff                 |
 | [FAQ and gotchas](./docs/14-faq-and-gotchas.md)          | Objections and every non-obvious problem we hit                        |
 | [Presentation script](./docs/presentation.md)            | A 40-minute session, slide by slide                                    |
-| [Architecture decisions](./docs/adr/README.md)           | Twelve ADRs, deviations from the specification included                |
+| [Architecture decisions](./docs/adr/README.md)           | Thirteen ADRs, deviations from the specification included              |
 | [Live demos](./demos/README.md)                          | One script per scenario, each asserting its outcome                    |
 | [Rules for AI agents](./AGENTS.md)                       | Source of truth, compatibility rules, prohibitions                     |
 | [Implementation report](./docs/implementation-report.md) | Acceptance criteria, what was validated, deviations and their reasons  |
@@ -364,6 +366,7 @@ timeline
 - [x] Live demo scripts (`demos/`, each asserts its outcome; `bash demos/run-all.sh`)
 - [x] Documentation (one document per piece), ADRs, presentation script, glossary and API reference portal
 - [x] Implementation report (acceptance criteria, validations, deviations)
+- [x] Software catalog: Backstage descriptors for every API, event, app and package, checked in CI
 
 ## 📄 License
 

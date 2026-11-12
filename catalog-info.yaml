@@ -1,0 +1,25 @@
+# Entry point of the software catalog (Backstage format). A Backstage instance registers this one
+# file; `nx run @acme/tools:catalog-check` keeps the list complete and every reference valid.
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: acme-lending
+  description: Every catalog entity of the lending domain.
+spec:
+  targets:
+    - ./contracts/catalog/domain.yaml
+    - ./contracts/catalog/systems.yaml
+    - ./contracts/catalog/teams.yaml
+    - ./contracts/apis/library/catalog-info.yaml
+    - ./contracts/apis/inventory/catalog-info.yaml
+    - ./contracts/events/loan.created/catalog-info.yaml
+    - ./contracts/packages/api-types/catalog-info.yaml
+    - ./contracts/packages/api-client/catalog-info.yaml
+    - ./contracts/packages/domain/catalog-info.yaml
+    - ./contracts/packages/events/catalog-info.yaml
+    - ./contracts/packages/inventory-client/catalog-info.yaml
+    - ./apps/api/catalog-info.yaml
+    - ./apps/inventory/catalog-info.yaml
+    - ./apps/notifications/catalog-info.yaml
+    - ./apps/web/catalog-info.yaml
+    - ./apps/legacy-client/catalog-info.yaml

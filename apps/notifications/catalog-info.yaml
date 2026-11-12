@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: loan-reminders
+  title: Loan reminders
+  description: AWS Lambda that consumes loan.created from SQS and schedules a return reminder.
+spec:
+  type: service
+  lifecycle: production
+  owner: team-lending
+  system: library
+  consumesApis: [loan-created]
+  dependsOn:
+    - component:acme-events

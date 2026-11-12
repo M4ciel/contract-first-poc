@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: inventory-service
+  title: Inventory service
+  description: AWS Lambda behind API Gateway that implements the Inventory API.
+spec:
+  type: service
+  lifecycle: production
+  owner: team-inventory
+  system: inventory
+  providesApis: [inventory-api]
+  dependsOn:
+    - component:acme-inventory-client

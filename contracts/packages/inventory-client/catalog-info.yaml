@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-inventory-client
+  title: '@acme/inventory-client'
+  description: Zod schemas, fetch client and MSW handlers generated from the Inventory API.
+spec:
+  type: library
+  lifecycle: production
+  owner: team-inventory
+  system: inventory
+  dependsOn: []

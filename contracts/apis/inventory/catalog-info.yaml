@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: inventory-api
+  title: Inventory API
+  description: Internal HTTP API to read stock and reserve copies, called by the library backend.
+  tags: [rest, internal]
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-inventory
+  system: inventory
+  definition:
+    $text: ./openapi.yaml

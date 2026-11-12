@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: legacy-client
+  title: Legacy client
+  description: An app version that was never updated (frozen @acme/api-types 1.0.0); proves additive changes do not break it.
+spec:
+  type: website
+  lifecycle: deprecated
+  owner: team-frontend
+  system: library
+  consumesApis: [library-api]
+  dependsOn:
+    - component:acme-api-client
+    - component:acme-api-types

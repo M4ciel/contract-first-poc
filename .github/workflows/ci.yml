@@ -39,6 +39,8 @@ jobs:
         run: pnpm nx run @acme/infra:fmt-check
       - name: Contract lint
         run: pnpm nx run contracts:contract-lint
+      - name: Software catalog (every API, event and app described, references valid)
+        run: pnpm nx run @acme/tools:catalog-check
 
       - name: Generate, lint, typecheck, build
         run: pnpm nx run-many -t lint typecheck build

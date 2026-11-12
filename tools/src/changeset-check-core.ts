@@ -23,7 +23,8 @@ const isTest = (path: string) => /\.spec\.[cm]?[jt]sx?$/.test(path);
 
 /** Published packages whose content can change because `path` changed. */
 export const packagesAffectedBy = (path: string): readonly string[] => {
-  if (isTest(path) || path.endsWith('.md')) return [];
+  // Tests, docs and catalog descriptors never end up in a published package.
+  if (isTest(path) || path.endsWith('.md') || path.endsWith('/catalog-info.yaml')) return [];
   if (path.startsWith('contracts/apis/library/')) return LIBRARY;
   if (path.startsWith('contracts/apis/inventory/')) return INVENTORY;
   // Error components and problem types are shared by both APIs.

@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-api-types
+  title: '@acme/api-types'
+  description: Zod schemas and types generated from the Library API, with strict request validators and tolerant responses.
+spec:
+  type: library
+  lifecycle: production
+  owner: team-lending
+  system: library
+  dependsOn: []

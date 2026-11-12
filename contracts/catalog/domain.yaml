@@ -1,0 +1,9 @@
+# The business domain every system of this repository belongs to.
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: lending
+  title: Lending
+  description: Lending books to readers, from the catalog to the reminders about due dates.
+spec:
+  owner: team-lending

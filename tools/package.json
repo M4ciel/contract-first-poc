@@ -2,7 +2,7 @@
   "name": "@acme/tools",
   "version": "0.0.0",
   "private": true,
-  "description": "Repository-wide checks: global test coverage, changesets and the clean-clone check.",
+  "description": "Repository-wide checks: global test coverage, changesets, the software catalog and the clean-clone check.",
   "license": "MIT",
   "type": "module",
   "nx": {
@@ -39,6 +39,21 @@
         }
       },
       "typecheck": {},
+      "catalog-check": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "inputs": [
+          "{workspaceRoot}/catalog-info.yaml",
+          "{workspaceRoot}/**/catalog-info.yaml",
+          "{workspaceRoot}/contracts/catalog/**/*",
+          "{workspaceRoot}/apps/*/package.json",
+          "{workspaceRoot}/contracts/packages/*/package.json",
+          "{workspaceRoot}/tools/src/catalog-check*.ts"
+        ],
+        "options": {
+          "command": "node tools/src/catalog-check.ts"
+        }
+      },
       "changeset-check": {
         "executor": "nx:run-commands",
         "cache": false,
@@ -58,5 +73,8 @@
         }
       }
     }
+  },
+  "devDependencies": {
+    "yaml": "2.9.1"
   }
 }

@@ -12,6 +12,10 @@ Humans should follow them too. `CLAUDE.md` only imports this file, so there is a
 - Domain events are defined only in `contracts/events/` (JSON Schema, immutable: a new shape is a
   new version). `@acme/events` is generated from it.
 - Shared business rules live only in `@acme/domain` (pure functions, no I/O).
+- Ownership and relations (owner team, system, provided and consumed APIs and events, `@acme`
+  dependencies) live only in the `catalog-info.yaml` next to each API, event, app and package,
+  listed in the root `catalog-info.yaml`. A new one needs a descriptor; `@acme/tools:catalog-check`
+  fails otherwise.
 
 ## Tooling
 

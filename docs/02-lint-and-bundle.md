@@ -44,7 +44,7 @@ Exceptions are explicit and reviewed: `.redocly.lint-ignore.yaml` holds each one
 (today only "a health check has no 4xx response").
 
 `redocly bundle` then writes `contracts/artifacts/<api>.bundle.yaml` (git-ignored): one
-self-contained file per API, input of Orval, oasdiff and the API reference portal.
+self-contained file per API, input of Orval, oasdiff and the developer portal.
 
 In Nx, `contracts:bundle` depends on `contracts:contract-lint`, and `contracts:generate` depends on
 `bundle`: nothing is generated from a contract that does not pass the lint.
@@ -54,7 +54,7 @@ In Nx, `contracts:bundle` depends on `contracts:contract-lint`, and `contracts:g
 ```bash
 pnpm nx run contracts:contract-lint   # lint both APIs
 pnpm nx run contracts:bundle          # lint + bundle
-pnpm nx run contracts:reference       # + API reference portal (artifacts/reference/index.html)
+pnpm nx run contracts:portal          # + developer portal (artifacts/portal/index.html)
 ```
 
 The `x-stability-level` rule is also covered by tests (`contracts/tooling/compat/stability-levels.spec.ts`)

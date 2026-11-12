@@ -7,6 +7,8 @@
 import { posix } from 'node:path';
 
 export const API_VERSION = 'backstage.io/v1alpha1';
+/** Annotation of a generated package: the API(s) it is generated from, comma-separated. */
+export const GENERATED_FROM = 'acme.test/generated-from';
 const KINDS = ['Location', 'Domain', 'System', 'Group', 'Component', 'API'] as const;
 const LIFECYCLES = ['experimental', 'production', 'deprecated'];
 const API_TYPES = ['openapi', 'asyncapi', 'json-schema'];
@@ -20,6 +22,7 @@ export interface Entity {
     readonly name?: unknown;
     readonly title?: unknown;
     readonly description?: unknown;
+    readonly annotations?: Record<string, unknown>;
   };
   readonly spec?: Record<string, unknown>;
 }
@@ -107,6 +110,14 @@ const referencesOf = ({ entity }: LoadedEntity): Array<[string, string]> => {
   ];
 };
 
+/** APIs a generated package comes from, as `api:name` keys. */
+export const generatedFrom = ({ entity }: LoadedEntity): string[] => {
+  const value = entity.metadata?.annotations?.[GENERATED_FROM];
+  return typeof value === 'string'
+    ? value.split(',').map((ref) => parseRef(ref.trim(), 'api'))
+    : [];
+};
+
 const definitionOf = ({ file, entity }: LoadedEntity): string | undefined => {
   const text = (entity.spec?.['definition'] as { $text?: unknown } | undefined)?.$text;
   return typeof text === 'string' ? posix.join(posix.dirname(file), text) : undefined;
@@ -130,6 +141,11 @@ export const checkCatalog = (
   for (const loaded of entities) {
     for (const [field, ref] of referencesOf(loaded)) {
       if (!keys.has(ref)) problems.push(`${loaded.file}: spec.${field} ${ref} does not exist`);
+    }
+    for (const ref of generatedFrom(loaded)) {
+      if (!ref.startsWith('api:') || !keys.has(ref)) {
+        problems.push(`${loaded.file}: ${GENERATED_FROM} ${ref} must be an existing API`);
+      }
     }
     const required = {
       Component: ['owner', 'system'],

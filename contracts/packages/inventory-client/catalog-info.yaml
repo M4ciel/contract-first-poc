@@ -4,6 +4,9 @@ metadata:
   name: acme-inventory-client
   title: '@acme/inventory-client'
   description: Zod schemas, fetch client and MSW handlers generated from the Inventory API.
+  annotations:
+    # The contract this package is generated from (checked by @acme/tools:catalog-check).
+    acme.test/generated-from: api:inventory-api
 spec:
   type: library
   lifecycle: production

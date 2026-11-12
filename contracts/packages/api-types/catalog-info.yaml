@@ -4,6 +4,9 @@ metadata:
   name: acme-api-types
   title: '@acme/api-types'
   description: Zod schemas and types generated from the Library API, with strict request validators and tolerant responses.
+  annotations:
+    # The contract this package is generated from (checked by @acme/tools:catalog-check).
+    acme.test/generated-from: api:library-api
 spec:
   type: library
   lifecycle: production

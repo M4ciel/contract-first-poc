@@ -4,6 +4,9 @@ metadata:
   name: acme-api-client
   title: '@acme/api-client'
   description: TanStack Query hooks and MSW handlers generated from the Library API.
+  annotations:
+    # The contract this package is generated from (checked by @acme/tools:catalog-check).
+    acme.test/generated-from: api:library-api
 spec:
   type: library
   lifecycle: production

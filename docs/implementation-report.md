@@ -34,7 +34,7 @@ State checked: `main` at the merge of the documentation step, from a fresh clone
 | actionlint on the workflows                                                | ✅      | ✅                                        |
 | Live demos (`demos/run-all.sh`)                                            | ✅      | —                                         |
 | Local release and preview to Verdaccio (`release-local`)                   | ✅      | —                                         |
-| API reference portal renders (headless Chromium, no console errors)        | ✅      | —                                         |
+| Developer portal renders (headless Chromium, no console errors)            | ✅      | —                                         |
 | `changeset-version.yml` opens the Version PR                               | —       | ✅ (PR #18 is open)                       |
 
 ## What was never run
@@ -68,7 +68,7 @@ State checked: `main` at the merge of the documentation step, from a fresh clone
 | Exact versions everywhere                     | Exact everywhere except `peerDependencies` of published packages (ranges such as `^4.6.7`)                                                  | An exact peer version would force every consumer to that exact release.                                                                                       |
 | —                                             | Folder aliases (`@config/*`, `@problems/*`, …) and no `../` imports, enforced by ESLint                                                     | Readable imports that survive moves.                                                                                                                          |
 | —                                             | Extra checks: changeset-check, event immutability, coverage required for every Jest project, clean clone, actionlint, Terraform format      | Each closes a gap found while building; see [FAQ and gotchas](./14-faq-and-gotchas.md).                                                                       |
-| Next step: documentation portal               | Already built (`pnpm nx run contracts:reference`, Scalar)                                                                                   | Cheap once the bundles exist.                                                                                                                                 |
+| Next step: documentation portal               | Built (`pnpm nx run contracts:portal`: catalog, APIs, events, packages, Scalar reference)                                                   | Cheap once the bundles exist.                                                                                                                                 |
 
 ## Known gaps
 

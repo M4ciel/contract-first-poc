@@ -18,3 +18,4 @@ Records marked _deviation_ differ from the [original specification](../spec.md) 
 | [0011](./0011-problem-type-catalog.md)                   | A shared catalog of problem types                         |
 | [0012](./0012-oasdiff-severity-for-new-enum-values.md)   | Lower oasdiff's severity for new response enum values     |
 | [0013](./0013-software-catalog-in-backstage-format.md)   | Software catalog in Backstage format, without Backstage   |
+| [0014](./0014-static-portal-on-github-pages.md)          | A static developer portal, published on GitHub Pages      |

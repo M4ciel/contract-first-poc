@@ -23,7 +23,8 @@ trade-offs, how to demonstrate it and frequently asked questions.
 | 14  | [FAQ and gotchas](./14-faq-and-gotchas.md)                       | Objections and everything that bit us                              | —       |
 | 15  | [Runtime and local environment](./15-runtime-and-environment.md) | NestJS, the inventory Lambda, MiniStack, Docker Compose            | 7, 8    |
 | 16  | [Feature flags](./16-feature-flags.md)                           | Flagsmith through OpenFeature, backend and frontend                | 11      |
-| 17  | [Software catalog](./17-software-catalog.md)                     | Owners, systems, who provides and consumes what (Backstage format) | —       |
+| 17  | [Software catalog](./17-software-catalog.md)                     | Owners, systems, who provides and consumes what (Backstage format) | 12      |
+| 18  | [Developer portal](./18-developer-portal.md)                     | The catalog, APIs, events and packages as a site on GitHub Pages   | 12      |
 
 Also: [presentation script](./presentation.md), [glossary](./glossary.md),
 [next steps](./next-steps.md), [implementation report](./implementation-report.md), [architecture decision records](./adr/) and the

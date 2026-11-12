@@ -35,6 +35,7 @@ State checked: `main` at the merge of the documentation step, from a fresh clone
 | Live demos (`demos/run-all.sh`)                                            | ✅      | —                                         |
 | Local release and preview to Verdaccio (`release-local`)                   | ✅      | —                                         |
 | Developer portal renders (headless Chromium, no console errors)            | ✅      | —                                         |
+| Developer portal built and deployed to GitHub Pages                        | —       | ✅ (every push to `main`)                 |
 | `changeset-version.yml` opens the Version PR                               | —       | ✅ (PR #18 is open)                       |
 
 ## What was never run
@@ -68,7 +69,7 @@ State checked: `main` at the merge of the documentation step, from a fresh clone
 | Exact versions everywhere                     | Exact everywhere except `peerDependencies` of published packages (ranges such as `^4.6.7`)                                                  | An exact peer version would force every consumer to that exact release.                                                                                       |
 | —                                             | Folder aliases (`@config/*`, `@problems/*`, …) and no `../` imports, enforced by ESLint                                                     | Readable imports that survive moves.                                                                                                                          |
 | —                                             | Extra checks: changeset-check, event immutability, coverage required for every Jest project, clean clone, actionlint, Terraform format      | Each closes a gap found while building; see [FAQ and gotchas](./14-faq-and-gotchas.md).                                                                       |
-| Next step: documentation portal               | Built (`pnpm nx run contracts:portal`: catalog, APIs, events, packages, Scalar reference)                                                   | Cheap once the bundles exist.                                                                                                                                 |
+| Next step: documentation portal               | Built (`pnpm nx run contracts:portal`: catalog, APIs, events, packages, Scalar reference) and published on GitHub Pages                     | Cheap once the bundles exist ([ADR 0014](./adr/0014-static-portal-on-github-pages.md)).                                                                       |
 
 ## Known gaps
 

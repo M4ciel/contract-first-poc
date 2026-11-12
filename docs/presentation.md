@@ -1,6 +1,6 @@
 # Presentation script
 
-About 40 minutes. Each slide has a title and the points to say; demos run from `demos/` (start the
+About 42 minutes. Each slide has a title and the points to say; demos run from `demos/` (start the
 environment before the session: `pnpm nx run @acme/infra:up`).
 
 ## 1. Current pains (4 min)
@@ -26,8 +26,10 @@ environment before the session: `pnpm nx run @acme/infra:up`).
 - Two APIs with the same rules: the public library API and the internal inventory API (a Lambda).
 - `@acme/domain`: shared rules with 100% mutation score; `@acme/events`: the event catalog.
 - Runtime on emulated AWS, flags in Flagsmith through OpenFeature, one command to start.
+- Everything is browsable in the [developer portal](https://m4ciel.github.io/contract-first-poc/):
+  owner, consumers, install command and reference of every API, generated from the repository.
 
-## 4. Demos (12 min)
+## 4. Demos (14 min)
 
 - **Demo 3, a new enum value:** add `lost` to `Loan.status`. CI passes; the app frozen on 1.0.0
   reads `unknown` and shows "Status unavailable"; without post-processing it throws `ZodError`.
@@ -35,6 +37,8 @@ environment before the session: `pnpm nx run @acme/infra:up`).
   pull request; the right paths are a new field plus deprecation, or `/v2`.
 - **Demo 5, preview in alpha:** break `/v2/books` freely, publish a preview, show `npm dist-tag ls`:
   `latest` did not move.
+- **Demo 12, the developer portal:** a new developer finds the Library API, its owner, its
+  consumers and the package to install; a descriptor that drifts from the code fails before publishing.
 - If there is time: demo 11 (flip a flag in the Flagsmith UI, the running backend follows) and
   demo 9 (100% coverage, a surviving mutant).
 

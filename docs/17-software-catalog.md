@@ -86,8 +86,8 @@ pnpm nx run @acme/tools:catalog-check
 
 - **Backstage format, no Backstage.** The descriptors follow its schema so a Backstage instance can
   register the root `catalog-info.yaml` as is. Running Backstage itself (a server, a database,
-  plugins) is not worth it for a few services; a static portal generated from the same files covers
-  the demo (see [next steps](./next-steps.md)).
+  plugins) is not worth it for a few services; the [developer portal](./18-developer-portal.md),
+  generated from the same files, makes the catalog browsable.
 - **Events as `asyncapi` APIs.** Backstage has no event kind; the common practice is an `API`
   entity whose definition is the AsyncAPI document (`contracts/events/asyncapi.yaml`).
 - **Owners are fictional teams.** No people: the repository holds no personal data.

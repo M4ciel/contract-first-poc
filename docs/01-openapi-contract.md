@@ -79,7 +79,7 @@ not break a backend deployed on Monday ([ADR 0007](./adr/0007-inventory-as-a-sep
 5. Open the pull request: its review is an API design conversation, before any code exists.
 
 `pnpm nx run contracts:portal` builds the developer portal into `contracts/artifacts/portal/`: a page
-per API with its operations and stability levels, and its interactive reference (Scalar).
+per API with its operations and stability levels, and its interactive reference (Scalar); see [developer portal](./18-developer-portal.md).
 
 ## Trade-offs
 

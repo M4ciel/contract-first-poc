@@ -29,7 +29,8 @@ export const packagesAffectedBy = (path: string): readonly string[] => {
   if (path.startsWith('contracts/apis/inventory/')) return INVENTORY;
   // Error components and problem types are shared by both APIs.
   if (path.startsWith('contracts/shared/')) return [...LIBRARY, ...INVENTORY];
-  if (path.startsWith('contracts/events/')) return EVENTS;
+  // Only the event schemas feed @acme/events; the AsyncAPI document and descriptors do not.
+  if (path.startsWith('contracts/events/')) return path.endsWith('.schema.json') ? EVENTS : [];
   // Generators decide what the generated packages contain. Other scripts (the compatibility
   // check, the API reference portal) change no package.
   if (

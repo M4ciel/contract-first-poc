@@ -63,7 +63,7 @@ environment before the session: `pnpm nx run @acme/infra:up`).
 
 ## 8. Next steps (2 min)
 
-- AsyncAPI for events, generators for other languages, contract tests against real responses, an
+- Diffing the AsyncAPI channels, generators for other languages, contract tests against real responses, an
   outbox for events, `426 Upgrade Required` for a minimum app version.
   ([list](./next-steps.md))
 - Questions: [FAQ](./14-faq-and-gotchas.md) covers the usual objections.

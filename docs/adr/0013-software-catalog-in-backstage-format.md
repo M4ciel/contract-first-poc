@@ -21,5 +21,5 @@ not deployed.
 
 - A Backstage instance can import the catalog by registering one file.
 - The catalog cannot silently drift: missing descriptors and wrong dependencies fail CI.
-- Events are `API` entities of type `json-schema` until they have an AsyncAPI document.
+- Events are `API` entities of type `asyncapi`, defined by `contracts/events/asyncapi.yaml`.
 - One more file per project, and a static portal still has to be built to browse it.

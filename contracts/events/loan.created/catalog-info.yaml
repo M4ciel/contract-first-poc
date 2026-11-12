@@ -6,9 +6,10 @@ metadata:
   description: Published when a book is lent. Identifiers and dates only.
   tags: [event, eventbridge]
 spec:
-  type: json-schema
+  type: asyncapi
   lifecycle: production
   owner: team-lending
   system: library
   definition:
-    $text: ./v1.schema.json
+    # Channels, operations and envelope of every lending event; the payload is ./v1.schema.json.
+    $text: ../asyncapi.yaml

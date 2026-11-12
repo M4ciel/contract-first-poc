@@ -38,6 +38,7 @@ describe('packagesAffectedBy', () => {
     'contracts/tooling/compat/check-compatibility.sh',
     'contracts/tooling/reference/build-reference.ts',
     'contracts/events/README.md',
+    'contracts/events/asyncapi.yaml',
     'contracts/apis/library/catalog-info.yaml',
     'contracts/events/loan.created/catalog-info.yaml',
     'contracts/packages/api-types/catalog-info.yaml',

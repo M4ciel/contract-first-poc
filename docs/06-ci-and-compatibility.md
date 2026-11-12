@@ -24,7 +24,7 @@ pinned by commit SHA:
 
 ### oasdiff against the exact base commit
 
-`contracts/scripts/compat/check-compatibility.sh` (`pnpm nx run contracts:compat`):
+`contracts/tooling/compat/check-compatibility.sh` (`pnpm nx run contracts:compat`):
 
 1. installs oasdiff 1.34.1, verifying its SHA-256 against `oasdiff.checksums` before running it;
 2. takes the base commit from `BASE_SHA`: in CI `github.event.pull_request.base.sha`, or

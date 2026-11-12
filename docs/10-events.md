@@ -2,8 +2,8 @@
 
 ## TL;DR
 
-Domain events are contracts too. Each one is a JSON Schema in `contracts/events/`, named
-`entity.action.vN`, **immutable** once published, with no personal data. `@acme/events` is generated
+Domain events are contracts too. Each one is a JSON Schema in `contracts/events/`, one folder
+per event and one file per version (`loan.created/v1.schema.json`), **immutable** once published, with no personal data. `@acme/events` is generated
 from it: payload types plus an exact schema for producers and a tolerant one for consumers.
 
 ## What pain it solves
@@ -17,7 +17,8 @@ message ends up in a dead-letter queue weeks before anyone notices.
 ```
 contracts/events/
 ├── README.md                # the rules and what is not automated yet
-└── loan.created.v1.json     # JSON Schema 2020-12
+└── loan.created/            # one folder per event (entity.action)
+    └── v1.schema.json       # one JSON Schema 2020-12 per version
 ```
 
 ```json
@@ -32,7 +33,7 @@ contracts/events/
 }
 ```
 
-`contracts/scripts/generate-events.ts` (part of `contracts:generate`) checks every file against the
+`contracts/tooling/generate/generate-events.ts` (part of `contracts:generate`) checks every file against the
 catalog rules (name, `$id`, `title`, `description`, `x-source`, `additionalProperties: false`, no
 property name that usually carries personal data such as `email` or `phone`) and generates:
 
@@ -71,8 +72,9 @@ Guarantees:
 - **Producer exactness:** the backend's test parses what it publishes with `LoanCreatedV1` (exact).
 - **Catalog consistency:** every schema validates its own `examples`, rejects an extra field
   (exact) and accepts it (tolerant).
-- **Immutability:** `contracts:compat` fails when a file that exists at the base commit changes or
-  disappears, and prints the diff. A new shape is a new file (`loan.created.v2.json`), published side
+- **Immutability:** `contracts:compat` fails when an event that exists at the base commit changes or
+  disappears, and prints the diff. Events are matched by `$id`, so moving a file is not a removal. A
+  new shape is a new file (`loan.created/v2.schema.json`), published side
   by side until every consumer moved.
 
 **What is not automated yet:** the catalog validates payloads, not channels (which bus, which queue,

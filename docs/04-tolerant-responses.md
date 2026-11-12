@@ -30,7 +30,7 @@ flowchart LR
   P --> Q["request schemas:<br/>unchanged, still strict"]
 ```
 
-`contracts/scripts/apply-response-enum-fallback-core.ts` (pure, 100% covered) does it in two
+`contracts/tooling/generate/apply-response-enum-fallback-core.ts` (pure, 100% covered) does it in two
 passes, on the AST and never with regular expressions:
 
 1. **Find the response schemas.** It parses the generated client and collects the types inside

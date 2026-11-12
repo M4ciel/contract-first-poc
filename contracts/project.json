@@ -16,7 +16,7 @@
     ],
     "generator": [
       "{projectRoot}/orval.config.ts",
-      "{projectRoot}/scripts/**/*",
+      "{projectRoot}/tooling/**/*",
       "{projectRoot}/packages/*/src/http/**/*",
       {
         "externalDependencies": ["orval"]
@@ -74,7 +74,7 @@
       ],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "orval --config orval.config.ts && node scripts/apply-response-enum-fallback.ts && node scripts/generate-events.ts"
+        "command": "orval --config orval.config.ts && node tooling/generate/apply-response-enum-fallback.ts && node tooling/generate/generate-events.ts"
       }
     },
     "test": {
@@ -91,7 +91,7 @@
       "cache": false,
       "options": {
         "cwd": "{projectRoot}",
-        "command": "bash scripts/compat/install-oasdiff.sh"
+        "command": "bash tooling/compat/install-oasdiff.sh"
       }
     },
     "compat": {
@@ -100,18 +100,18 @@
       "dependsOn": ["bundle", "oasdiff-install"],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "bash scripts/compat/check-compatibility.sh"
+        "command": "bash tooling/compat/check-compatibility.sh"
       }
     },
     "reference": {
       "executor": "nx:run-commands",
       "cache": true,
       "dependsOn": ["bundle"],
-      "inputs": ["contract", "{projectRoot}/scripts/build-reference.ts"],
+      "inputs": ["contract", "{projectRoot}/tooling/reference/build-reference.ts"],
       "outputs": ["{projectRoot}/artifacts/reference"],
       "options": {
         "cwd": "{projectRoot}",
-        "command": "node scripts/build-reference.ts"
+        "command": "node tooling/reference/build-reference.ts"
       }
     }
   }

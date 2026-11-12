@@ -5,7 +5,7 @@ import { defineConfig } from 'orval';
  *
  * Requests are strict (unknown fields are rejected) and responses are not strict at this stage.
  * Response tolerance (dropping unknown fields, `unknown` enum fallback) is applied afterwards by
- * scripts/apply-response-enum-fallback.ts.
+ * tooling/generate/apply-response-enum-fallback.ts.
  */
 const zodOverride = {
   generateReusableSchemas: false,

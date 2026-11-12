@@ -12,14 +12,15 @@ describe('packagesAffectedBy', () => {
       'contracts/shared/components/schemas/ProblemType.yaml',
       ['@acme/api-types', '@acme/api-client', '@acme/inventory-client'],
     ],
-    ['contracts/events/loan.created.v1.json', ['@acme/events']],
-    ['contracts/scripts/generate-events.ts', ['@acme/events']],
+    ['contracts/events/loan.created/v1.schema.json', ['@acme/events']],
+    ['contracts/tooling/generate/generate-events.ts', ['@acme/events']],
+    ['contracts/tooling/generate/event-files.ts', ['@acme/events']],
     [
       'contracts/orval.config.ts',
       ['@acme/api-types', '@acme/api-client', '@acme/inventory-client'],
     ],
     [
-      'contracts/scripts/apply-response-enum-fallback-core.ts',
+      'contracts/tooling/generate/apply-response-enum-fallback-core.ts',
       ['@acme/api-types', '@acme/api-client', '@acme/inventory-client'],
     ],
     ['contracts/packages/domain/src/loan.ts', ['@acme/domain']],
@@ -32,9 +33,10 @@ describe('packagesAffectedBy', () => {
 
   it.each([
     'contracts/packages/domain/src/loan.spec.ts',
-    'contracts/scripts/apply-response-enum-fallback-core.spec.ts',
-    'contracts/scripts/compat/check-compatibility.sh',
-    'contracts/scripts/build-reference.ts',
+    'contracts/tooling/generate/apply-response-enum-fallback-core.spec.ts',
+    'contracts/tooling/generate/events-catalog.spec.ts',
+    'contracts/tooling/compat/check-compatibility.sh',
+    'contracts/tooling/reference/build-reference.ts',
     'contracts/events/README.md',
     'contracts/packages/domain/stryker.config.mjs',
     'contracts/packages/unknown/src/index.ts',

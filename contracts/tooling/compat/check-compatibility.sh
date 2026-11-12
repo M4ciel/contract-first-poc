@@ -9,13 +9,14 @@
 #
 # oasdiff reads `x-stability-level`: breaking changes in `draft` and `alpha` operations are allowed,
 # `beta` and `stable` are protected, and lowering an operation's level is itself an error.
-# Domain events (contracts/events) are immutable: a file that exists at the base commit must be
-# byte-for-byte the same; a new shape is a new version (a new file).
+# Domain events (contracts/events) are immutable: an event that exists at the base commit must be
+# byte-for-byte the same; a new shape is a new version (a new file). Events are matched by their
+# `$id`, not by path, so reorganising the catalog folders is not mistaken for a removal.
 #
 # One rule is lowered from error to info, in oasdiff-severity.txt (the file format has no
 # comments): `response-property-enum-value-added`. A new enum value in a response is an allowed,
 # additive change (AGENTS.md, spec 5.9) because every generated response schema maps values it does
-# not know to `'unknown'` (scripts/apply-response-enum-fallback.ts). Nothing else is relaxed.
+# not know to `'unknown'` (tooling/generate/apply-response-enum-fallback.ts). Nothing else is relaxed.
 #
 # Expects fresh head bundles in contracts/artifacts (the Nx target depends on `bundle`).
 set -euo pipefail
@@ -88,21 +89,30 @@ for head_bundle in "$contracts"/artifacts/*.bundle.yaml; do
   fi
 done
 
-if [ -d "$work/$prefix/events" ]; then
-  for base_event in "$work/$prefix"/events/*.json; do
-    event="$(basename "$base_event")"
-    if [ ! -f "$contracts/events/$event" ]; then
-      echo "✖ events/$event exists at $short but was removed. Published events are never deleted." >&2
-      status=1
-    elif ! cmp -s "$base_event" "$contracts/events/$event"; then
-      echo "✖ events/$event changed since $short. Events are immutable: add a new version instead." >&2
-      diff -u "$base_event" "$contracts/events/$event" >&2 || true
-      status=1
-    else
-      echo "› events/$event: unchanged"
-    fi
+# Prints "<$id> <file>" for every event schema under a catalog folder.
+event_ids() {
+  [ -d "$1" ] || return 0
+  find "$1" -name '*.json' -type f | sort | while read -r file; do
+    id="$(sed -n 's/^ *"\$id": *"\(urn:acme:event:[^"]*\)".*/\1/p' "$file" | head -n 1)"
+    if [ -n "$id" ]; then echo "$id $file"; fi
   done
-fi
+}
+head_events="$(event_ids "$contracts/events")"
+while read -r id base_event; do
+  [ -n "$id" ] || continue
+  name="${id#urn:acme:event:}"
+  head_event="$(awk -v id="$id" '$1 == id { print $2; exit }' <<<"$head_events")"
+  if [ -z "$head_event" ]; then
+    echo "✖ $name exists at $short but was removed. Published events are never deleted." >&2
+    status=1
+  elif ! cmp -s "$base_event" "$head_event"; then
+    echo "✖ $name changed since $short. Events are immutable: add a new version instead." >&2
+    diff -u "$base_event" "$head_event" >&2 || true
+    status=1
+  else
+    echo "› $name: unchanged (${head_event#"$contracts"/})"
+  fi
+done <<<"$(event_ids "$work/$prefix/events")"
 
 if [ "$status" -ne 0 ]; then
   echo "✖ Incompatible contract change. Do not weaken this check: move an API change to a new" >&2

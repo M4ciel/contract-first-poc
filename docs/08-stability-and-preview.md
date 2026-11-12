@@ -17,7 +17,7 @@ adjustment is a blocked breaking change. Published as a normal version, it leaks
 
 1. **Levels**: `draft`, `alpha`, `beta`, `stable`, required by the lint on every operation.
 2. **oasdiff understands them**, verified by tests that run the real binary
-   (`contracts/scripts/compat/stability-levels.spec.ts`):
+   (`contracts/tooling/compat/stability-levels.spec.ts`):
 
    | Change                                     | Result                              |
    | ------------------------------------------ | ----------------------------------- |

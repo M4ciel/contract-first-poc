@@ -13,7 +13,7 @@ would make Orval generate a plain string and lose the type.
 
 ## Decision
 
-`contracts/scripts/compat/oasdiff-severity.txt` lowers that one rule to `info`. Nothing else is
+`contracts/tooling/compat/oasdiff-severity.txt` lowers that one rule to `info`. Nothing else is
 relaxed. A test runs oasdiff with and without the file to document the difference.
 
 ## Consequences

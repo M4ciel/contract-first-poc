@@ -18,5 +18,5 @@ expect_success 'tolerant schemas read lost as unknown, raw Orval schemas break, 
   env NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' \
   pnpm --filter @acme/legacy-client exec jest --coverage=false --verbose \
   --testNamePattern='new enum value|current contract'
-say 'The post-processing (contracts/scripts/apply-response-enum-fallback.ts) added "unknown" and'
+say 'The post-processing (contracts/tooling/generate/apply-response-enum-fallback.ts) added "unknown" and'
 say '.catch("unknown") to every response enum, so old screens show a neutral label instead of crashing.'

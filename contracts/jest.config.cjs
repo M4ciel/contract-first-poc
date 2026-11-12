@@ -3,14 +3,14 @@
 module.exports = {
   displayName: 'contracts',
   preset: '../jest.preset.cjs',
-  roots: ['<rootDir>/scripts'],
+  roots: ['<rootDir>/tooling'],
   extensionsToTreatAsEsm: ['.ts'],
   transform: {
     '^.+\\.ts$': ['ts-jest', { useESM: true, tsconfig: '<rootDir>/tsconfig.json' }],
   },
   // Coverage always runs, so the threshold below is enforced on every `nx test`.
   collectCoverage: true,
-  collectCoverageFrom: ['scripts/**/*-core.ts'],
+  collectCoverageFrom: ['tooling/**/*-core.ts'],
   coverageDirectory: '../coverage/contracts',
   // The core is the only logic in this project and all of it is reachable from tests.
   coverageThreshold: { global: { branches: 100, functions: 100, lines: 100, statements: 100 } },

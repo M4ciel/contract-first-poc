@@ -26,7 +26,7 @@ flowchart LR
   subgraph contracts["contracts/ (the contracts repository)"]
     O["apis/*/openapi.yaml<br/>+ shared/"] --> L["Redocly lint + bundle"]
     L --> G["Orval + post-processing"]
-    E["events/*.json"] --> GE["event generator"]
+    E["events/*/vN.schema.json"] --> GE["event generator"]
     G --> T["@acme/api-types"]
     G --> C["@acme/api-client"]
     G --> IC["@acme/inventory-client"]

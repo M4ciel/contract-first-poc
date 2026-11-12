@@ -10,7 +10,7 @@ import {
   collectResponseTypeNames,
 } from './apply-response-enum-fallback-core.ts';
 
-const root = join(import.meta.dirname, '..');
+const root = join(import.meta.dirname, '..', '..');
 
 const targets = [
   {

@@ -1,6 +1,6 @@
 {
   "name": "@acme/events",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Types and Zod schemas generated from the Acme domain event catalog (JSON Schema).",
   "license": "MIT",
   "type": "module",

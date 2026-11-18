@@ -1,5 +1,12 @@
 # @acme/domain
 
+## 0.1.1
+
+### Patch Changes
+
+- 02373a8: Every package now has a README with how to install it from the private registry and how to use it.
+  No code change.
+
 ## 0.1.0
 
 ### Minor Changes
